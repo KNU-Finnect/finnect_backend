@@ -27,26 +27,44 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-
-    # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-    #   with:
-    #     gradle-version: '8.5'
-    #
-    # - name: Build with Gradle 8.5
-    #   run: gradle build
-
+    - name: check file
+      run: ls ./build/libs/
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+          name: cicdsample
+          path: build/libs/Finnect_backend-0.0.1-SNAPSHOT.jar
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cicdsample
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SECRET_KEY }}
+      - name: keySet
+        run : ssh-keygen -R ${{ secrets.SERVER_IP }}
+      - name: keySet
+        run: ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      - name: checkKEy
+        run: ssh-add -l
+      - name: SCP transfer
+        run: scp *.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/cicd
+      - name: remove 8080port
+        run:
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "sudo fuser -k 8080/tcp"
+      - name: Execute remote commands
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "sudo nohup java -jar ~/cicd/Finnect_backend-0.0.1-SNAPSHOT.jar &"
+          
   dependency-submission:
 
     runs-on: ubuntu-latest

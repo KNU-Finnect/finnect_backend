@@ -1,6 +1,7 @@
 package com.finnect.deal.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import com.finnect.mockDomain.Company;
 import com.finnect.mockDomain.Member;
@@ -16,14 +17,16 @@ class DealTest {
 
     @BeforeEach
     void setUp() {
-        company = new Company();
-        row = new Row();
-        member = new Member();
+        company = mock(Company.class);
+        row = mock(Row.class);
+        member = mock(Member.class);
     }
 
     @Test
     @DisplayName("딜 생성 테스트")
     void createDealTest(){
+        //given
+
         //when
         Deal deal = Deal.builder()
                 .dealId(1)

@@ -5,20 +5,20 @@ import static org.mockito.Mockito.mock;
 
 import com.finnect.mockDomain.Company;
 import com.finnect.mockDomain.Member;
-import com.finnect.mockDomain.Row;
+import com.finnect.mockDomain.DataRow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class DealTest {
     Company company;
-    Row row;
+    DataRow dataRow;
     Member member;
 
     @BeforeEach
     void setUp() {
         company = mock(Company.class);
-        row = mock(Row.class);
+        dataRow = mock(DataRow.class);
         member = mock(Member.class);
     }
 
@@ -32,12 +32,12 @@ class DealTest {
                 .dealId(1)
                 .dealName("test")
                 .company(company)
-                .row(row)
+                .dataRow(dataRow)
                 .member(member)
                 .build();
         //then
         assertEquals(deal.getCompany(), company);
-        assertEquals(deal.getRow(), row);
+        assertEquals(deal.getDataRow(), dataRow);
         assertEquals(deal.getMember(), member);
     }
 
@@ -48,15 +48,16 @@ class DealTest {
                 .dealId(1)
                 .dealName("test")
                 .company(company)
-                .row(row)
+                .dataRow(dataRow)
                 .member(member)
                 .build();
 
         deal.setDealName("Test2");
 
         //then
+
         assertEquals(deal.getCompany(), company);
-        assertEquals(deal.getRow(), row);
+        assertEquals(deal.getDataRow(), dataRow);
         assertEquals(deal.getMember(), member);
         assertEquals(deal.getDealName(), "Test2");
     }

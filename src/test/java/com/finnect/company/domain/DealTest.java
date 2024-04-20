@@ -1,4 +1,4 @@
-package com.finnect.deal.domain;
+package com.finnect.company.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

@@ -1,4 +1,4 @@
-package com.finnect.deal.domain;
+package com.finnect.company.domain;
 
 import com.finnect.mockDomain.Company;
 import com.finnect.mockDomain.Member;
@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
 
 
 @AllArgsConstructor

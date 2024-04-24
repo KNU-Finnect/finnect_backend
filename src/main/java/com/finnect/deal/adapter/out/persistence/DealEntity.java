@@ -1,4 +1,4 @@
-package com.finnect.company.domain;
+package com.finnect.company.adapter.out.persistence.entity;
 
 import com.finnect.mockDomain.Member;
 import com.finnect.mockDomain.DataRow;
@@ -17,8 +17,8 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @Builder
-@Entity
-public class Deal {
+@Entity(name = "deal")
+public class DealEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long dealId;
@@ -32,7 +32,7 @@ public class Deal {
     // Mock Entity
     @OneToOne(fetch = FetchType.EAGER)
     @Getter
-    private Company company;
+    private CompanyEntity companyEntity;
     // Identified By userId & workspaceId
     // Mock Entity
 
@@ -46,5 +46,5 @@ public class Deal {
     @Getter
     private DataRow dataRow;
 
-    protected Deal() {}
+    protected DealEntity() {}
 }

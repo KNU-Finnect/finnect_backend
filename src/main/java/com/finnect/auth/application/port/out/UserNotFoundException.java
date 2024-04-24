@@ -1,4 +1,4 @@
-package com.finnect.auth.adapter.out.persistence;
+package com.finnect.auth.application.port.out;
 
 public class UserNotFoundException extends RuntimeException {
 

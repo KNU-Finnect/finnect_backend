@@ -3,8 +3,7 @@ package com.finnect.auth.adapter.out.persistence;
 import com.finnect.auth.UserState;
 import com.finnect.auth.application.port.out.GetUserPort;
 import com.finnect.auth.application.port.out.CreateUserPort;
-import com.finnect.auth.domain.User;
-import org.modelmapper.ModelMapper;
+import com.finnect.auth.application.port.out.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -3,7 +3,6 @@ package com.finnect.company.domain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-import com.finnect.mockDomain.Company;
 import com.finnect.mockDomain.Member;
 import com.finnect.mockDomain.DataRow;
 import org.junit.jupiter.api.BeforeEach;

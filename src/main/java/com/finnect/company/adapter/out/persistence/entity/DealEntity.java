@@ -1,6 +1,5 @@
 package com.finnect.company.domain;
 
-import com.finnect.mockDomain.Company;
 import com.finnect.mockDomain.Member;
 import com.finnect.mockDomain.DataRow;
 

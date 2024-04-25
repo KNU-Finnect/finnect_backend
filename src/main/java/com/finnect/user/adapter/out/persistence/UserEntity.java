@@ -2,16 +2,21 @@ package com.finnect.user.adapter.out.persistence;
 
 import com.finnect.user.UserId;
 import com.finnect.user.UserState;
+import com.finnect.user.WorkspaceAuthority;
 import com.finnect.user.WorkspaceId;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor()
 @Builder
-public class UserJpaEntity implements UserState {
+public class UserEntity implements UserState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +52,32 @@ public class UserJpaEntity implements UserState {
     }
 
     @Override
-    public WorkspaceId getAuthorizedWorkspaceId() {
+    public WorkspaceId getDefaultWorkspaceId() {
         return new WorkspaceId(defaultWorkspaceId);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new WorkspaceAuthority(getDefaultWorkspaceId()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

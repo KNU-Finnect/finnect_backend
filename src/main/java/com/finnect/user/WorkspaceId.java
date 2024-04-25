@@ -6,4 +6,12 @@ public record WorkspaceId(Long value) {
     public String toString() {
         return value.toString();
     }
+
+    public static WorkspaceId parseOrNull(String value) {
+        try {
+            return new WorkspaceId(Long.parseLong(value));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

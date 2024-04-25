@@ -1,18 +1,6 @@
 package com.finnect.user;
 
-public interface UserState {
+import org.springframework.security.core.userdetails.UserDetails;
 
-    UserId getId();
-
-    String getUsername();
-
-    String getPassword();
-
-    String getEmail();
-
-    String getFirstName();
-
-    String getLastName();
-
-    WorkspaceId getAuthorizedWorkspaceId();
+public interface UserState extends UserInfoState, UserDetails {
 }

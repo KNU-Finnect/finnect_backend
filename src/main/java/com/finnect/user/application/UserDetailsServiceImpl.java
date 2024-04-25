@@ -1,9 +1,8 @@
 package com.finnect.user.application;
 
-import com.finnect.user.UserState;
-import com.finnect.user.application.port.out.GetUserPort;
+import com.finnect.user.application.port.out.GetUserDetailsPort;
 import com.finnect.user.application.port.out.UserNotFoundException;
-import com.finnect.user.domain.User;
+import com.finnect.user.domain.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,31 +11,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    public final GetUserPort getUserPort;
+    public final GetUserDetailsPort getUserDetailsPort;
 
     public final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthenticationService(
-            GetUserPort getUserPort,
+    public UserDetailsServiceImpl(
+            GetUserDetailsPort getUserDetailsPort,
             PasswordEncoder passwordEncoder
     ) {
-        this.getUserPort = getUserPort;
+        this.getUserDetailsPort = getUserDetailsPort;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserState user;
+        UserDetails user;
 
         try {
-            user = getUserPort.getUser(username);
+            user = getUserDetailsPort.getUserDetails(username);
         } catch (UserNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage(), e);
         }
 
-        return User.from(user);
+        return UserDetailsImpl.from(user);
     }
 }

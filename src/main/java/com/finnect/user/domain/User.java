@@ -4,70 +4,85 @@ import com.finnect.user.UserId;
 import com.finnect.user.UserState;
 import com.finnect.user.WorkspaceId;
 import lombok.Builder;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 @Builder
-@Getter
-public class User implements UserState, UserDetails {
+public class User implements UserState {
 
-    private final UserId id;
+    public final UserInfo userInfo;
 
-    private final String username;
-
-    private final String password;
-
-    private final String email;
-
-    private final String firstName;
-
-    private final String lastName;
-
-    private final WorkspaceAuthority workspaceAuthority;
+    public final UserDetailsImpl userDetails;
 
     @Override
-    public WorkspaceId getAuthorizedWorkspaceId() {
-        return workspaceAuthority.workspaceId();
+    public UserId getId() {
+        return userInfo.getId();
+    }
+
+    @Override
+    public String getEmail() {
+        return userInfo.getEmail();
+    }
+
+    @Override
+    public String getFirstName() {
+        return userInfo.getFirstName();
+    }
+
+    @Override
+    public String getLastName() {
+        return userInfo.getLastName();
+    }
+
+    @Override
+    public WorkspaceId getDefaultWorkspaceId() {
+        return userInfo.getDefaultWorkspaceId();
+    }
+
+    @Override
+    public String getUsername() {
+        return userDetails.getUsername();
+    }
+
+    @Override
+    public String getPassword() {
+        return userDetails.getPassword();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(workspaceAuthority);
+        return userDetails.getAuthorities();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return userDetails.isAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return userDetails.isAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return userDetails.isCredentialsNonExpired();
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return userDetails.isEnabled();
     }
 
     public static User from(UserState user) {
         return User.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .workspaceAuthority(new WorkspaceAuthority(user.getAuthorizedWorkspaceId()))
+                .userInfo(
+                        UserInfo.from(user)
+                )
+                .userDetails(
+                        UserDetailsImpl.from(user)
+                )
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package com.finnect.user.domain;
 import com.finnect.user.UserId;
 import com.finnect.user.UserState;
 import com.finnect.user.WorkspaceId;
+import com.finnect.user.application.port.in.CreateUserCommand;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -82,6 +83,17 @@ public class User implements UserState {
                 )
                 .userDetails(
                         UserDetailsImpl.from(user)
+                )
+                .build();
+    }
+
+    public static User from(CreateUserCommand createUser) {
+        return User.builder()
+                .userInfo(
+                        UserInfo.from(createUser)
+                )
+                .userDetails(
+                        UserDetailsImpl.from(createUser)
                 )
                 .build();
     }

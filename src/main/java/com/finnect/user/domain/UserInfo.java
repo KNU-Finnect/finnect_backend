@@ -3,6 +3,7 @@ package com.finnect.user.domain;
 import com.finnect.user.UserId;
 import com.finnect.user.UserInfoState;
 import com.finnect.user.WorkspaceId;
+import com.finnect.user.application.port.in.CreateUserCommand;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -27,6 +28,14 @@ public class UserInfo implements UserInfoState {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .defaultWorkspaceId(user.getDefaultWorkspaceId())
+                .build();
+    }
+
+    public static UserInfo from(CreateUserCommand createUser) {
+        return UserInfo.builder()
+                .email(createUser.getEmail())
+                .firstName(createUser.getFirstName())
+                .lastName(createUser.getLastName())
                 .build();
     }
 }

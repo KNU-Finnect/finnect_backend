@@ -1,6 +1,7 @@
 package com.finnect.user.domain;
 
 import com.finnect.user.WorkspaceAuthority;
+import com.finnect.user.application.port.in.CreateUserCommand;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,6 +60,13 @@ public class UserDetailsImpl implements UserDetails {
                 .workspaceAuthority(
                         WorkspaceAuthority.from(user.getAuthorities())
                 )
+                .build();
+    }
+
+    public static UserDetailsImpl from(CreateUserCommand createUser) {
+        return UserDetailsImpl.builder()
+                .username(createUser.getUsername())
+                .password(createUser.getPassword())
                 .build();
     }
 }

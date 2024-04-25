@@ -1,6 +1,6 @@
-package com.finnect.user.application;
+package com.finnect.user.application.service;
 
-import com.finnect.user.application.port.in.CreateUserCommand;
+import com.finnect.user.application.port.in.command.CreateUserCommand;
 import com.finnect.user.application.port.in.SignupUseCase;
 import com.finnect.user.application.port.out.CreateUserPort;
 import com.finnect.user.domain.User;

@@ -1,4 +1,4 @@
-package com.finnect.user.application.port.out;
+package com.finnect.user.exception;
 
 public class UserNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.finnect.user.adapter.out.persistence;
+package com.finnect.user.adapter.out.persistence.entity;
 
 import com.finnect.user.UserId;
 import com.finnect.user.UserState;

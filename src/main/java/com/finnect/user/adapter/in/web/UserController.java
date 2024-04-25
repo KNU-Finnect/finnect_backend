@@ -1,6 +1,7 @@
 package com.finnect.user.adapter.in.web;
 
 import com.finnect.common.Response;
+import com.finnect.user.adapter.in.web.request.SignupRequest;
 import com.finnect.user.application.port.in.SignupUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

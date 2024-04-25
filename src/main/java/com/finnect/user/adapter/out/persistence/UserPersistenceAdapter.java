@@ -1,9 +1,11 @@
 package com.finnect.user.adapter.out.persistence;
 
 import com.finnect.user.UserState;
+import com.finnect.user.adapter.out.persistence.entity.UserEntity;
+import com.finnect.user.adapter.out.persistence.entity.UserRepository;
 import com.finnect.user.application.port.out.CreateUserPort;
 import com.finnect.user.application.port.out.GetUserDetailsPort;
-import com.finnect.user.application.port.out.UserNotFoundException;
+import com.finnect.user.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;

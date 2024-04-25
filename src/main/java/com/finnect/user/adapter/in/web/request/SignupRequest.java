@@ -1,6 +1,6 @@
-package com.finnect.user.adapter.in.web;
+package com.finnect.user.adapter.in.web.request;
 
-import com.finnect.user.application.port.in.CreateUserCommand;
+import com.finnect.user.application.port.in.command.CreateUserCommand;
 import lombok.Getter;
 
 @Getter

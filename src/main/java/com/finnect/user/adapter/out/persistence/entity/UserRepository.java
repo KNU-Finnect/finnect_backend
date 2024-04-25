@@ -1,4 +1,4 @@
-package com.finnect.user.adapter.out.persistence;
+package com.finnect.user.adapter.out.persistence.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

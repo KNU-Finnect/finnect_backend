@@ -1,4 +1,4 @@
-package com.finnect.user.application.port.in;
+package com.finnect.user.application.port.in.command;
 
 public interface CreateUserCommand {
 

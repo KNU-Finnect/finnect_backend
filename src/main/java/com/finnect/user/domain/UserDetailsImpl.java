@@ -1,7 +1,7 @@
 package com.finnect.user.domain;
 
 import com.finnect.user.WorkspaceAuthority;
-import com.finnect.user.application.port.in.CreateUserCommand;
+import com.finnect.user.application.port.in.command.CreateUserCommand;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

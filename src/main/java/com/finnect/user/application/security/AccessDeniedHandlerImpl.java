@@ -1,4 +1,4 @@
-package com.finnect.user.adapter.out.security;
+package com.finnect.user.application.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

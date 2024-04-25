@@ -1,4 +1,4 @@
-package com.finnect.user.adapter.out.security;
+package com.finnect.user.application.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

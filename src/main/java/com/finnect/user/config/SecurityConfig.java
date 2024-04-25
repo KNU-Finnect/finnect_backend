@@ -1,8 +1,8 @@
 package com.finnect.user.config;
 
-import com.finnect.user.adapter.out.jwt.JwtProvider;
-import com.finnect.user.adapter.out.security.AuthenticationFilter;
-import com.finnect.user.adapter.out.security.AuthorizationFilter;
+import com.finnect.user.application.security.jwt.JwtProvider;
+import com.finnect.user.application.security.AuthenticationFilter;
+import com.finnect.user.application.security.AuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;

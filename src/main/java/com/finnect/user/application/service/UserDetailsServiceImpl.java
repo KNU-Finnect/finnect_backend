@@ -1,7 +1,7 @@
-package com.finnect.user.application;
+package com.finnect.user.application.service;
 
 import com.finnect.user.application.port.out.GetUserDetailsPort;
-import com.finnect.user.application.port.out.UserNotFoundException;
+import com.finnect.user.exception.UserNotFoundException;
 import com.finnect.user.domain.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -86,6 +86,7 @@ public class SecurityConfig {
     public AuthenticationFilter authenticationFilter() throws Exception {
         AuthenticationFilter filter = new AuthenticationFilter(tokenProvider);
         filter.setAuthenticationManager(authenticationManager(null));
+        filter.setFilterProcessesUrl("/users/login");
         return filter;
     }
 

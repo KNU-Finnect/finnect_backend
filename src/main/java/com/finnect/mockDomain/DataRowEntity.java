@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class DataRow {
+public class DataRowEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

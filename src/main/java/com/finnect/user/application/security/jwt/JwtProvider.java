@@ -20,20 +20,22 @@ import java.util.*;
 @Component
 public class JwtProvider {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final Long accessExpiredTime;
 
-    @Value("${jwt.access-expired-time}")
-    private Long accessExpiredTime;
-
-    @Value("${jwt.refresh-expired-time}")
-    private Long refreshExpiredTime;
+    private final Long refreshExpiredTime;
 
     private final Key key;
 
     private final JwtParser parser;
 
-    public JwtProvider() {
+    public JwtProvider(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.access-expired-time}") Long accessExpiredTime,
+            @Value("${jwt.refresh-expired-time}") Long refreshExpiredTime
+    ) {
+        this.accessExpiredTime = accessExpiredTime;
+        this.refreshExpiredTime = refreshExpiredTime;
+
         key = Keys.hmacShaKeyFor(
                 Decoders.BASE64.decode(secret)
         );

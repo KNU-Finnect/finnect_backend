@@ -63,10 +63,10 @@ public class UserDetailsImpl implements UserDetails {
                 .build();
     }
 
-    public static UserDetailsImpl from(CreateUserCommand createUser) {
+    public static UserDetailsImpl from(CreateUserCommand command) {
         return UserDetailsImpl.builder()
-                .username(createUser.getUsername())
-                .password(createUser.getPassword())
+                .username(command.username())
+                .password(command.password())
                 .build();
     }
 }

@@ -87,13 +87,13 @@ public class User implements UserState {
                 .build();
     }
 
-    public static User from(CreateUserCommand createUser) {
+    public static User from(CreateUserCommand command) {
         return User.builder()
                 .userInfo(
-                        UserInfo.from(createUser)
+                        UserInfo.from(command)
                 )
                 .userDetails(
-                        UserDetailsImpl.from(createUser)
+                        UserDetailsImpl.from(command)
                 )
                 .build();
     }

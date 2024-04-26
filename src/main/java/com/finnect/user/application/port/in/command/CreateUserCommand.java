@@ -1,14 +1,13 @@
 package com.finnect.user.application.port.in.command;
 
-public interface CreateUserCommand {
+import lombok.Builder;
 
-    String getUsername();
-
-    String getPassword();
-
-    String getEmail();
-
-    String getFirstName();
-
-    String getLastName();
+@Builder
+public record CreateUserCommand(
+        String username,
+        String password,
+        String email,
+        String firstName,
+        String lastName
+) {
 }

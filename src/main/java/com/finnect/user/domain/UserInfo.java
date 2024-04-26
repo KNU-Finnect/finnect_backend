@@ -31,11 +31,11 @@ public class UserInfo implements UserInfoState {
                 .build();
     }
 
-    public static UserInfo from(CreateUserCommand createUser) {
+    public static UserInfo from(CreateUserCommand command) {
         return UserInfo.builder()
-                .email(createUser.getEmail())
-                .firstName(createUser.getFirstName())
-                .lastName(createUser.getLastName())
+                .email(command.email())
+                .firstName(command.firstName())
+                .lastName(command.lastName())
                 .build();
     }
 }

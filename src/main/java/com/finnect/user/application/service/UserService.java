@@ -18,9 +18,9 @@ public class UserService implements SignupUseCase {
     }
 
     @Override
-    public Object signup(CreateUserCommand createUser) {
+    public Object signup(CreateUserCommand command) {
         createUserPort.createUser(
-                User.from(createUser)
+                User.from(command)
         );
         return null;
     }

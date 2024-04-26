@@ -5,6 +5,7 @@ import com.finnect.user.UserState;
 import com.finnect.user.WorkspaceId;
 import com.finnect.user.application.port.in.command.CreateUserCommand;
 import lombok.Builder;
+import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -12,8 +13,10 @@ import java.util.Collection;
 @Builder
 public class User implements UserState {
 
+    @NonNull
     public final UserInfo userInfo;
 
+    @NonNull
     public final UserDetailsImpl userDetails;
 
     @Override

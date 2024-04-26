@@ -3,6 +3,7 @@ package com.finnect.user.domain;
 import com.finnect.user.WorkspaceAuthority;
 import com.finnect.user.application.port.in.command.CreateUserCommand;
 import lombok.Builder;
+import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,19 +13,21 @@ import java.util.Collections;
 @Builder
 public class UserDetailsImpl implements UserDetails {
 
+    @NonNull
     private final String username;
 
+    @NonNull
     private final String password;
 
     private final WorkspaceAuthority workspaceAuthority;
 
     @Override
-    public String getUsername() {
+    public @NonNull String getUsername() {
         return username;
     }
 
     @Override
-    public String getPassword() {
+    public @NonNull String getPassword() {
         return password;
     }
 
@@ -65,8 +68,8 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl from(CreateUserCommand command) {
         return UserDetailsImpl.builder()
-                .username(command.username())
-                .password(command.password())
+                .username(command.getUsername())
+                .password(command.getPassword())
                 .build();
     }
 }

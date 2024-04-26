@@ -1,23 +1,25 @@
-package com.finnect.company.domain;
+package com.finnect.company.adapter.out.persistence.entity;
 
-import jakarta.persistence.CascadeType;
+import com.finnect.mockDomain.DataRowEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import java.util.List;
+import jakarta.persistence.OneToOne;
+import lombok.Getter;
 
-@Entity
-public class Company {
+@Entity(name = "company")
+public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long companyId;
+    @Getter
+    private Long companyId;
 
-    @OneToMany
-            (cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "companyId")
-    private List<Deal> deals;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @Getter
+    private DataRowEntity dataRowEntity;
+
 }

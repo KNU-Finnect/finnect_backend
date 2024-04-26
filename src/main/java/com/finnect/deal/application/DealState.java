@@ -4,7 +4,11 @@ import com.finnect.mockDomain.MemberEntity;
 
 public interface DealState {
 
-    String getCompany();
+    Long getDealId();
     String getDealName();
-    MemberEntity getMemberInCharge();
+    Long getCompany();
+    Long getUser();
+    Long getWorkspace();
+    Long getDataRow();
+
 }

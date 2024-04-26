@@ -11,15 +11,12 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 import java.util.Collections;
 
-@Entity
-@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor()
-@Builder
+@Builder @AllArgsConstructor()
+@Entity @Table(name = "user")
 public class UserEntity implements UserState {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 

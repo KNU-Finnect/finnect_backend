@@ -20,6 +20,6 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
         log.info(dataColumn.toString());
         dataColumn = saveDataColumnPort.saveNewColumn(dataColumn);
         saveCellPort.saveNewCellByNewColumn(dataColumn);
-        return null;
+        return dataColumn;
     }
 }

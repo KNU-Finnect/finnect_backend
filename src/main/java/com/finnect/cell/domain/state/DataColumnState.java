@@ -1,13 +1,16 @@
 package com.finnect.cell.domain.state;
 
-public interface ColumnState {
+import com.finnect.cell.domain.DataColumn.ColumnType;
+import com.finnect.cell.domain.DataColumn.DataType;
+
+public interface DataColumnState {
 
     Long getColumnId();
     Long getWorkspaceId();
     String getColumnName();
-    String getColumnType();
+    ColumnType getColumnType();
     Double getColumnIndex();
     Boolean isHided();
-    String getDType();
+    DataType getDType();
 
 }

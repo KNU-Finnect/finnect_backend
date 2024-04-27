@@ -1,9 +1,10 @@
 package com.finnect.cell.domain;
 
-import com.finnect.cell.domain.state.ColumnState;
+import com.finnect.cell.domain.state.DataColumnState;
 import lombok.Builder;
+import lombok.Getter;
 
-public class Column implements ColumnState {
+public class DataColumn implements DataColumnState {
     private Long columnId;
     private Long workspaceId;
     private String columnName;
@@ -14,8 +15,8 @@ public class Column implements ColumnState {
 
 
     @Builder
-    public Column(Long columnId, Long workspaceId, String columnName, DataType dType, ColumnType columnType,
-                  Double columnIndex, Boolean isHided) {
+    public DataColumn(Long columnId, Long workspaceId, String columnName, DataType dType, ColumnType columnType,
+                      Double columnIndex, Boolean isHided) {
         this.columnId = columnId;
         this.workspaceId = workspaceId;
         this.columnName = columnName;
@@ -29,50 +30,81 @@ public class Column implements ColumnState {
     public Long getColumnId() {
         return this.columnId;
     }
-
     @Override
     public Long getWorkspaceId() {
         return this.workspaceId;
     }
-
     @Override
     public String getColumnName() {
         return this.columnName;
     }
-
     @Override
-    public String getColumnType() {
-        return this.columnType.getType();
+    public ColumnType getColumnType() {
+        return this.columnType;
     }
-
     @Override
     public Double getColumnIndex() {
         return columnIndex;
     }
-
     @Override
     public Boolean isHided() {
         return isHided;
     }
+    @Override
+    public DataType getDType() {
+        return this.dType;
+    }
+
 
     @Override
-    public String getDType() {
-        return this.dType.name();
+    public String toString() {
+        return "DataColumn{" +
+                "columnId=" + columnId +
+                ", workspaceId=" + workspaceId +
+                ", columnName='" + columnName + '\'' +
+                ", dType=" + dType +
+                ", columnType=" + columnType +
+                ", columnIndex=" + columnIndex +
+                ", isHided=" + isHided +
+                '}';
     }
 
     public enum ColumnType {
         TEXT("TEXT"), NUMBER("NUMBER");
+
+        @Getter
         private final String type;
+
         ColumnType(String str) {
             this.type = str;
         }
 
-        public String getType() {
-            return type;
+        public static ColumnType getColumnType(String columnType) {
+            for(ColumnType type : ColumnType.values()){
+                if(type.getType().equals(columnType)){
+                    return type;
+                }
+            }
+            return null;
         }
     }
 
     public enum DataType{
-        DEAL, COMPANY;
+        DEAL("DEAL"), COMPANY("CCOMPANY");
+
+        @Getter
+        private final String type;
+        DataType(String type) {
+            this.type = type;
+        }
+
+        public static DataType getDataType(String dataType){
+            for(DataType type : DataType.values()){
+                if(type.getType().equals(dataType)){
+                    return type;
+                }
+            }
+            return null;
+        }
     }
 }

@@ -28,4 +28,11 @@ public class DataRowEntity implements com.finnect.cell.domain.state.DataRowState
                 .dataRowId(this.dataRowId)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "DataRowEntity{" +
+                "dataRowId=" + dataRowId +
+                '}';
+    }
 }

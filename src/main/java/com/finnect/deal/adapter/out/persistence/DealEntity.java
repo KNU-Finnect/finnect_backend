@@ -1,20 +1,11 @@
 package com.finnect.deal.adapter.out.persistence;
 
-import com.finnect.cell.adapter.out.persistence.DataRowEntity;
-import com.finnect.company.adapter.out.persistence.entity.CompanyEntity;
 import com.finnect.deal.application.DealState;
 import com.finnect.deal.domain.Deal;
-import com.finnect.mockDomain.MemberEntity;
-import com.finnect.mockDomain.MemberId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 
 
@@ -26,31 +17,26 @@ public class DealEntity implements DealState {
 
     private String dealName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private CompanyEntity companyEntity;
+    private Long companyId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "user_id"),
-            @JoinColumn(name = "workspace_id")
-    })
+    private Long userId;
+    private Long workspaceId;
 
-    private MemberEntity memberEntity;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "data_row_id")
-    private DataRowEntity dataRowEntity;
+    private Long dataRowId;
 
     protected DealEntity() {}
+
+
     @Builder
-    public DealEntity(Long dealId, String dealName, CompanyEntity companyEntity, MemberEntity memberEntity, DataRowEntity dataRowEntity) {
+    public DealEntity(Long dealId, String dealName, Long companyId, Long userId, Long workspaceId, Long dataRowId) {
         this.dealId = dealId;
         this.dealName = dealName;
-        this.companyEntity = companyEntity;
-        this.memberEntity = memberEntity;
-        this.dataRowEntity = dataRowEntity;
+        this.companyId = companyId;
+        this.userId = userId;
+        this.workspaceId = workspaceId;
+        this.dataRowId = dataRowId;
     }
+
 
     @Override
     public Long getDealId() {
@@ -58,23 +44,23 @@ public class DealEntity implements DealState {
     }
 
     @Override
-    public Long getCompany() {
-        return this.companyEntity.getCompanyId();
+    public Long getCompanyId() {
+        return this.companyId;
     }
 
     @Override
-    public Long getUser() {
-        return this.memberEntity.getUserId();
+    public Long getUserId() {
+        return this.userId;
     }
 
     @Override
-    public Long getWorkspace() {
-        return this.memberEntity.getWorkspaceId();
+    public Long getWorkspaceId() {
+        return this.workspaceId;
     }
 
     @Override
-    public Long getDataRow() {
-        return this.dataRowEntity.getDataRowId();
+    public Long getDataRowId() {
+        return this.dataRowId;
     }
 
     @Override
@@ -88,10 +74,10 @@ public class DealEntity implements DealState {
         return Deal.builder()
                 .dealId(this.getDealId())
                 .dealName(this.getDealName())
-                .companyId(this.getCompany())
-                .userId(this.getUser())
-                .workspaceId(this.getWorkspace())
-                .dataRowId(this.getDataRow())
+                .companyId(this.getCompanyId())
+                .userId(this.getUserId())
+                .workspaceId(this.getWorkspaceId())
+                .dataRowId(this.getDataRowId())
                 .build();
     }
 
@@ -99,8 +85,9 @@ public class DealEntity implements DealState {
         return DealEntity.builder()
                 .dealId(deal.getDealId())
                 .dealName(deal.getDealName())
-                .memberEntity(null)
-                .dataRowEntity(new DataRowEntity(deal.getDataRow()))
+                .userId(deal.getUserId())
+                .workspaceId(deal.getWorkspaceId())
+                .dataRowId(deal.getDataRowId())
                 .build();
     }
 
@@ -109,9 +96,10 @@ public class DealEntity implements DealState {
         return "DealEntity{" +
                 "dealId=" + dealId +
                 ", dealName='" + dealName + '\'' +
-                ", companyEntity=" + companyEntity +
-                ", memberEntity=" + memberEntity +
-                ", dataRowEntity=" + dataRowEntity +
+                ", companyId=" + companyId +
+                ", userId=" + userId +
+                ", workspaceId=" + workspaceId +
+                ", dataRowId=" + dataRowId +
                 '}';
     }
 }

@@ -1,6 +1,6 @@
 package com.finnect.company.adapter.out.persistence.entity;
 
-import com.finnect.mockDomain.DataRowEntity;
+import com.finnect.cell.adapter.out.persistence.DataRowEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

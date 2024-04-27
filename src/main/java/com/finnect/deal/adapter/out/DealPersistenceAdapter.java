@@ -18,9 +18,12 @@ public class DealPersistenceAdapter implements SaveDealPort {
 
 
     @Override
-    public void saveDeal(DealState deal) {
+    public Deal saveDeal(DealState deal) {
         DealEntity dealEntity = DealEntity.toPersistence(deal);
         log.info(dealEntity.toString());
-        dealRepository.save(dealEntity);
+        dealEntity = dealRepository.save(dealEntity);
+
+        log.info("saved : " + dealEntity.toString());
+        return dealEntity.toDomain();
     }
 }

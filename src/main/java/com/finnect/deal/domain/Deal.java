@@ -36,22 +36,22 @@ public class Deal implements DealState {
     }
 
     @Override
-    public Long getCompany() {
+    public Long getCompanyId() {
         return this.companyId;
     }
 
     @Override
-    public Long getUser() {
+    public Long getUserId() {
         return this.userId;
     }
 
     @Override
-    public Long getWorkspace() {
+    public Long getWorkspaceId() {
         return this.workspaceId;
     }
 
     @Override
-    public Long getDataRow() {
+    public Long getDataRowId() {
         return this.dataRowId;
     }
 

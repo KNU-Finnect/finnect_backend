@@ -7,4 +7,6 @@ import java.util.List;
 public interface LoadNoteUseCase {
 
     List<NoteState> loadNotesInDeal(Note note);
+
+    NoteState loadNoteInDetail(Note note);
 }

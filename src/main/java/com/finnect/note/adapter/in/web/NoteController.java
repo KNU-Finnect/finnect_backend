@@ -2,6 +2,7 @@ package com.finnect.note.adapter.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
+import com.finnect.note.adapter.in.web.res.DetailNoteResponse;
 import com.finnect.note.adapter.in.web.res.NoteListResponse;
 import com.finnect.note.application.port.in.LoadNoteUseCase;
 import com.finnect.note.domain.Note;
@@ -31,5 +32,18 @@ public class NoteController {
         return ResponseEntity.ok
                 (ApiUtils.success(HttpStatus.OK
                         , new NoteListResponse(dealId, notes)));
+    }
+
+    @GetMapping("/workspaces/deals/{dealId}/notes/{noteId}")
+    public ResponseEntity<?> loadNoteDetail(@PathVariable Long dealId, @PathVariable Long noteId){
+        NoteState noteState = loadNoteUseCase.loadNoteInDetail(
+                Note.builder()
+                        .dealId(dealId)
+                        .noteId(noteId)
+                        .build()
+        );
+        return ResponseEntity.ok
+                (ApiUtils.success(HttpStatus.OK
+                        , new DetailNoteResponse(noteState)));
     }
 }

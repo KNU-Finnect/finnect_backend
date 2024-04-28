@@ -1,11 +1,12 @@
 package com.finnect.workspace.domain;
 
+import com.finnect.workspace.MemberState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Member {
+public class Member implements MemberState {
     private final Long userId;
     private final Long workspaceId;
 

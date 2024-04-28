@@ -16,10 +16,6 @@ public class SaveNoteRequest {
     public Note toDomain(Long userId){
         return Note.builder()
                 .dealId(dealId)
-                .createdDate(ZonedDateTime
-                        .now
-                            (ZoneId.of("Asia/Seoul"))
-                        .toLocalDateTime())
                 .title(this.title)
                 .bodyText(this.bodyText)
                 .lastEditor(userId)

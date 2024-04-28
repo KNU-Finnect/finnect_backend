@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
-    public final CreateWorkspacePort createWorkspacePort;
+    private final CreateWorkspacePort createWorkspacePort;
     private final CheckDefaultWorkspaceUsecase checkDefaultWorkspaceUsecase;
     private final SetDefaultUsecase setDefaultUsecase;
 

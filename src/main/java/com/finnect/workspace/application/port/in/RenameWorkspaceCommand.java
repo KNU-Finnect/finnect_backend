@@ -4,9 +4,11 @@ import com.finnect.common.SelfValidating;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.nio.charset.StandardCharsets;
 
+@Getter
 public class RenameWorkspaceCommand extends SelfValidating<RenameWorkspaceCommand> {
 
     @NotNull(message = "워크스페이스의 ID는 null일 수 없습니다.")

@@ -20,4 +20,9 @@ public class LoadNoteService implements LoadNoteUseCase {
 
         return new ArrayList<>(notes);
     }
+
+    @Override
+    public NoteState loadNoteInDetail(Note note) {
+        return loadNotePort.loadNoteDetail(note);
+    }
 }

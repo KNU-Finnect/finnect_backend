@@ -22,4 +22,8 @@ class WorkspaceJpaEntity implements WorkspaceState {
 
     @Column
     private String workspaceName;
+
+    void updateWorkspace(String newName) {
+        this.workspaceName = newName;
+    }
 }

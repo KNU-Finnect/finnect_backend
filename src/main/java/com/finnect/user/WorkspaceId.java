@@ -1,10 +1,10 @@
 package com.finnect.user;
 
-public record WorkspaceId(Long value) {
+public record WorkspaceId(long value) {
 
     @Override
     public String toString() {
-        return value.toString();
+        return "%d".formatted(value);
     }
 
     public static WorkspaceId parseOrNull(String value) {

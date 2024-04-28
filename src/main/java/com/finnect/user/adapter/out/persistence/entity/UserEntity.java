@@ -45,12 +45,20 @@ public class UserEntity implements UserState {
 
     @Override
     public UserId getId() {
-        return new UserId(id);
+        if (id != null) {
+            return new UserId(id);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public WorkspaceId getDefaultWorkspaceId() {
-        return new WorkspaceId(defaultWorkspaceId);
+        if (defaultWorkspaceId != null) {
+            return new WorkspaceId(defaultWorkspaceId);
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort, SaveDataColumnPort {
     private final DataCellRepository dataCellRepository;
-    private final ColumnRepository columnRepository;
+    private final DataColumnRepository dataColumnRepository;
     private final DataRowRepository dataRowRepository;
     @Override
     @Transactional
@@ -36,7 +36,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
     @Override
     public DataColumn saveNewColumn(DataColumnState column) {
         DataColumnEntity dataColumnEntity = DataColumnEntity.toEntity(column);
-        columnRepository.save(dataColumnEntity);
+        dataColumnRepository.save(dataColumnEntity);
         return dataColumnEntity.toDomain();
     }
     @Override
@@ -56,7 +56,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
 
     @Override
     public void saveNewCellByNewRow(DataColumnState column, DataRowState dataRow) {
-        List<DataColumnEntity> columnEntities = columnRepository.findDataColumnEntitiesByWorkspaceId(column.getWorkspaceId());
+        List<DataColumnEntity> columnEntities = dataColumnRepository.findDataColumnEntitiesByWorkspaceId(column.getWorkspaceId());
         log.info(columnEntities.toString());
         List<DataCellEntity> cellEntities = columnEntities.stream()
                 .map(dataColumnEntity -> DataCellEntity.builder()

@@ -24,4 +24,11 @@ public class LoadNoteAdapter implements LoadNotePort {
                 .map(NoteEntity::toDomain)
                 .toList();
     }
+
+    @Override
+    public Note loadNoteDetail(NoteState noteState) {
+        NoteEntity note = noteRepository.findNoteEntityByDealIdAndNoteId(noteState.getDealId(), noteState.getNoteId())
+                .orElseThrow(IllegalAccessError::new);
+        return note.toDomain();
+    }
 }

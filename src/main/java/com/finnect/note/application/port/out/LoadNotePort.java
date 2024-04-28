@@ -7,4 +7,5 @@ import java.util.List;
 public interface LoadNotePort {
 
     List<Note> loadNoteByDealId(NoteState noteState);
+    Note loadNoteDetail(NoteState noteState);
 }

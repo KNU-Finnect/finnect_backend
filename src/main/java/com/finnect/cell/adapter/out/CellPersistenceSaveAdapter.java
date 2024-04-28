@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort, SaveDataColumnPort {
-    private final CellRepository cellRepository;
+    private final DataCellRepository dataCellRepository;
     private final ColumnRepository columnRepository;
     private final DataRowRepository dataRowRepository;
     @Override
@@ -51,7 +51,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
                                 .rowId(dataRowEntity.getDataRowId())
                                 .build())
                         .toList();
-        cellRepository.saveAll(cellEntities);
+        dataCellRepository.saveAll(cellEntities);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
                         .build())
                 .toList();
         log.info("Saving New Cell");
-        cellRepository.saveAll(cellEntities);
+        dataCellRepository.saveAll(cellEntities);
     }
 
 

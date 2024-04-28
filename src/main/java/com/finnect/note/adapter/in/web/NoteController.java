@@ -6,9 +6,12 @@ import com.finnect.note.adapter.in.web.req.PatchNoteRequest;
 import com.finnect.note.adapter.in.web.req.SaveNoteRequest;
 import com.finnect.note.adapter.in.web.res.DetailNoteResponse;
 import com.finnect.note.adapter.in.web.res.NoteListResponse;
+import com.finnect.note.adapter.in.web.res.SimpleNoteHistoryListResponse;
+import com.finnect.note.application.port.in.LoadNoteHistoryUseCase;
 import com.finnect.note.application.port.in.LoadNoteUseCase;
 import com.finnect.note.application.port.in.SaveNoteUseCase;
 import com.finnect.note.domain.Note;
+import com.finnect.note.domain.state.NoteHistoryState;
 import com.finnect.note.domain.state.NoteState;
 import java.util.List;
 import javax.swing.text.html.HTML;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class NoteController {
     private final LoadNoteUseCase loadNoteUseCase;
+    private final LoadNoteHistoryUseCase loadNoteHistoryUseCase;
     private final SaveNoteUseCase saveNoteUseCase;
 
     @PostMapping("/workspace/deals/{dealId}/notes")
@@ -79,5 +83,16 @@ public class NoteController {
         return ResponseEntity.ok
                 (ApiUtils.success(HttpStatus.OK
                         , new DetailNoteResponse(noteState)));
+    }
+
+    @GetMapping("/workspaces/deals/{dealId}/notes/{noteId}/histories")
+    public SimpleNoteHistoryListResponse loadNoteHistory(@PathVariable Long dealId, @PathVariable Long noteId){
+        List<NoteHistoryState> noteHistoryStates = loadNoteHistoryUseCase.loadNoteHistory(
+                Note.builder()
+                        .dealId(dealId)
+                        .noteId(noteId)
+                        .build()
+        );
+        return new SimpleNoteHistoryListResponse(noteHistoryStates);
     }
 }

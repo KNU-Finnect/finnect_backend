@@ -1,5 +1,6 @@
 package com.finnect.cell.adapter.out.persistence;
 
+import com.finnect.cell.domain.state.DataCell;
 import com.finnect.cell.domain.state.DataCellState;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -53,5 +54,15 @@ public class DataCellEntity implements DataCellState {
     @Override
     public Long getCompanyId() {
         return this.companyId;
+    }
+
+    public DataCell toDomain(){
+        return DataCell.builder()
+                .cellId(new CellId(this.getRowId(), this.getColumnId()))
+                .value(this.value)
+                .companyId(this.companyId)
+                .peopleId(this.peopleId)
+                .userId(this.userId)
+                .build();
     }
 }

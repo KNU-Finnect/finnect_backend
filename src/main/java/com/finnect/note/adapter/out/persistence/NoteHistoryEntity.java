@@ -1,5 +1,6 @@
 package com.finnect.note.adapter.out.persistence;
 
+import com.finnect.note.domain.NoteHistory;
 import com.finnect.note.domain.state.NoteHistoryState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,5 +64,15 @@ public class NoteHistoryEntity implements NoteHistoryState {
     @Override
     public Long editor() {
         return this.editor;
+    }
+    public NoteHistory toDomain(){
+        return NoteHistory.builder()
+                .noteHistoryId(this.noteHistoryId)
+                .noteId(this.noteId)
+                .historyTitle(this.historyTitle)
+                .historyBodyText(this.historyBodyText)
+                .editedDate(this.editedDate)
+                .editor(this.editor)
+                .build();
     }
 }

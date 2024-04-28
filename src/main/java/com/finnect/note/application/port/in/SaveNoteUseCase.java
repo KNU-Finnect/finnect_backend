@@ -6,4 +6,6 @@ import com.finnect.note.domain.state.NoteState;
 public interface SaveNoteUseCase {
 
     NoteState saveNewNote(Note note);
+
+    NoteState patchNote(Note note);
 }

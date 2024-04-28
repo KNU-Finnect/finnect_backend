@@ -2,6 +2,7 @@ package com.finnect.note.adapter.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
+import com.finnect.note.adapter.in.web.req.PatchNoteRequest;
 import com.finnect.note.adapter.in.web.req.SaveNoteRequest;
 import com.finnect.note.adapter.in.web.res.DetailNoteResponse;
 import com.finnect.note.adapter.in.web.res.NoteListResponse;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +41,20 @@ public class NoteController {
                 , HttpStatus.CREATED
         );
     }
+
+    @PatchMapping("/workspace/deals/{dealId}/notes/{noteId}")
+    public ResponseEntity<ApiResult<DetailNoteResponse>> changeNoteInfo(@RequestBody PatchNoteRequest request,
+                                                                        @PathVariable Long dealId,
+                                                                        @PathVariable Long noteId){
+        NoteState noteState = saveNoteUseCase.patchNote(request.toDomain(1L));
+
+        return new ResponseEntity<>(
+                ApiUtils.success(HttpStatus.OK
+                        , new DetailNoteResponse(noteState))
+                , HttpStatus.CREATED
+        );
+    }
+
     @GetMapping("/workspaces/deals/{dealId}/notes")
     public ResponseEntity<ApiResult<NoteListResponse>> loadNotes(@PathVariable Long dealId){
         List<NoteState> notes = loadNoteUseCase.loadNotesInDeal(

@@ -7,4 +7,5 @@ import com.finnect.note.domain.state.NoteState;
 public interface SaveNotePort {
 
     Note saveNote(NoteState noteState);
+    Note patchNote(NoteState noteState);
 }

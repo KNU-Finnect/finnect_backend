@@ -1,21 +1,21 @@
 package com.finnect.note.adapter.in.web.req;
 
 import com.finnect.note.domain.Note;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class SaveNoteRequest {
+public class PatchNoteRequest {
     private Long dealId;
+    private Long noteId;
     private String title;
     private String bodyText;
 
     public Note toDomain(Long userId){
         return Note.builder()
-                .dealId(dealId)
+                .dealId(this.dealId)
+                .noteId(this.noteId)
                 .title(this.title)
                 .bodyText(this.bodyText)
                 .lastEditor(userId)

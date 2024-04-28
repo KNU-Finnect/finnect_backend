@@ -15,4 +15,9 @@ public class SaveNoteService implements SaveNoteUseCase {
     public NoteState saveNewNote(Note note) {
         return saveNotePort.saveNote(note);
     }
+
+    @Override
+    public NoteState patchNote(Note note) {
+        return saveNotePort.patchNote(note);
+    }
 }

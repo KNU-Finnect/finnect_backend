@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.Builder;
 
 @Entity(name = "note")
 public class NoteEntity implements NoteState {
@@ -22,6 +23,20 @@ public class NoteEntity implements NoteState {
     private String bodyText;
     private LocalDateTime createdDate;
     private Long lastEditor;
+
+    @Builder
+    public NoteEntity(Long noteId, Long dealId, String title, String bodyText, LocalDateTime createdDate,
+                      Long lastEditor) {
+        this.noteId = noteId;
+        this.dealId = dealId;
+        this.title = title;
+        this.bodyText = bodyText;
+        this.createdDate = createdDate;
+        this.lastEditor = lastEditor;
+    }
+
+    protected NoteEntity() {
+    }
 
     @Override
     public Long getNoteId() {
@@ -53,6 +68,8 @@ public class NoteEntity implements NoteState {
         return this.lastEditor;
     }
 
+
+
     public Note toDomain(){
         return Note.builder()
                 .noteId(this.noteId)
@@ -61,6 +78,16 @@ public class NoteEntity implements NoteState {
                 .bodyText(this.bodyText)
                 .createdDate(this.createdDate)
                 .lastEditor(this.lastEditor)
+                .build();
+    }
+
+    public static NoteEntity toEntity(NoteState noteState){
+        return NoteEntity.builder()
+                .dealId(noteState.getDealId())
+                .title(noteState.getTitle())
+                .bodyText(noteState.getBodyText())
+                .createdDate(noteState.getCreatedDate())
+                .lastEditor(noteState.getLastEditor())
                 .build();
     }
 

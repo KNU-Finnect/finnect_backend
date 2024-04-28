@@ -1,6 +1,6 @@
 package com.finnect.cell.adapter.out;
 
-import com.finnect.cell.adapter.out.persistence.CellEntity;
+import com.finnect.cell.adapter.out.persistence.DataCellEntity;
 import com.finnect.cell.adapter.out.persistence.DataColumnEntity;
 import com.finnect.cell.adapter.out.persistence.DataRowEntity;
 import com.finnect.cell.application.port.out.SaveDataColumnPort;
@@ -45,8 +45,8 @@ public class CellPersistenceAdapter implements SaveDataRowPort, SaveCellPort, Sa
 
         List<DataRowEntity> dataRows = dataRowRepository.findDataRowEntitiesByWorkspaceId(column.getWorkspaceId());
         log.info(dataRows.toString());
-        List<CellEntity> cellEntities = dataRows.stream()
-                        .map(dataRowEntity -> CellEntity.builder()
+        List<DataCellEntity> cellEntities = dataRows.stream()
+                        .map(dataRowEntity -> DataCellEntity.builder()
                                 .columnId(column.getColumnId())
                                 .rowId(dataRowEntity.getDataRowId())
                                 .build())
@@ -58,8 +58,8 @@ public class CellPersistenceAdapter implements SaveDataRowPort, SaveCellPort, Sa
     public void saveNewCellByNewRow(DataColumnState column, DataRowState dataRow) {
         List<DataColumnEntity> columnEntities = columnRepository.findDataColumnEntitiesByWorkspaceId(column.getWorkspaceId());
         log.info(columnEntities.toString());
-        List<CellEntity> cellEntities = columnEntities.stream()
-                .map(dataColumnEntity -> CellEntity.builder()
+        List<DataCellEntity> cellEntities = columnEntities.stream()
+                .map(dataColumnEntity -> DataCellEntity.builder()
                         .columnId(dataColumnEntity.getColumnId())
                         .rowId(dataRow.getDataRowId())
                         .build())

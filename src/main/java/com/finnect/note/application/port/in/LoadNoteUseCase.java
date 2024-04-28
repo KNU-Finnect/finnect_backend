@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LoadNoteUseCase {
 
-    List<NoteState> loadNotes(Note note);
+    List<NoteState> loadNotesInDeal(Note note);
 }

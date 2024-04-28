@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class LoadNoteService implements LoadNoteUseCase {
     private final LoadNotePort loadNotePort;
     @Override
-    public List<NoteState> loadNotes(Note note)
+    public List<NoteState> loadNotesInDeal(Note note)
     {
         List<Note> notes = loadNotePort.loadNoteByDealId(note);
 

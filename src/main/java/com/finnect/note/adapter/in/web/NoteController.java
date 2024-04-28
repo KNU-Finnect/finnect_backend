@@ -22,7 +22,7 @@ public class NoteController {
     private final LoadNoteUseCase loadNoteUseCase;
     @GetMapping("/workspaces/deals/{dealId}/notes")
     public ResponseEntity<ApiResult<NoteListResponse>> loadNotes(@PathVariable Long dealId){
-        List<NoteState> notes = loadNoteUseCase.loadNotes(
+        List<NoteState> notes = loadNoteUseCase.loadNotesInDeal(
                 Note.builder()
                         .dealId(dealId)
                         .build()

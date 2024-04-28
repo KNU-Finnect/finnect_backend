@@ -7,6 +7,7 @@ import com.finnect.user.application.port.in.command.CreateUserCommand;
 import lombok.Builder;
 import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 
@@ -90,13 +91,13 @@ public class User implements UserState {
                 .build();
     }
 
-    public static User from(CreateUserCommand command) {
+    public static User from(CreateUserCommand command, PasswordEncoder passwordEncoder) {
         return User.builder()
                 .userInfo(
                         UserInfo.from(command)
                 )
                 .userDetails(
-                        UserDetailsImpl.from(command)
+                        UserDetailsImpl.from(command, passwordEncoder)
                 )
                 .build();
     }

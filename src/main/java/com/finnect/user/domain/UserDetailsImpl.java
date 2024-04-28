@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -66,10 +67,12 @@ public class UserDetailsImpl implements UserDetails {
                 .build();
     }
 
-    public static UserDetailsImpl from(CreateUserCommand command) {
+    public static UserDetailsImpl from(CreateUserCommand command, PasswordEncoder passwordEncoder) {
         return UserDetailsImpl.builder()
                 .username(command.getUsername())
-                .password(command.getPassword())
+                .password(
+                        passwordEncoder.encode(command.getPassword())
+                )
                 .build();
     }
 }

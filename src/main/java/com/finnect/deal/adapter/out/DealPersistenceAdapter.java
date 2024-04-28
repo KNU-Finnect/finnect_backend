@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class DealPersistenceAdapter implements SaveDealPort {
+public class DealPersistenceAdapter implements SaveDealPort, LoadDealPort{
 
     private final DealRepository dealRepository;
 
@@ -24,6 +24,13 @@ public class DealPersistenceAdapter implements SaveDealPort {
         dealEntity = dealRepository.save(dealEntity);
 
         log.info("saved : " + dealEntity.toString());
+        return dealEntity.toDomain();
+    }
+
+    @Override
+    public Deal findDealById(DealState dealState) {
+        DealEntity dealEntity = dealRepository.findById(dealState.getDealId())
+                .orElseThrow(IllegalArgumentException::new);
         return dealEntity.toDomain();
     }
 }

@@ -1,7 +1,7 @@
 package com.finnect.deal.application.service;
 
 import com.finnect.cell.application.port.in.CreateNewRowUseCase;
-import com.finnect.cell.domain.Column;
+import com.finnect.cell.domain.DataColumn;
 import com.finnect.cell.domain.state.DataRowState;
 import com.finnect.deal.application.DealState;
 import com.finnect.deal.application.port.in.CreateDealUseCase;
@@ -22,7 +22,7 @@ public class CreateDealService implements CreateDealUseCase {
     public DealState createDeal(Deal deal) {
 
         DataRowState dataRow = createNewRowUseCase.createNewDataRow(
-                Column.builder()
+                DataColumn.builder()
                         .workspaceId(deal.getWorkspaceId())
                         .build()
         );

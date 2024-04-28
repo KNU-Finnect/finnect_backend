@@ -1,13 +1,13 @@
 package com.finnect.cell.adapter.out.persistence;
 
-import com.finnect.cell.domain.state.CellState;
+import com.finnect.cell.domain.state.DataCell;
+import com.finnect.cell.domain.state.DataCellState;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Builder;
 
-@Entity(name = "cell")
-public class CellEntity implements CellState {
+@Entity(name = "data_cell")
+public class DataCellEntity implements DataCellState {
 
     @EmbeddedId
     private CellId cellId;
@@ -17,22 +17,22 @@ public class CellEntity implements CellState {
     private Long peopleId;
     private Long companyId;
     @Builder
-    public CellEntity(Long rowId, Long columnId, String value, Long userId, Long peopleId, Long companyId) {
+    public DataCellEntity(Long rowId, Long columnId, String value, Long userId, Long peopleId, Long companyId) {
         this.cellId = new CellId(rowId, columnId);
         this.value = value;
         this.userId = userId;
         this.peopleId = peopleId;
         this.companyId = companyId;
     }
-    protected CellEntity() {}
+    protected DataCellEntity() {}
 
     @Override
-    public Long getColumn() {
+    public Long getColumnId() {
         return this.cellId.getColumnId();
     }
 
     @Override
-    public Long getRow() {
+    public Long getRowId() {
         return this.cellId.getRowId();
     }
 
@@ -42,17 +42,27 @@ public class CellEntity implements CellState {
     }
 
     @Override
-    public Long getUser() {
+    public Long getUserId() {
         return this.userId;
     }
 
     @Override
-    public Long getPeople() {
+    public Long getPeopleId() {
         return this.peopleId;
     }
 
     @Override
-    public Long getCompany() {
+    public Long getCompanyId() {
         return this.companyId;
+    }
+
+    public DataCell toDomain(){
+        return DataCell.builder()
+                .cellId(new CellId(this.getRowId(), this.getColumnId()))
+                .value(this.value)
+                .companyId(this.companyId)
+                .peopleId(this.peopleId)
+                .userId(this.userId)
+                .build();
     }
 }

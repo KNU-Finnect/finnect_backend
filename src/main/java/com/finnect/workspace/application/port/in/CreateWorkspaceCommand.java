@@ -1,7 +1,6 @@
 package com.finnect.workspace.application.port.in;
 
 import com.finnect.common.SelfValidating;
-import com.finnect.workspace.WorkspaceState;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -10,7 +9,7 @@ import lombok.Getter;
 import java.nio.charset.StandardCharsets;
 
 @Getter
-public class CreateWorkspaceCommand extends SelfValidating<CreateWorkspaceCommand> implements WorkspaceState {
+public class CreateWorkspaceCommand extends SelfValidating<CreateWorkspaceCommand> {
 
     private final Long workspaceId;
     @NotEmpty(message = "워크스페이스의 이름은 빈 문자열이거나 공백일 수 없습니다.")

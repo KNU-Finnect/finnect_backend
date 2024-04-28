@@ -1,11 +1,11 @@
 package com.finnect.cell.domain.state;
 
-public interface CellState {
+public interface DataCellState {
 
-    Long getColumn();
-    Long getRow();
+    Long getColumnId();
+    Long getRowId();
     String getValue();
-    Long getUser();
-    Long getPeople();
-    Long getCompany();
+    Long getUserId();
+    Long getPeopleId();
+    Long getCompanyId();
 }

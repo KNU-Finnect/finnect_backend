@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import lombok.Builder;
 
 @Entity(name = "note")
@@ -86,7 +88,20 @@ public class NoteEntity implements NoteState {
                 .dealId(noteState.getDealId())
                 .title(noteState.getTitle())
                 .bodyText(noteState.getBodyText())
-                .createdDate(noteState.getCreatedDate())
+                .createdDate(ZonedDateTime
+                        .now(ZoneId.of("Asia/Seoul"))
+                        .toLocalDateTime())
+                .lastEditor(noteState.getLastEditor())
+                .build();
+    }
+
+    public static NoteEntity patchEntity(NoteState noteState, NoteEntity existing){
+        return NoteEntity.builder()
+                .dealId(noteState.getDealId())
+                .noteId(noteState.getNoteId())
+                .title(noteState.getTitle())
+                .bodyText(noteState.getBodyText())
+                .createdDate(existing.getCreatedDate())
                 .lastEditor(noteState.getLastEditor())
                 .build();
     }

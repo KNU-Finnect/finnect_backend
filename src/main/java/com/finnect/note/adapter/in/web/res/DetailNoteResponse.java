@@ -17,7 +17,9 @@ public class DetailNoteResponse {
         this.title = noteState.getTitle();
         this.bodyText = noteState.getBodyText();
         this.createdDate = noteState.getCreatedDate();
-        this.lastEditor = null;
+        this.lastEditor = EditorResponse.builder()
+                .userId(noteState.getLastEditor())
+                .build();
     }
 }
 @Getter

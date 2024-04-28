@@ -1,10 +1,12 @@
 package com.finnect.deal.application;
 
-import com.finnect.mockDomain.MemberEntity;
-
 public interface DealState {
 
-    String getCompany();
+    Long getDealId();
     String getDealName();
-    MemberEntity getMemberInCharge();
+    Long getCompanyId();
+    Long getUserId();
+    Long getWorkspaceId();
+    Long getDataRowId();
+
 }

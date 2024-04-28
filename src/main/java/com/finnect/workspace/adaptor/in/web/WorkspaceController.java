@@ -5,20 +5,19 @@ import com.finnect.workspace.WorkspaceState;
 import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;
 import com.finnect.workspace.adaptor.in.web.req.RenameWorkspaceRequest;
 import com.finnect.workspace.adaptor.in.web.res.CreateWorkspaceResponse;
+import com.finnect.workspace.adaptor.in.web.res.FindWorkspacesResponse;
 import com.finnect.workspace.adaptor.in.web.res.RenameWorkspaceResponse;
 import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceDto;
-import com.finnect.workspace.application.port.in.CreateWorkspaceCommand;
-import com.finnect.workspace.application.port.in.CreateWorkspaceUsecase;
-import com.finnect.workspace.application.port.in.RenameWorkspaceCommand;
-import com.finnect.workspace.application.port.in.RenameWorkspaceUsecase;
+import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceWithIdDto;
+import com.finnect.workspace.application.port.in.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ public class WorkspaceController {
 
     private final CreateWorkspaceUsecase createWorkspaceUsecase;
     private final RenameWorkspaceUsecase renameWorkspaceUsecase;
+    private final FindWorkspacesQuery findWorkspacesQuery;
 
     @PostMapping("/workspaces")
     public ResponseEntity<Response<CreateWorkspaceResponse>> createWorkspace(@RequestBody CreateWorkspaceRequest request) {
@@ -55,5 +55,18 @@ public class WorkspaceController {
         WorkspaceDto workspaceDto = new WorkspaceDto(state.getWorkspaceName());
         RenameWorkspaceResponse renameWorkspaceResponse = new RenameWorkspaceResponse(workspaceDto);
         return ResponseEntity.status(HttpStatus.OK).body(new Response<>(HttpStatus.OK.value(), renameWorkspaceResponse));
+    }
+
+    @GetMapping("/workspaces")
+    public ResponseEntity<Response<FindWorkspacesResponse>> findWorkspaces() {
+        Long userId = 1L;
+
+        List<WorkspaceState> states = findWorkspacesQuery.findWorkspaces(userId);
+
+        List<WorkspaceWithIdDto> workspaceDtos = states.stream()
+                .map(WorkspaceWithIdDto::from)
+                .toList();
+        FindWorkspacesResponse findWorkspacesResponse = new FindWorkspacesResponse(workspaceDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response<>(HttpStatus.OK.value(), findWorkspacesResponse));
     }
 }

@@ -1,4 +1,4 @@
-package com.finnect.user;
+package com.finnect.user.vo;
 
 import org.springframework.security.core.GrantedAuthority;
 

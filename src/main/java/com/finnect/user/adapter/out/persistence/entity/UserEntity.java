@@ -1,15 +1,10 @@
 package com.finnect.user.adapter.out.persistence.entity;
 
-import com.finnect.user.UserId;
-import com.finnect.user.UserState;
-import com.finnect.user.WorkspaceAuthority;
-import com.finnect.user.WorkspaceId;
+import com.finnect.user.vo.UserId;
+import com.finnect.user.state.UserState;
+import com.finnect.user.vo.WorkspaceId;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder @AllArgsConstructor()
@@ -28,18 +23,19 @@ public class UserEntity implements UserState {
     @Column(name = "password")
     private String password;
 
-    @Getter
+    @Getter @Setter
     @Column(name = "email")
     private String email;
 
-    @Getter
+    @Getter @Setter
     @Column(name = "first_name")
     private String firstName;
 
-    @Getter
+    @Getter @Setter
     @Column(name = "last_name")
     private String lastName;
 
+    @Setter
     @Column(name = "default_workspace_id")
     private Long defaultWorkspaceId;
 
@@ -61,28 +57,15 @@ public class UserEntity implements UserState {
         }
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new WorkspaceAuthority(getDefaultWorkspaceId()));
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public static UserEntity from(UserState user) {
+        return UserEntity.builder()
+                .id(user.getId().value())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .defaultWorkspaceId(user.getDefaultWorkspaceId().value())
+                .build();
     }
 }

@@ -1,47 +1,43 @@
 package com.finnect.user.application.service;
 
 import com.finnect.user.application.port.in.ReissueUseCase;
-import com.finnect.user.application.port.in.command.CreateAccessTokenCommand;
-import com.finnect.user.application.port.out.GetUserDetailsPort;
-import com.finnect.user.application.security.jwt.AccessToken;
+import com.finnect.user.application.port.in.command.ReissueCommand;
+import com.finnect.user.application.port.out.GetUserPort;
 import com.finnect.user.application.security.jwt.JwtProvider;
+import com.finnect.user.domain.User;
+import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.exception.InvalidRefreshTokenException;
 import com.finnect.user.exception.UserNotFoundException;
-import com.finnect.user.domain.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService implements UserDetailsService, ReissueUseCase {
 
-    public final GetUserDetailsPort getUserDetailsPort;
-
-    public final PasswordEncoder passwordEncoder;
+    private final GetUserPort getUserPort;
 
     private final JwtProvider tokenProvider;
 
     @Autowired
     public AuthenticationService(
-            GetUserDetailsPort getUserDetailsPort,
-            PasswordEncoder passwordEncoder,
+            GetUserPort getUserPort,
             JwtProvider tokenProvider
     ) {
-        this.getUserDetailsPort = getUserDetailsPort;
-        this.passwordEncoder = passwordEncoder;
+        this.getUserPort = getUserPort;
+
         this.tokenProvider = tokenProvider;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails user;
+        User user;
 
         try {
-            user = getUserDetailsPort.getUserDetails(username);
+            user = User.from(getUserPort.getUser(username));
         } catch (UserNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage(), e);
         }
@@ -50,7 +46,7 @@ public class AuthenticationService implements UserDetailsService, ReissueUseCase
     }
 
     @Override
-    public AccessToken reissue(CreateAccessTokenCommand command) {
+    public String reissue(ReissueCommand command) {
         Authentication authentication;
 
         try {
@@ -59,6 +55,6 @@ public class AuthenticationService implements UserDetailsService, ReissueUseCase
             throw new InvalidRefreshTokenException(e.getMessage(), e);
         }
 
-        return tokenProvider.generateAccessToken(authentication);
+        return tokenProvider.generateAccessToken(authentication).value();
     }
 }

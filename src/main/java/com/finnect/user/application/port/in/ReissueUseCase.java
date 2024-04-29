@@ -1,9 +1,8 @@
 package com.finnect.user.application.port.in;
 
-import com.finnect.user.application.port.in.command.CreateAccessTokenCommand;
-import com.finnect.user.application.security.jwt.AccessToken;
+import com.finnect.user.application.port.in.command.ReissueCommand;
 
 public interface ReissueUseCase {
 
-    AccessToken reissue(CreateAccessTokenCommand command);
+    String reissue(ReissueCommand command);
 }

@@ -21,11 +21,9 @@ import java.util.*;
 public class JwtProvider {
 
     private final Long accessExpiredTime;
-
     private final Long refreshExpiredTime;
 
     private final Key key;
-
     private final JwtParser parser;
 
     public JwtProvider(

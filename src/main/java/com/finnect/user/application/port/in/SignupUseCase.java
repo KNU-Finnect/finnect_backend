@@ -1,8 +1,8 @@
 package com.finnect.user.application.port.in;
 
-import com.finnect.user.application.port.in.command.CreateUserCommand;
+import com.finnect.user.application.port.in.command.SignupCommand;
 
 public interface SignupUseCase {
 
-    Object signup(CreateUserCommand command);
+    void signup(SignupCommand command);
 }

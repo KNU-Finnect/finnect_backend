@@ -1,29 +1,27 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.UserId;
-import com.finnect.user.UserState;
-import com.finnect.user.WorkspaceId;
-import com.finnect.user.application.port.in.command.CreateUserCommand;
+import com.finnect.user.vo.UserId;
+import com.finnect.user.state.UserState;
+import com.finnect.user.vo.WorkspaceId;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Collection;
 
 @Builder
 public class User implements UserState {
 
-    @NonNull
-    public final UserInfo userInfo;
+    @Getter
+    private final UserId id;
+
+    @Getter
+    private final String username;
+
+    @Getter
+    private final String password;
 
     @NonNull
-    public final UserDetailsImpl userDetails;
+    private final UserInfo userInfo;
 
-    @Override
-    public UserId getId() {
-        return userInfo.getId();
-    }
 
     @Override
     public String getEmail() {
@@ -45,60 +43,15 @@ public class User implements UserState {
         return userInfo.getDefaultWorkspaceId();
     }
 
-    @Override
-    public String getUsername() {
-        return userDetails.getUsername();
-    }
-
-    @Override
-    public String getPassword() {
-        return userDetails.getPassword();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userDetails.getAuthorities();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return userDetails.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return userDetails.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return userDetails.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return userDetails.isEnabled();
-    }
 
     public static User from(UserState user) {
-        return User.builder()
-                .userInfo(
-                        UserInfo.from(user)
-                )
-                .userDetails(
-                        UserDetailsImpl.from(user)
-                )
-                .build();
-    }
+        UserInfo userInfo = UserInfo.from(user);
 
-    public static User from(CreateUserCommand command, PasswordEncoder passwordEncoder) {
         return User.builder()
-                .userInfo(
-                        UserInfo.from(command)
-                )
-                .userDetails(
-                        UserDetailsImpl.from(command, passwordEncoder)
-                )
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .userInfo(userInfo)
                 .build();
     }
 }

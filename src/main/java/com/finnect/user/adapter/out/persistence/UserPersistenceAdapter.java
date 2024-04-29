@@ -1,17 +1,17 @@
 package com.finnect.user.adapter.out.persistence;
 
-import com.finnect.user.UserState;
+import com.finnect.user.vo.UserId;
+import com.finnect.user.state.UserState;
 import com.finnect.user.adapter.out.persistence.entity.UserEntity;
 import com.finnect.user.adapter.out.persistence.entity.UserRepository;
 import com.finnect.user.application.port.out.CreateUserPort;
-import com.finnect.user.application.port.out.GetUserDetailsPort;
+import com.finnect.user.application.port.out.GetUserPort;
 import com.finnect.user.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserPersistenceAdapter implements GetUserDetailsPort, CreateUserPort {
+public class UserPersistenceAdapter implements CreateUserPort, GetUserPort {
 
     private final UserRepository userRepository;
 
@@ -21,19 +21,27 @@ public class UserPersistenceAdapter implements GetUserDetailsPort, CreateUserPor
     }
 
     @Override
-    public UserDetails getUserDetails(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
+    public void createUser(UserState userState) {
+        UserEntity userEntity = UserEntity.builder()
+                .username(userState.getUsername())
+                .password(userState.getPassword())
+                .email(userState.getEmail())
+                .firstName(userState.getFirstName())
+                .lastName(userState.getLastName())
+                .build();
+
+        userRepository.save(userEntity);
     }
 
     @Override
-    public void createUser(UserState user) {
-        userRepository.save(UserEntity.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .build());
+    public UserState getUser(UserId userId) throws UserNotFoundException {
+        return userRepository.findById(userId.value())
+                .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    @Override
+    public UserState getUser(String username) throws UserNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
     }
 }

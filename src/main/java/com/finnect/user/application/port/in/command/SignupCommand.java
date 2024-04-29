@@ -10,7 +10,8 @@ import lombok.NonNull;
 
 @Builder
 @Getter
-public class CreateUserCommand extends SelfValidating<CreateUserCommand> {
+public class SignupCommand extends SelfValidating<SignupCommand> {
+
     @NonNull
     @Size(min = 5, max = 20) @Pattern(regexp = "^[a-z0-9-_]+$")
     private final String username;
@@ -31,7 +32,7 @@ public class CreateUserCommand extends SelfValidating<CreateUserCommand> {
     @Pattern(regexp = "^[가-힣a-zA-Z]+$")
     private final String lastName;
 
-    public CreateUserCommand(
+    public SignupCommand(
             @NonNull String username,
             @NonNull String password,
             @NonNull String email,

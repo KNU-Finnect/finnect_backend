@@ -6,12 +6,12 @@ import lombok.NonNull;
 
 @Builder
 @Getter
-public class CreateAccessTokenCommand {
+public class ReissueCommand {
 
     @NonNull
     private final String refreshToken;
 
-    public CreateAccessTokenCommand(
+    public ReissueCommand(
             @NonNull String refreshToken
     ) {
         this.refreshToken = refreshToken;

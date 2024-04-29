@@ -1,4 +1,4 @@
-package com.finnect.user;
+package com.finnect.user.vo;
 
 public record UserId(Long value) {
 

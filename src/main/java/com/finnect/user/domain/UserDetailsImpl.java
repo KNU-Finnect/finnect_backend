@@ -1,12 +1,13 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.WorkspaceAuthority;
-import com.finnect.user.application.port.in.command.CreateUserCommand;
+import com.finnect.user.vo.UserId;
+import com.finnect.user.state.UserState;
+import com.finnect.user.vo.WorkspaceAuthority;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,23 +15,20 @@ import java.util.Collections;
 @Builder
 public class UserDetailsImpl implements UserDetails {
 
+    @Getter
+    @NonNull
+    private final UserId id;
+
+    @Getter
     @NonNull
     private final String username;
 
+    @Getter
     @NonNull
     private final String password;
 
     private final WorkspaceAuthority workspaceAuthority;
 
-    @Override
-    public @NonNull String getUsername() {
-        return username;
-    }
-
-    @Override
-    public @NonNull String getPassword() {
-        return password;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,22 +55,13 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    public static UserDetailsImpl from(UserDetails user) {
+
+    public static UserDetailsImpl from(UserState user) {
         return UserDetailsImpl.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .workspaceAuthority(
-                        WorkspaceAuthority.from(user.getAuthorities())
-                )
-                .build();
-    }
-
-    public static UserDetailsImpl from(CreateUserCommand command, PasswordEncoder passwordEncoder) {
-        return UserDetailsImpl.builder()
-                .username(command.getUsername())
-                .password(
-                        passwordEncoder.encode(command.getPassword())
-                )
+                .workspaceAuthority(new WorkspaceAuthority(user.getDefaultWorkspaceId()))
                 .build();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -27,9 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
-
     private final AccessDeniedHandler accessDeniedHandler;
-
     private final JwtProvider tokenProvider;
 
     @Autowired
@@ -76,7 +75,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -88,7 +87,7 @@ public class SecurityConfig {
     public AuthenticationFilter authenticationFilter() throws Exception {
         AuthenticationFilter filter = new AuthenticationFilter(tokenProvider);
         filter.setAuthenticationManager(authenticationManager(null));
-        filter.setFilterProcessesUrl("/users/login");
+        filter.setFilterProcessesUrl("/users/signin");
         return filter;
     }
 

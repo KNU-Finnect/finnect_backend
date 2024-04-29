@@ -53,8 +53,15 @@ public class JwtProvider {
 
     public Authentication obtainAuthentication(String token) {
         Claims claims = parser.parseClaimsJws(token).getBody();
+        String userId = String.valueOf(claims.get("uid"));
         String username = claims.getSubject();
-        return new UsernamePasswordAuthenticationToken(username, "");
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                username,
+                ""
+        );
+        authenticationToken.setDetails(userId);
+        return authenticationToken;
     }
 
     public JwtPair generateTokenPair(Authentication authentication) {
@@ -89,6 +96,7 @@ public class JwtProvider {
         List<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         Map<String, String> claims = new HashMap<>();
+        claims.put("uid", String.valueOf(authentication.getDetails()));
         for (String authority: authorities) {
             String[] s = authority.split("=");
             claims.put(s[0], s[1]);
@@ -96,8 +104,8 @@ public class JwtProvider {
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setSubject(authentication.getName())
                 .setClaims(claims)
+                .setSubject(authentication.getName())
                 .setIssuer("finnect")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expiredTime))

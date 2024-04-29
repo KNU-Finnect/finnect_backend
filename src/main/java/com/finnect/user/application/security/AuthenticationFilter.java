@@ -42,6 +42,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             FilterChain chain,
             Authentication authResult
     ) throws IOException, ServletException {
+        logger.info("Successful authentication: %s".formatted(authResult));
         JwtPair tokenPair = jwtProvider.generateTokenPair(authResult);
 
         response.setHeader(

@@ -34,7 +34,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        log.info("Authenticating user: {}", username);
+        log.info("Authenticating username: {}", username);
 
         // Find user
         UserDetailsImpl userFound = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
@@ -45,12 +45,13 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         }
 
         // Complete login
-        log.info("Authenticated user: {}", username);
-        return new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userFound.getUsername(),
                 "",
                 userFound.getAuthorities()
         );
+        authenticationToken.setDetails(userFound.getId());
+        return authenticationToken;
     }
 
     @Override

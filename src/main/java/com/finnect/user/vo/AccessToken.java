@@ -1,4 +1,4 @@
-package com.finnect.user.application.security.jwt;
+package com.finnect.user.vo;
 
 public record AccessToken(String value) {
 

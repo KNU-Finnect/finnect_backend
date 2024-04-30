@@ -1,4 +1,4 @@
-package com.finnect.user.application.security;
+package com.finnect.user.adapter.in.security;
 
 import com.finnect.user.domain.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;

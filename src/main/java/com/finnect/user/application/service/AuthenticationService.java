@@ -3,7 +3,7 @@ package com.finnect.user.application.service;
 import com.finnect.user.application.port.in.ReissueUseCase;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.out.GetUserPort;
-import com.finnect.user.application.security.jwt.JwtProvider;
+import com.finnect.user.application.jwt.JwtProvider;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.exception.InvalidRefreshTokenException;

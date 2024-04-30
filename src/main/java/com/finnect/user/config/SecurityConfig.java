@@ -1,8 +1,8 @@
 package com.finnect.user.config;
 
-import com.finnect.user.application.security.jwt.JwtProvider;
-import com.finnect.user.application.security.AuthenticationFilter;
-import com.finnect.user.application.security.AuthorizationFilter;
+import com.finnect.user.application.jwt.JwtProvider;
+import com.finnect.user.adapter.in.security.AuthenticationFilter;
+import com.finnect.user.adapter.in.security.AuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

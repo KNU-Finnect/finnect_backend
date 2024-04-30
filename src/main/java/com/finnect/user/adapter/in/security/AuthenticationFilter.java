@@ -1,7 +1,7 @@
-package com.finnect.user.application.security;
+package com.finnect.user.adapter.in.security;
 
-import com.finnect.user.application.security.jwt.JwtPair;
-import com.finnect.user.application.security.jwt.JwtProvider;
+import com.finnect.user.vo.JwtPair;
+import com.finnect.user.application.jwt.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

@@ -1,11 +1,14 @@
-package com.finnect.user.application.security.jwt;
+package com.finnect.user.application.jwt;
 
+import com.finnect.user.vo.AccessToken;
+import com.finnect.user.vo.JwtPair;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -76,7 +79,7 @@ public class JwtProvider {
         return generateAccessToken(authentication, new Date());
     }
 
-    public RefreshToken generateRefreshToken(Authentication authentication) {
+    public String generateRefreshToken(Authentication authentication) {
         return generateRefreshToken(authentication, new Date());
     }
 
@@ -86,13 +89,13 @@ public class JwtProvider {
         return new AccessToken(token);
     }
 
-    private RefreshToken generateRefreshToken(Authentication authentication, Date now) {
+    private String generateRefreshToken(Authentication authentication, Date now) {
         String token = generateToken(authentication, now, refreshExpiredTime);
         log.info("Generated refresh token: {}", token);
-        return new RefreshToken(token);
+        return token;
     }
 
-    private String generateToken(Authentication authentication, Date now, Long expiredTime) {
+    private String generateToken(@NonNull Authentication authentication, Date now, Long expiredTime) {
         List<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         Map<String, String> claims = new HashMap<>();

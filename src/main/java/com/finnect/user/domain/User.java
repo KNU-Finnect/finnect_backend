@@ -1,57 +1,48 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.vo.UserId;
 import com.finnect.user.state.UserState;
+import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
 @Builder
+@Getter
 public class User implements UserState {
 
-    @Getter
     private final UserId id;
 
-    @Getter
+    @NonNull
     private final String username;
 
-    @Getter
+    @NonNull
     private final String password;
 
     @NonNull
-    private final UserInfo userInfo;
+    private final String email;
+
+    @NonNull
+    private final String firstName;
+
+    @NonNull
+    private final String lastName;
+
+    private final WorkspaceId defaultWorkspaceId;
 
 
-    @Override
-    public String getEmail() {
-        return userInfo.getEmail();
+    public UserInfo getInfo() {
+        return UserInfo.from(this);
     }
-
-    @Override
-    public String getFirstName() {
-        return userInfo.getFirstName();
-    }
-
-    @Override
-    public String getLastName() {
-        return userInfo.getLastName();
-    }
-
-    @Override
-    public WorkspaceId getDefaultWorkspaceId() {
-        return userInfo.getDefaultWorkspaceId();
-    }
-
 
     public static User from(UserState user) {
-        UserInfo userInfo = UserInfo.from(user);
-
         return User.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .userInfo(userInfo)
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .build();
     }
 }

@@ -1,9 +1,9 @@
 package com.finnect.user.vo;
 
-public record UserId(Long value) {
+public record UserId(long value) {
 
     @Override
     public String toString() {
-        return value.toString();
+        return "%d".formatted(value);
     }
 }

@@ -1,6 +1,7 @@
 package com.finnect.user.domain;
 
 import com.finnect.user.state.UserInfoState;
+import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.NonNull;
 @Builder
 @Getter
 public class UserInfo implements UserInfoState {
+
+    private final UserId id;
 
     @NonNull
     private final String email;
@@ -19,22 +22,12 @@ public class UserInfo implements UserInfoState {
     @NonNull
     private final String lastName;
 
-    private WorkspaceId defaultWorkspaceId;
+    private final WorkspaceId defaultWorkspaceId;
 
-    public UserInfo(
-            @NonNull String email,
-            @NonNull String firstName,
-            @NonNull String lastName,
-            WorkspaceId defaultWorkspaceId
-    ) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.defaultWorkspaceId = defaultWorkspaceId;
-    }
 
     public static UserInfo from(UserInfoState user) {
         return UserInfo.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())

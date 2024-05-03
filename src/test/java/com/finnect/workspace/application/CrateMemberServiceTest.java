@@ -29,7 +29,7 @@ public class CrateMemberServiceTest {
     }
 
     @Test
-    @DisplayName("워크스페이스 생성 유스케이스")
+    @DisplayName("멤버 생성 유스케이스")
     void createWithoutUserDomainTest() {
         // given
         Long userId = 1L;

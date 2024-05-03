@@ -11,6 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+public
 class MemberId implements Serializable {
     private Long userId;
     private Long workspaceId;

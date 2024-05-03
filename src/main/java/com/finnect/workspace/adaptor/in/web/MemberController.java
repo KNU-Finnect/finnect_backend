@@ -1,4 +1,4 @@
-package com.finnect.workspace.adaptor;
+package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.Response;
 import com.finnect.workspace.MemberState;

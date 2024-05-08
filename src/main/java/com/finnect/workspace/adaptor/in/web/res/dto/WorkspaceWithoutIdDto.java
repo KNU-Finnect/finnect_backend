@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkspaceDto {
+public class WorkspaceWithoutIdDto {
     private String workspaceName;
 }

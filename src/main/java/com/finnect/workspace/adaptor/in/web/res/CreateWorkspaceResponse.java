@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.in.web.res;
 
-import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceDto;
+import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceWithoutIdDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateWorkspaceResponse {
-    WorkspaceDto workspace;
+    WorkspaceWithoutIdDto workspace;
 }

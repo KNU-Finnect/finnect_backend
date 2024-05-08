@@ -10,6 +10,7 @@ import com.finnect.workspace.adaptor.in.web.res.InviteMembersResponse;
 import com.finnect.workspace.adaptor.in.web.res.RenameWorkspaceResponse;
 import com.finnect.workspace.adaptor.in.web.res.dto.InvitationDto;
 import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceDto;
+import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceWithoutIdDto;
 import com.finnect.workspace.application.port.in.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +42,9 @@ public class WorkspaceController {
 
         WorkspaceState state = createWorkspaceUsecase.createWorkspace(workspaceCommand);
 
-        WorkspaceDto workspaceDto = new WorkspaceDto(state.getWorkspaceName());
+        WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
 
-        CreateWorkspaceResponse createWorkspaceResponse = new CreateWorkspaceResponse(workspaceDto);
+        CreateWorkspaceResponse createWorkspaceResponse = new CreateWorkspaceResponse(workspaceWithoutIdDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new Response(201, createWorkspaceResponse));
     }
 
@@ -56,8 +57,8 @@ public class WorkspaceController {
 
         WorkspaceState state = renameWorkspaceUsecase.renameWorkspace(renameCommand);
 
-        WorkspaceDto workspaceDto = new WorkspaceDto(state.getWorkspaceName());
-        RenameWorkspaceResponse renameWorkspaceResponse = new RenameWorkspaceResponse(workspaceDto);
+        WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
+        RenameWorkspaceResponse renameWorkspaceResponse = new RenameWorkspaceResponse(workspaceWithoutIdDto);
         return ResponseEntity.status(HttpStatus.OK).body(new Response<>(HttpStatus.OK.value(), renameWorkspaceResponse));
     }
 

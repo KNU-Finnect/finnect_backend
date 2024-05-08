@@ -6,19 +6,18 @@ import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;
 import com.finnect.workspace.adaptor.in.web.req.InviteMembersRequest;
 import com.finnect.workspace.adaptor.in.web.req.RenameWorkspaceRequest;
 import com.finnect.workspace.adaptor.in.web.res.CreateWorkspaceResponse;
+import com.finnect.workspace.adaptor.in.web.res.GetWorkspacesResponse;
 import com.finnect.workspace.adaptor.in.web.res.InviteMembersResponse;
 import com.finnect.workspace.adaptor.in.web.res.RenameWorkspaceResponse;
 import com.finnect.workspace.adaptor.in.web.res.dto.InvitationDto;
 import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceDto;
+import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceWithoutIdDto;
 import com.finnect.workspace.application.port.in.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +30,7 @@ public class WorkspaceController {
     private final CreateWorkspaceUsecase createWorkspaceUsecase;
     private final RenameWorkspaceUsecase renameWorkspaceUsecase;
     private final InviteMembersUsecase inviteMembersUsecase;
+    private final GetWorkspacesQuery getWorkspacesQuery;
 
     @PostMapping("/workspaces")
     public ResponseEntity<Response<CreateWorkspaceResponse>> createWorkspace(@RequestBody CreateWorkspaceRequest request) {
@@ -41,9 +41,9 @@ public class WorkspaceController {
 
         WorkspaceState state = createWorkspaceUsecase.createWorkspace(workspaceCommand);
 
-        WorkspaceDto workspaceDto = new WorkspaceDto(state.getWorkspaceName());
+        WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
 
-        CreateWorkspaceResponse createWorkspaceResponse = new CreateWorkspaceResponse(workspaceDto);
+        CreateWorkspaceResponse createWorkspaceResponse = new CreateWorkspaceResponse(workspaceWithoutIdDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new Response(201, createWorkspaceResponse));
     }
 
@@ -56,9 +56,21 @@ public class WorkspaceController {
 
         WorkspaceState state = renameWorkspaceUsecase.renameWorkspace(renameCommand);
 
-        WorkspaceDto workspaceDto = new WorkspaceDto(state.getWorkspaceName());
-        RenameWorkspaceResponse renameWorkspaceResponse = new RenameWorkspaceResponse(workspaceDto);
+        WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
+        RenameWorkspaceResponse renameWorkspaceResponse = new RenameWorkspaceResponse(workspaceWithoutIdDto);
         return ResponseEntity.status(HttpStatus.OK).body(new Response<>(HttpStatus.OK.value(), renameWorkspaceResponse));
+    }
+
+    @GetMapping("/workspaces")
+    public ResponseEntity<Response<GetWorkspacesResponse>> getWorkspaces() {
+        Long userId = 1L;
+
+        List<WorkspaceDto> workspaceStates = getWorkspacesQuery.getWorkspaces(userId)
+                .stream()
+                .map(WorkspaceDto::new)
+                .collect(Collectors.toList());
+        GetWorkspacesResponse getWorkspacesResponse = new GetWorkspacesResponse(workspaceStates);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response<>(HttpStatus.OK.value(), getWorkspacesResponse));
     }
 
     @PostMapping("/workspaces/invitation")

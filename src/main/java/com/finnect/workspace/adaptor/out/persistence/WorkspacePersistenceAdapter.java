@@ -2,15 +2,18 @@ package com.finnect.workspace.adaptor.out.persistence;
 
 import com.finnect.workspace.WorkspaceState;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
+import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import com.finnect.workspace.application.port.out.UpdateWorkspacePort;
 import com.finnect.workspace.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Component
 class WorkspacePersistenceAdapter implements
-        CreateWorkspacePort, UpdateWorkspacePort {
+        CreateWorkspacePort, UpdateWorkspacePort, GetWorkspacesPort {
     private final WorkspaceRepository workspaceRepository;
 
     @Autowired
@@ -38,5 +41,12 @@ class WorkspacePersistenceAdapter implements
         workspaceJpaEntity.updateWorkspace(state.getWorkspaceName());
 
         return workspaceJpaEntity;
+    }
+
+    @Override
+    public List<WorkspaceState> getWorkspacesByUserId(Long userId) {
+        List<WorkspaceState> workspaceStates = workspaceRepository.getAllByUserId(userId);
+
+        return workspaceStates;
     }
 }

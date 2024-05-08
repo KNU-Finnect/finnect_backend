@@ -4,7 +4,7 @@ import com.finnect.common.Response;
 import com.finnect.workspace.MemberState;
 import com.finnect.workspace.adaptor.in.web.req.CreateMemberRequest;
 import com.finnect.workspace.adaptor.in.web.res.CreateMemberResponse;
-import com.finnect.workspace.adaptor.in.web.res.dto.FindMembersResponse;
+import com.finnect.workspace.adaptor.in.web.res.FindMembersResponse;
 import com.finnect.workspace.adaptor.in.web.res.dto.MemberDto;
 import com.finnect.workspace.adaptor.in.web.res.dto.MemberWithoutIdDto;
 import com.finnect.workspace.application.port.in.CreateMemberCommand;

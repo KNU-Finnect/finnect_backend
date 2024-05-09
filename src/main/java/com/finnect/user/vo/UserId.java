@@ -6,4 +6,12 @@ public record UserId(long value) {
     public String toString() {
         return "%d".formatted(value);
     }
+
+    public static UserId parseOrNull(String value) {
+        try {
+            return new UserId(Long.parseLong(value));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

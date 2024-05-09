@@ -1,6 +1,5 @@
 package com.finnect.crm.adapter.out.cell.persistence;
 
-import com.finnect.crm.domain.cell.CellId;
 import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.cell.state.DataCellState;
 import jakarta.persistence.EmbeddedId;
@@ -14,7 +13,7 @@ import lombok.Builder;
 public class DataCellEntity implements DataCellState {
 
     @EmbeddedId
-    private CellIdEntity cellId;
+    private CellId cellId;
 
     @ManyToOne
     @MapsId("dataRowId")
@@ -27,7 +26,7 @@ public class DataCellEntity implements DataCellState {
     private Long companyId;
     @Builder
     public DataCellEntity(Long rowId, Long columnId, String value, Long userId, Long peopleId, Long companyId) {
-        this.cellId = new CellIdEntity(rowId, columnId);
+        this.cellId = new CellId(rowId, columnId);
         this.value = value;
         this.userId = userId;
         this.peopleId = peopleId;

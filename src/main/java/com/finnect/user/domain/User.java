@@ -17,7 +17,7 @@ public class User implements UserState {
     private final String username;
 
     @NonNull
-    private final String password;
+    private String password;
 
     @NonNull
     private final String email;
@@ -29,6 +29,11 @@ public class User implements UserState {
     private final String lastName;
 
     private final WorkspaceId defaultWorkspaceId;
+
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 
 
     public UserInfo getInfo() {

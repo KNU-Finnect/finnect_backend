@@ -1,6 +1,6 @@
 package com.finnect.crm.domain.cell;
 
-import com.finnect.crm.adapter.out.cell.persistence.CellId;
+import com.finnect.crm.adapter.out.cell.persistence.CellIdEntity;
 import com.finnect.crm.domain.cell.state.DataCellState;
 import lombok.Builder;
 

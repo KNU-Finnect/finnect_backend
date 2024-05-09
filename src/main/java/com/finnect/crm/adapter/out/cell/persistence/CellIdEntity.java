@@ -2,22 +2,23 @@ package com.finnect.crm.adapter.out.cell.persistence;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import java.io.Serializable;
 import lombok.Getter;
 
 @Getter
 @Embeddable
-public class CellId implements Serializable {
+public class CellIdEntity implements Serializable {
 
-    private Long rowId;
+    private Long dataRowId;
     private Long columnId;
 
-    public CellId(Long rowId, Long columnId) {
-        this.rowId = rowId;
+    public CellIdEntity(Long dataRowId, Long columnId) {
+        this.dataRowId = dataRowId;
         this.columnId = columnId;
     }
 
-    public CellId() {
-
+    public CellIdEntity() {
     }
 }

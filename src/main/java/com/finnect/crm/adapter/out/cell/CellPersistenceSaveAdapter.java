@@ -1,9 +1,10 @@
 package com.finnect.crm.adapter.out.cell;
 
 import com.finnect.crm.adapter.out.cell.persistence.DataCellEntity;
-import com.finnect.crm.adapter.out.cell.persistence.DataColumnEntity;
+import com.finnect.crm.adapter.out.column.DataColumnRepository;
+import com.finnect.crm.adapter.out.column.persistence.DataColumnEntity;
 import com.finnect.crm.adapter.out.cell.persistence.DataRowEntity;
-import com.finnect.crm.application.port.out.cell.SaveDataColumnPort;
+import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
 import com.finnect.crm.application.port.out.cell.SaveDataRowPort;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.domain.cell.DataColumn;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort, SaveDataColumnPort {
+public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
     private final DataCellRepository dataCellRepository;
     private final DataColumnRepository dataColumnRepository;
     private final DataRowRepository dataRowRepository;
@@ -33,12 +34,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
 
         return dataRowEntity.toDomain();
     }
-    @Override
-    public DataColumn saveNewColumn(DataColumnState column) {
-        DataColumnEntity dataColumnEntity = DataColumnEntity.toEntity(column);
-        dataColumnRepository.save(dataColumnEntity);
-        return dataColumnEntity.toDomain();
-    }
+
     @Override
     public void saveNewCellByNewColumn(DataColumnState column) {
         log.info(column.getWorkspaceId().toString());

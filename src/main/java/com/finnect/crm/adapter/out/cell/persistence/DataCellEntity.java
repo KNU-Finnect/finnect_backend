@@ -1,16 +1,25 @@
 package com.finnect.crm.adapter.out.cell.persistence;
 
+import com.finnect.crm.domain.cell.CellId;
 import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.cell.state.DataCellState;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import lombok.Builder;
 
 @Entity(name = "data_cell")
 public class DataCellEntity implements DataCellState {
 
     @EmbeddedId
-    private CellId cellId;
+    private CellIdEntity cellId;
+
+    @ManyToOne
+    @MapsId("dataRowId")
+    @JoinColumn(name = "data_row_id")
+    private DataRowEntity dataRow;
 
     private String value;
     private Long userId;
@@ -18,7 +27,7 @@ public class DataCellEntity implements DataCellState {
     private Long companyId;
     @Builder
     public DataCellEntity(Long rowId, Long columnId, String value, Long userId, Long peopleId, Long companyId) {
-        this.cellId = new CellId(rowId, columnId);
+        this.cellId = new CellIdEntity(rowId, columnId);
         this.value = value;
         this.userId = userId;
         this.peopleId = peopleId;
@@ -33,7 +42,7 @@ public class DataCellEntity implements DataCellState {
 
     @Override
     public Long getRowId() {
-        return this.cellId.getRowId();
+        return this.cellId.getDataRowId();
     }
 
     @Override

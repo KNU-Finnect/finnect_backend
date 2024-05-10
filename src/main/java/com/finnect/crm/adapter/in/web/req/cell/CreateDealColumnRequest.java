@@ -1,8 +1,8 @@
 package com.finnect.crm.adapter.in.web.req.cell;
 
 import com.finnect.crm.domain.cell.DataColumn;
-import com.finnect.crm.domain.cell.DataColumn.DataType;
 import com.finnect.crm.domain.column.ColumnType;
+import com.finnect.crm.domain.column.DataType;
 
 
 public class CreateDealColumnRequest  {

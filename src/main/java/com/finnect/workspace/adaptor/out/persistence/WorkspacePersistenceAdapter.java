@@ -2,6 +2,7 @@ package com.finnect.workspace.adaptor.out.persistence;
 
 import com.finnect.workspace.WorkspaceState;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
+import com.finnect.workspace.application.port.out.DeleteWorkspacePort;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import com.finnect.workspace.application.port.out.UpdateWorkspacePort;
 import com.finnect.workspace.error.NotFoundException;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Component
 class WorkspacePersistenceAdapter implements
-        CreateWorkspacePort, UpdateWorkspacePort, GetWorkspacesPort {
+        CreateWorkspacePort, UpdateWorkspacePort, GetWorkspacesPort, DeleteWorkspacePort {
     private final WorkspaceRepository workspaceRepository;
 
     @Autowired
@@ -48,5 +49,11 @@ class WorkspacePersistenceAdapter implements
         List<WorkspaceState> workspaceStates = workspaceRepository.getAllByUserId(userId);
 
         return workspaceStates;
+    }
+
+    @Override
+    public boolean delete(Long workspaceId) {
+        workspaceRepository.deleteById(workspaceId);
+        return true;
     }
 }

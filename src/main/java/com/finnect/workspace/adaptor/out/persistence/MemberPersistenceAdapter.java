@@ -1,6 +1,7 @@
 package com.finnect.workspace.adaptor.out.persistence;
 
 import com.finnect.workspace.MemberState;
+import com.finnect.workspace.application.port.out.ExitWorkspacePort;
 import com.finnect.workspace.application.port.out.GetMemberPort;
 import com.finnect.workspace.application.port.out.FindMembersPort;
 import com.finnect.workspace.application.port.out.SaveMemberPort;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-class MemberPersistenceAdapter implements SaveMemberPort, FindMembersPort, GetMemberPort {
+class MemberPersistenceAdapter implements SaveMemberPort, FindMembersPort, GetMemberPort, ExitWorkspacePort {
 
     private final MemberRepository memberRepository;
 
@@ -45,5 +46,13 @@ class MemberPersistenceAdapter implements SaveMemberPort, FindMembersPort, GetMe
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 멤버입니다."));
 
         return memberState;
+    }
+
+    @Override
+    public boolean exit(MemberState memberState) {
+        MemberId memberId = new MemberId(memberState.getUserId(), memberState.getWorkspaceId());
+        memberRepository.deleteById(memberId);
+
+        return true;
     }
 }

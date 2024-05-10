@@ -1,13 +1,11 @@
 package com.finnect.crm.adapter.out.cell;
 
 import com.finnect.crm.adapter.out.cell.persistence.DataCellEntity;
+import com.finnect.crm.adapter.out.cell.persistence.DataRowEntity;
 import com.finnect.crm.adapter.out.column.DataColumnRepository;
 import com.finnect.crm.adapter.out.column.persistence.DataColumnEntity;
-import com.finnect.crm.adapter.out.cell.persistence.DataRowEntity;
-import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
-import com.finnect.crm.application.port.out.cell.SaveDataRowPort;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
-import com.finnect.crm.domain.cell.DataColumn;
+import com.finnect.crm.application.port.out.cell.SaveDataRowPort;
 import com.finnect.crm.domain.cell.DataRow;
 import com.finnect.crm.domain.cell.state.DataColumnState;
 import com.finnect.crm.domain.cell.state.DataRowState;
@@ -44,7 +42,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
         List<DataCellEntity> cellEntities = dataRows.stream()
                         .map(dataRowEntity -> DataCellEntity.builder()
                                 .columnId(column.getColumnId())
-                                .rowId(dataRowEntity.getDataRowId())
+                                .row(dataRowEntity)
                                 .build())
                         .toList();
         dataCellRepository.saveAll(cellEntities);
@@ -57,7 +55,7 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
         List<DataCellEntity> cellEntities = columnEntities.stream()
                 .map(dataColumnEntity -> DataCellEntity.builder()
                         .columnId(dataColumnEntity.getColumnId())
-                        .rowId(dataRow.getDataRowId())
+                        .row(new DataRowEntity(dataRow.getDataRowId()))
                         .build())
                 .toList();
         log.info("Saving New Cell");

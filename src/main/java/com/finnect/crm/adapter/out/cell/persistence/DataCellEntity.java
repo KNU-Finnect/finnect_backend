@@ -25,8 +25,9 @@ public class DataCellEntity implements DataCellState {
     private Long peopleId;
     private Long companyId;
     @Builder
-    public DataCellEntity(Long rowId, Long columnId, String value, Long userId, Long peopleId, Long companyId) {
-        this.cellId = new CellId(rowId, columnId);
+    public DataCellEntity(DataRowEntity row, Long columnId, String value, Long userId, Long peopleId, Long companyId) {
+        this.cellId = new CellId(row.getDataRowId(), columnId);
+        this.dataRow = row;
         this.value = value;
         this.userId = userId;
         this.peopleId = peopleId;

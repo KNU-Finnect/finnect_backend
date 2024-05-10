@@ -18,4 +18,12 @@ public class CellId implements Serializable {
 
     public CellId() {
     }
+
+    @Override
+    public String toString() {
+        return "CellId{" +
+                "dataRowId=" + dataRowId +
+                ", columnId=" + columnId +
+                '}';
+    }
 }

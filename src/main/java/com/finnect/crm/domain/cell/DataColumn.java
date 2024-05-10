@@ -1,6 +1,7 @@
 package com.finnect.crm.domain.cell;
 
 import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.ColumnType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -67,26 +68,6 @@ public class DataColumn implements DataColumnState {
                 ", columnIndex=" + columnIndex +
                 ", isHided=" + isHided +
                 '}';
-    }
-
-    public enum ColumnType {
-        TEXT("TEXT"), NUMBER("NUMBER");
-
-        @Getter
-        private final String type;
-
-        ColumnType(String str) {
-            this.type = str;
-        }
-
-        public static ColumnType getColumnType(String columnType) {
-            for(ColumnType type : ColumnType.values()){
-                if(type.getType().equals(columnType)){
-                    return type;
-                }
-            }
-            return null;
-        }
     }
 
     public enum DataType{

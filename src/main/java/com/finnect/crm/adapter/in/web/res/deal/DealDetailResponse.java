@@ -1,8 +1,8 @@
 package com.finnect.crm.adapter.in.web.res.deal;
 
-import com.finnect.crm.domain.cell.DataColumn.ColumnType;
 import com.finnect.crm.domain.cell.state.DataCellState;
 import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.ColumnType;
 import com.finnect.crm.domain.deal.state.DealState;
 import java.util.ArrayList;
 import java.util.HashMap;

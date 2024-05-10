@@ -1,9 +1,9 @@
 package com.finnect.crm.adapter.out.column.persistence;
 
 import com.finnect.crm.domain.cell.DataColumn;
-import com.finnect.crm.domain.cell.DataColumn.ColumnType;
 import com.finnect.crm.domain.cell.DataColumn.DataType;
 import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.ColumnType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

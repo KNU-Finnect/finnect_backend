@@ -1,17 +1,18 @@
 package com.finnect.user.adapter.out.persistence;
 
+import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.state.UserState;
 import com.finnect.user.adapter.out.persistence.entity.UserEntity;
 import com.finnect.user.adapter.out.persistence.entity.UserRepository;
 import com.finnect.user.application.port.out.CreateUserPort;
-import com.finnect.user.application.port.out.GetUserPort;
+import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserPersistenceAdapter implements CreateUserPort, GetUserPort {
+public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, UpdateUserPort {
 
     private final UserRepository userRepository;
 
@@ -34,14 +35,21 @@ public class UserPersistenceAdapter implements CreateUserPort, GetUserPort {
     }
 
     @Override
-    public UserState getUser(UserId userId) throws UserNotFoundException {
+    public UserState loadUser(UserId userId) throws UserNotFoundException {
         return userRepository.findById(userId.value())
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
-    public UserState getUser(String username) throws UserNotFoundException {
+    public UserState loadUser(String username) throws UserNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
+    }
+
+    @Override
+    public void updateUser(UserState userState) {
+        UserEntity userEntity = UserEntity.from(userState);
+
+        userRepository.save(userEntity);
     }
 }

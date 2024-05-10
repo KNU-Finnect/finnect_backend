@@ -2,7 +2,7 @@ package com.finnect.user.application.service;
 
 import com.finnect.user.application.port.in.ReissueUseCase;
 import com.finnect.user.application.port.in.command.ReissueCommand;
-import com.finnect.user.application.port.out.GetUserPort;
+import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.jwt.JwtProvider;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
@@ -18,16 +18,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService implements UserDetailsService, ReissueUseCase {
 
-    private final GetUserPort getUserPort;
+    private final LoadUserPort loadUserPort;
 
     private final JwtProvider tokenProvider;
 
     @Autowired
     public AuthenticationService(
-            GetUserPort getUserPort,
+            LoadUserPort loadUserPort,
             JwtProvider tokenProvider
     ) {
-        this.getUserPort = getUserPort;
+        this.loadUserPort = loadUserPort;
 
         this.tokenProvider = tokenProvider;
     }
@@ -37,7 +37,7 @@ public class AuthenticationService implements UserDetailsService, ReissueUseCase
         User user;
 
         try {
-            user = User.from(getUserPort.getUser(username));
+            user = User.from(loadUserPort.loadUser(username));
         } catch (UserNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage(), e);
         }

@@ -1,7 +1,6 @@
 package com.finnect.crm.adapter.out.cell.persistence;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
 import java.io.Serializable;
 import lombok.Getter;
 
@@ -9,15 +8,14 @@ import lombok.Getter;
 @Embeddable
 public class CellId implements Serializable {
 
-    private Long rowId;
+    private Long dataRowId;
     private Long columnId;
 
-    public CellId(Long rowId, Long columnId) {
-        this.rowId = rowId;
+    public CellId(Long dataRowId, Long columnId) {
+        this.dataRowId = dataRowId;
         this.columnId = columnId;
     }
 
     public CellId() {
-
     }
 }

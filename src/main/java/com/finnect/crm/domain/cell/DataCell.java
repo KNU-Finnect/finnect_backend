@@ -27,7 +27,7 @@ public class DataCell implements DataCellState {
 
     @Override
     public Long getRowId() {
-        return this.cellId.getRowId();
+        return this.cellId.getDataRowId();
     }
 
     @Override

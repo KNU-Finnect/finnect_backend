@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DataCellRepository extends JpaRepository<DataCellEntity, CellId> {
-    List<DataCellEntity> findDataCellEntitiesByCellIdRowId(Long rowId);
+    List<DataCellEntity> findDataCellEntitiesByCellIdDataRowId(Long rowId);
 }

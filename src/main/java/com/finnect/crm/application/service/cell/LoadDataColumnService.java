@@ -1,7 +1,7 @@
 package com.finnect.crm.application.service.cell;
 
 import com.finnect.crm.application.port.in.cell.LoadDataColumnUseCase;
-import com.finnect.crm.application.port.out.cell.LoadDataColumnPort;
+import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
 import com.finnect.crm.domain.cell.DataColumn;
 import com.finnect.crm.domain.cell.state.DataColumnState;
 import java.util.ArrayList;

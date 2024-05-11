@@ -3,8 +3,10 @@ package com.finnect.crm.adapter.in.web.req.cell;
 import com.finnect.crm.domain.cell.DataColumn;
 import com.finnect.crm.domain.column.ColumnType;
 import com.finnect.crm.domain.column.DataType;
+import lombok.Getter;
 
 
+@Getter
 public class CreateDealColumnRequest  {
     private Long columnId;
     private Long workspaceId;

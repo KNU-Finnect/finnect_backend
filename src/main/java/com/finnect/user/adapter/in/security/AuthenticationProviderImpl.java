@@ -34,7 +34,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        log.info("Authenticating username: {}", username);
+        log.info("Authenticating: {}", authentication);
 
         // Find user
         UserDetailsImpl userFound = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);

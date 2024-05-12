@@ -27,7 +27,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header != null) {
-            logger.info("Authenticating access token: %s".formatted(header));
+            logger.info("Access token: %s".formatted(header));
 
             AuthorizeCommand command = AuthorizeCommand.builder()
                     .bearerToken(header)

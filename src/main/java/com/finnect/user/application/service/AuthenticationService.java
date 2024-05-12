@@ -1,54 +1,63 @@
 package com.finnect.user.application.service;
 
- import com.finnect.user.application.jwt.JwtProvider;
- import com.finnect.user.application.port.in.AuthorizeUseCase;
- import com.finnect.user.application.port.in.IssueUseCase;
+import com.finnect.user.application.jwt.JwtProvider;
+import com.finnect.user.application.port.in.AuthorizeUseCase;
+import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.ReissueUseCase;
- import com.finnect.user.application.port.in.command.AuthorizeCommand;
- import com.finnect.user.application.port.in.command.IssueCommand;
+import com.finnect.user.application.port.in.UserDetailsQuery;
+import com.finnect.user.application.port.in.command.AuthorizeCommand;
+import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
+import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.LoadUserPort;
+import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.domain.*;
-import com.finnect.user.exception.InvalidRefreshTokenException;
 import com.finnect.user.exception.UserNotFoundException;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
- import org.springframework.security.core.context.SecurityContextHolder;
- import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class AuthenticationService implements UserDetailsService, IssueUseCase, ReissueUseCase, AuthorizeUseCase {
+public class AuthenticationService implements UserDetailsQuery, IssueUseCase, ReissueUseCase, AuthorizeUseCase {
 
     private final LoadUserPort loadUserPort;
+    private final LoadRefreshTokenPort loadRefreshTokenPort;
+    private final SaveRefreshTokenPort saveRefreshTokenPort;
+
     private final JwtProvider tokenProvider;
 
     @Autowired
     public AuthenticationService(
             LoadUserPort loadUserPort,
+            LoadRefreshTokenPort loadRefreshTokenPort,
+            SaveRefreshTokenPort saveRefreshTokenPort,
             JwtProvider tokenProvider
     ) {
         this.loadUserPort = loadUserPort;
+        this.loadRefreshTokenPort = loadRefreshTokenPort;
+        this.saveRefreshTokenPort = saveRefreshTokenPort;
 
         this.tokenProvider = tokenProvider;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user;
+    public UserDetails loadUserById(UserId userId) throws UserNotFoundException {
+        User user = User.from(loadUserPort.loadUser(userId));
 
-        try {
-            user = User.from(loadUserPort.loadUser(username));
-        } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException(e.getMessage(), e);
-        }
+        return UserDetailsImpl.from(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
+        User user = User.from(loadUserPort.loadUser(username));
 
         return UserDetailsImpl.from(user);
     }
@@ -63,6 +72,8 @@ public class AuthenticationService implements UserDetailsService, IssueUseCase, 
                 .userId(UserId.parseOrNull(authentication.getDetails().toString()))
                 .build();
 
+        saveRefreshTokenPort.saveToken(refreshToken);
+
         return TokenPair.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -71,15 +82,16 @@ public class AuthenticationService implements UserDetailsService, IssueUseCase, 
 
     @Override
     public AccessTokenState reissue(ReissueCommand command) {
-        Authentication authentication;
+        RefreshToken refreshToken = RefreshToken.from(loadRefreshTokenPort.loadToken(command.getRefreshToken()));
+        UserDetails user = loadUserById(refreshToken.getUserId());
 
-        try {
-            authentication = tokenProvider.obtainAuthentication(command.getRefreshToken());
-        } catch (Exception e) {
-            throw new InvalidRefreshTokenException(e.getMessage(), e);
-        }
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                user.getUsername(),
+                "",
+                user.getAuthorities()
+        );
 
-        return new AccessToken(tokenProvider.generateAccessToken(authentication));
+        return new AccessToken(tokenProvider.generateAccessToken(authenticationToken));
     }
 
     @Override

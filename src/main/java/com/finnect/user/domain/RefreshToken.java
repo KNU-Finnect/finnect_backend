@@ -17,4 +17,10 @@ public class RefreshToken implements RefreshTokenState {
     public String toString() {
         return token;
     }
+
+    public static RefreshToken from(RefreshTokenState refreshToken) {
+        return RefreshToken.builder()
+                .token(refreshToken.getToken())
+                .build();
+    }
 }

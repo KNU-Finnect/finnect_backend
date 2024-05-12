@@ -26,13 +26,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header != null && header.startsWith("Bearer")) {
-            // Resolve token
-            String accessToken = header.substring(7);
-            logger.info("Authenticating access token: %s".formatted(accessToken));
+        if (header != null) {
+            logger.info("Authenticating access token: %s".formatted(header));
 
             AuthorizeCommand command = AuthorizeCommand.builder()
-                    .token(accessToken)
+                    .bearerToken(header)
                     .build();
 
             authenticationService.authorize(command);

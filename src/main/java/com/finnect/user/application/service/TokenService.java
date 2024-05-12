@@ -9,10 +9,8 @@ import com.finnect.user.application.port.in.command.AuthorizeCommand;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
-import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.domain.*;
-import com.finnect.user.exception.UserNotFoundException;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
@@ -26,40 +24,28 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class AuthenticationService implements UserDetailsQuery, IssueUseCase, ReissueUseCase, AuthorizeUseCase {
+public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseCase {
 
-    private final LoadUserPort loadUserPort;
+    private final UserDetailsQuery userDetailsQuery;
+
     private final LoadRefreshTokenPort loadRefreshTokenPort;
     private final SaveRefreshTokenPort saveRefreshTokenPort;
 
     private final JwtProvider tokenProvider;
 
     @Autowired
-    public AuthenticationService(
-            LoadUserPort loadUserPort,
+    public TokenService(
+            UserDetailsQuery userDetailsQuery,
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
             JwtProvider tokenProvider
     ) {
-        this.loadUserPort = loadUserPort;
+        this.userDetailsQuery = userDetailsQuery;
+
         this.loadRefreshTokenPort = loadRefreshTokenPort;
         this.saveRefreshTokenPort = saveRefreshTokenPort;
 
         this.tokenProvider = tokenProvider;
-    }
-
-    @Override
-    public UserDetails loadUserById(UserId userId) throws UserNotFoundException {
-        User user = User.from(loadUserPort.loadUser(userId));
-
-        return UserDetailsImpl.from(user);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
-        User user = User.from(loadUserPort.loadUser(username));
-
-        return UserDetailsImpl.from(user);
     }
 
     @Override
@@ -83,7 +69,7 @@ public class AuthenticationService implements UserDetailsQuery, IssueUseCase, Re
     @Override
     public AccessTokenState reissue(ReissueCommand command) {
         RefreshToken refreshToken = RefreshToken.from(loadRefreshTokenPort.loadToken(command.getRefreshToken()));
-        UserDetails user = loadUserById(refreshToken.getUserId());
+        UserDetails user = userDetailsQuery.loadUserById(refreshToken.getUserId());
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),

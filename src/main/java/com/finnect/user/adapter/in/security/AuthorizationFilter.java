@@ -1,7 +1,7 @@
 package com.finnect.user.adapter.in.security;
 
 import com.finnect.user.application.port.in.command.AuthorizeCommand;
-import com.finnect.user.application.service.AuthenticationService;
+import com.finnect.user.application.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
 
-    private final AuthenticationService authenticationService;
+    private final TokenService tokenService;
 
     @Override
     protected void doFilterInternal(
@@ -33,7 +33,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     .bearerToken(header)
                     .build();
 
-            authenticationService.authorize(command);
+            tokenService.authorize(command);
         } else {
             logger.info("No access tokens");
         }

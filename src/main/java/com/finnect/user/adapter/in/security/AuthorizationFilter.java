@@ -1,6 +1,7 @@
 package com.finnect.user.adapter.in.security;
 
-import com.finnect.user.application.jwt.JwtProvider;
+import com.finnect.user.application.port.in.command.AuthorizeCommand;
+import com.finnect.user.application.service.AuthenticationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthenticationService authenticationService;
 
     @Override
     protected void doFilterInternal(
@@ -30,16 +29,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer")) {
             // Resolve token
             String accessToken = header.substring(7);
-            logger.info("Validating access token: %s".formatted(accessToken));
+            logger.info("Authenticating access token: %s".formatted(accessToken));
 
-            if (jwtProvider.validateToken(accessToken)) {
-                // Allow authentication object to be viewed from anywhere
-                Authentication authentication = jwtProvider.obtainAuthentication(accessToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("Authenticated access token: %s".formatted(accessToken));
-            } else {
-                logger.info("Invalid access token: %s".formatted(accessToken));
-            }
+            AuthorizeCommand command = AuthorizeCommand.builder()
+                    .token(accessToken)
+                    .build();
+
+            authenticationService.authorize(command);
         } else {
             logger.info("No access tokens");
         }

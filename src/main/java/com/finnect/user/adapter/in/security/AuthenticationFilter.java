@@ -1,7 +1,8 @@
 package com.finnect.user.adapter.in.security;
 
-import com.finnect.user.vo.JwtPair;
-import com.finnect.user.application.jwt.JwtProvider;
+import com.finnect.user.application.port.in.command.IssueCommand;
+import com.finnect.user.application.service.AuthenticationService;
+import com.finnect.user.state.TokenPairState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -19,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthenticationService authenticationService;
 
     @Override
     public Authentication attemptAuthentication(
@@ -43,14 +44,19 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             Authentication authResult
     ) throws IOException, ServletException {
         logger.info("Successful authentication: %s".formatted(authResult));
-        JwtPair tokenPair = jwtProvider.generateTokenPair(authResult);
+
+        IssueCommand command = IssueCommand.builder()
+                .authentication(authResult)
+                .build();
+
+        TokenPairState tokenPair = authenticationService.issue(command);
 
         response.setHeader(
                 HttpHeaders.AUTHORIZATION,
-                tokenPair.accessToken().toBearerString()
+                tokenPair.getAccessToken().toBearerString()
         );
 
-        Cookie cookie = new Cookie("Refresh", tokenPair.refreshToken().toString());
+        Cookie cookie = new Cookie("Refresh", tokenPair.getRefreshToken().toString());
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }

@@ -1,7 +1,5 @@
 package com.finnect.user.application.jwt;
 
-import com.finnect.user.vo.AccessToken;
-import com.finnect.user.vo.JwtPair;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtParser;
@@ -17,25 +15,25 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
 public class JwtProvider {
 
     private final Long accessExpiredTime;
-    private final Long refreshExpiredTime;
 
     private final Key key;
     private final JwtParser parser;
 
     public JwtProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.access-expired-time}") Long accessExpiredTime,
-            @Value("${jwt.refresh-expired-time}") Long refreshExpiredTime
+            @Value("${jwt.access-expired-time}") Long accessExpiredTime
     ) {
         this.accessExpiredTime = accessExpiredTime;
-        this.refreshExpiredTime = refreshExpiredTime;
 
         key = Keys.hmacShaKeyFor(
                 Decoders.BASE64.decode(secret)
@@ -67,36 +65,11 @@ public class JwtProvider {
         return authenticationToken;
     }
 
-    public JwtPair generateTokenPair(Authentication authentication) {
+    public String generateAccessToken(@NonNull Authentication authentication) {
         Date now = new Date();
-        return new JwtPair(
-                generateAccessToken(authentication, now),
-                generateRefreshToken(authentication, now)
-        );
-    }
-
-    public AccessToken generateAccessToken(Authentication authentication) {
-        return generateAccessToken(authentication, new Date());
-    }
-
-    public String generateRefreshToken(Authentication authentication) {
-        return generateRefreshToken(authentication, new Date());
-    }
-
-    private AccessToken generateAccessToken(Authentication authentication, Date now) {
-        String token = generateToken(authentication, now, accessExpiredTime);
-        log.info("Generated access token: {}", token);
-        return new AccessToken(token);
-    }
-
-    private String generateRefreshToken(Authentication authentication, Date now) {
-        String token = generateToken(authentication, now, refreshExpiredTime);
-        log.info("Generated refresh token: {}", token);
-        return token;
-    }
-
-    private String generateToken(@NonNull Authentication authentication, Date now, Long expiredTime) {
-        List<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        List<String> authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
 
         Map<String, String> claims = new HashMap<>();
         claims.put("uid", String.valueOf(authentication.getDetails()));
@@ -105,14 +78,17 @@ public class JwtProvider {
             claims.put(s[0], s[1]);
         }
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setClaims(claims)
                 .setSubject(authentication.getName())
                 .setIssuer("finnect")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + expiredTime))
+                .setExpiration(new Date(now.getTime() + accessExpiredTime))
                 .signWith(key)
                 .compact();
+
+        log.info("Generated access token: {}", token);
+        return token;
     }
 }

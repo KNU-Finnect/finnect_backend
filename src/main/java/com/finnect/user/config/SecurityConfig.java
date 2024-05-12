@@ -3,6 +3,7 @@ package com.finnect.user.config;
 import com.finnect.user.application.jwt.JwtProvider;
 import com.finnect.user.adapter.in.security.AuthenticationFilter;
 import com.finnect.user.adapter.in.security.AuthorizationFilter;
+import com.finnect.user.application.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,17 +30,19 @@ public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
-    private final JwtProvider tokenProvider;
+
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public SecurityConfig(
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler,
-            JwtProvider tokenProvider
+            AuthenticationService authenticationService
     ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
-        this.tokenProvider = tokenProvider;
+
+        this.authenticationService = authenticationService;
     }
 
     @Bean
@@ -85,13 +88,13 @@ public class SecurityConfig {
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(tokenProvider);
+        AuthenticationFilter filter = new AuthenticationFilter(authenticationService);
         filter.setAuthenticationManager(authenticationManager(null));
         filter.setFilterProcessesUrl("/users/signin");
         return filter;
     }
 
     public AuthorizationFilter authorizationFilter() {
-        return new AuthorizationFilter(tokenProvider);
+        return new AuthorizationFilter(authenticationService);
     }
 }

@@ -4,7 +4,7 @@ import com.finnect.user.application.port.in.UserDetailsQuery;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
-import com.finnect.user.exception.UserNotFoundException;
+import com.finnect.user.application.port.out.exception.UserNotFoundException;
 import com.finnect.user.vo.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

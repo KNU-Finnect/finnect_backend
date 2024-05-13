@@ -1,7 +1,7 @@
 package com.finnect.user.adapter.in.security;
 
+import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.command.IssueCommand;
-import com.finnect.user.application.service.TokenService;
 import com.finnect.user.state.TokenPairState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final TokenService tokenService;
+    private final IssueUseCase issueUseCase;
 
     @Override
     public Authentication attemptAuthentication(
@@ -49,7 +49,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .authentication(authResult)
                 .build();
 
-        TokenPairState tokenPair = tokenService.issue(command);
+        TokenPairState tokenPair = issueUseCase.issue(command);
 
         response.setHeader(
                 HttpHeaders.AUTHORIZATION,

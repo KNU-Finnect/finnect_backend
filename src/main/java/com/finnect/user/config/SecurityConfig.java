@@ -2,7 +2,8 @@ package com.finnect.user.config;
 
 import com.finnect.user.adapter.in.security.AuthenticationFilter;
 import com.finnect.user.adapter.in.security.AuthorizationFilter;
-import com.finnect.user.application.service.TokenService;
+import com.finnect.user.application.port.in.AuthorizeUseCase;
+import com.finnect.user.application.port.in.IssueUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,18 +31,21 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
 
-    private final TokenService tokenService;
+    private final IssueUseCase issueUseCase;
+    private final AuthorizeUseCase authorizeUseCase;
 
     @Autowired
     public SecurityConfig(
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler,
-            TokenService tokenService
+            IssueUseCase issueUseCase,
+            AuthorizeUseCase authorizeUseCase
     ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
 
-        this.tokenService = tokenService;
+        this.issueUseCase = issueUseCase;
+        this.authorizeUseCase = authorizeUseCase;
     }
 
     @Bean
@@ -87,13 +91,13 @@ public class SecurityConfig {
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(tokenService);
+        AuthenticationFilter filter = new AuthenticationFilter(issueUseCase);
         filter.setAuthenticationManager(authenticationManager(null));
         filter.setFilterProcessesUrl("/users/signin");
         return filter;
     }
 
     public AuthorizationFilter authorizationFilter() {
-        return new AuthorizationFilter(tokenService);
+        return new AuthorizationFilter(authorizeUseCase);
     }
 }

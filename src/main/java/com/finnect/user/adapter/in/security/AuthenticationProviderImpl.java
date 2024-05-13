@@ -1,57 +1,36 @@
 package com.finnect.user.adapter.in.security;
 
-import com.finnect.user.domain.UserDetailsImpl;
+import com.finnect.user.application.port.in.AuthenticateUseCase;
+import com.finnect.user.application.port.in.command.AuthenticateCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class AuthenticationProviderImpl implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
-
-    private final PasswordEncoder passwordEncoder;
+    private final AuthenticateUseCase authenticateUseCase;
 
     @Autowired
     public AuthenticationProviderImpl(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder
+            AuthenticateUseCase authenticateUseCase
     ) {
-        this.userDetailsService = userDetailsService;
-
-        this.passwordEncoder = passwordEncoder;
+        this.authenticateUseCase = authenticateUseCase;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        log.info("Authenticating: {}", authentication);
+        AuthenticateCommand command = AuthenticateCommand.builder()
+                .username(authentication.getName())
+                .password(authentication.getCredentials().toString())
+                .build();
 
-        // Find user
-        UserDetailsImpl userFound = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
-
-        // Verify password
-        if (!passwordEncoder.matches(password, userFound.getPassword())) {
-            throw new BadCredentialsException(userFound.getUsername());
-        }
-
-        // Complete login
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userFound.getUsername(),
-                "",
-                userFound.getAuthorities()
-        );
-        authenticationToken.setDetails(userFound.getId());
-        return authenticationToken;
+        return authenticateUseCase.authenticate(command);
     }
 
     @Override

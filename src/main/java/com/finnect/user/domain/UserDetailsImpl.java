@@ -6,13 +6,14 @@ import com.finnect.user.vo.WorkspaceAuthority;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
-@Builder
+@Builder @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
     @Getter

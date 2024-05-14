@@ -4,8 +4,9 @@ import com.finnect.user.state.RefreshTokenState;
 import com.finnect.user.vo.UserId;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Builder
+@Builder @RequiredArgsConstructor
 @Getter
 public class RefreshToken implements RefreshTokenState {
 

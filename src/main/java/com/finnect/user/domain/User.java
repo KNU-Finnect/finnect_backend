@@ -48,6 +48,7 @@ public class User implements UserState {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .defaultWorkspaceId(user.getDefaultWorkspaceId())
                 .build();
     }
 }

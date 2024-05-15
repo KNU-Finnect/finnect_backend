@@ -9,22 +9,26 @@ import org.springframework.data.redis.core.TimeToLive;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder @AllArgsConstructor
-@Getter
-@RedisHash(value = "refreshToken", timeToLive = 14440)
+@RedisHash(value = "refresh-token")
 public class RefreshTokenEntity implements RefreshTokenState {
 
     @Id
     private String token;
 
-    private UserId userId;
+    private Long userId;
+
     @TimeToLive
     @Getter
     private Long expirationSecond;
 
+    public UserId getUserId() {
+        return new UserId(userId);
+    }
+
     public static RefreshTokenEntity from(RefreshTokenState refreshToken) {
         return RefreshTokenEntity.builder()
-                .userId(refreshToken.getUserId())
                 .token(refreshToken.toString())
+                .userId(refreshToken.getUserId().value())
                 .expirationSecond(refreshToken.getExpirationSecond())
                 .build();
     }

@@ -24,16 +24,16 @@ import java.util.Map;
 @Component
 public class JwtProvider {
 
-    private final Long accessExpiredTime;
+    private final Long expirationSecond;
 
     private final Key key;
     private final JwtParser parser;
 
     public JwtProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.access-expired-time}") Long accessExpiredTime
+            @Value("${jwt.access-expiration-second}") Long expirationSecond
     ) {
-        this.accessExpiredTime = accessExpiredTime;
+        this.expirationSecond = expirationSecond;
 
         key = Keys.hmacShaKeyFor(
                 Decoders.BASE64.decode(secret)
@@ -84,7 +84,7 @@ public class JwtProvider {
                 .setSubject(authentication.getName())
                 .setIssuer("finnect")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + accessExpiredTime))
+                .setExpiration(new Date(now.getTime() + expirationSecond * 1000))
                 .signWith(key)
                 .compact();
 

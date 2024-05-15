@@ -26,7 +26,7 @@ class JwtProviderTests {
     @Test
     void authentication_used_to_generate_token_should_equals_authentication_obtained_from_token() {
         // given
-        JwtProvider tokenProvider = new JwtProvider(SECRET, 180000L);
+        JwtProvider tokenProvider = new JwtProvider(SECRET, 180L);
         Authentication authenticationToken = givenAuthenticationToken();
 
         // when

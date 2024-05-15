@@ -7,12 +7,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Builder @RequiredArgsConstructor
-@Getter
 public class RefreshToken implements RefreshTokenState {
 
     private final String token;
 
+    @Getter
     private final UserId userId;
+
+    @Getter
+    private final Long expirationSecond;
 
     @Override
     public String toString() {
@@ -21,7 +24,9 @@ public class RefreshToken implements RefreshTokenState {
 
     public static RefreshToken from(RefreshTokenState refreshToken) {
         return RefreshToken.builder()
-                .token(refreshToken.getToken())
+                .token(refreshToken.toString())
+                .userId(refreshToken.getUserId())
+                .expirationSecond(refreshToken.getExpirationSecond())
                 .build();
     }
 }

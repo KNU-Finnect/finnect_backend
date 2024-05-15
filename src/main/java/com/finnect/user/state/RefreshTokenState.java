@@ -4,7 +4,7 @@ import com.finnect.user.vo.UserId;
 
 public interface RefreshTokenState {
 
-    String getToken();
-
     UserId getUserId();
+
+    Long getExpirationSecond();
 }

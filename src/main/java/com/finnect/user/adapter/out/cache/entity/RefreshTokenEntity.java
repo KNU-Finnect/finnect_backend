@@ -5,6 +5,7 @@ import com.finnect.user.vo.UserId;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder @AllArgsConstructor
@@ -16,11 +17,15 @@ public class RefreshTokenEntity implements RefreshTokenState {
     private String token;
 
     private UserId userId;
+    @TimeToLive
+    @Getter
+    private Long expirationSecond;
 
     public static RefreshTokenEntity from(RefreshTokenState refreshToken) {
         return RefreshTokenEntity.builder()
-                .token(refreshToken.getToken())
                 .userId(refreshToken.getUserId())
+                .token(refreshToken.toString())
+                .expirationSecond(refreshToken.getExpirationSecond())
                 .build();
     }
 }

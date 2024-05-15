@@ -12,6 +12,7 @@ import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
     private final SaveRefreshTokenPort saveRefreshTokenPort;
 
     private final JwtProvider tokenProvider;
+    private final Long refreshExpirationSecond;
 
 
     @Autowired
@@ -36,7 +38,8 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
             UserDetailsQuery userDetailsQuery,
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
-            JwtProvider tokenProvider
+            JwtProvider tokenProvider,
+            @Value("${jwt.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
         this.userDetailsQuery = userDetailsQuery;
 
@@ -44,6 +47,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         this.saveRefreshTokenPort = saveRefreshTokenPort;
 
         this.tokenProvider = tokenProvider;
+        this.refreshExpirationSecond = refreshExpirationSecond;
     }
 
     @Override
@@ -54,6 +58,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(UUID.randomUUID().toString())
                 .userId(UserId.parseOrNull(authentication.getDetails().toString()))
+                .expirationSecond(refreshExpirationSecond)
                 .build();
 
         saveRefreshTokenPort.saveToken(refreshToken);

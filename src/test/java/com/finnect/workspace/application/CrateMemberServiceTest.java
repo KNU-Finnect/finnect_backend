@@ -2,7 +2,7 @@ package com.finnect.workspace.application;
 
 import com.finnect.workspace.MemberState;
 import com.finnect.workspace.adaptor.out.persistence.MemberId;
-import com.finnect.workspace.adaptor.out.persistence.MemberJpaEntity;
+import com.finnect.workspace.adaptor.out.persistence.MemberEntity;
 import com.finnect.workspace.application.port.in.CreateMemberCommand;
 import com.finnect.workspace.application.port.out.SaveMemberPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ public class CrateMemberServiceTest {
 
         // when
         when(saveMemberPort.saveMember(any(MemberState.class)))
-                .thenReturn(MemberJpaEntity.builder()
+                .thenReturn(MemberEntity.builder()
                         .memberId(new MemberId(userId, workspaceId))
                         .nickname(nickname)
                         .role(role)

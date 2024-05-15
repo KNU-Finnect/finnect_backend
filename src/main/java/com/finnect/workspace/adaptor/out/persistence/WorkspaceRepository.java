@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-interface WorkspaceRepository extends JpaRepository<WorkspaceJpaEntity, Long> {
+interface WorkspaceRepository extends JpaRepository<WorkspaceEntity, Long> {
 
-    WorkspaceJpaEntity save(WorkspaceJpaEntity workspaceJpaEntity);
+    WorkspaceEntity save(WorkspaceEntity workspaceEntity);
 
-    Optional<WorkspaceJpaEntity> findById(Long workspaceId);
+    Optional<WorkspaceEntity> findById(Long workspaceId);
 
-    @Query("select w from WorkspaceJpaEntity w join member m on w.workspaceId = m.memberId.workspaceId where m.memberId.userId = :uid")
+    @Query("select w from WorkspaceEntity w join member m on w.workspaceId = m.memberId.workspaceId where m.memberId.userId = :uid")
     List<WorkspaceState> getAllByUserId(@Param("uid") Long userId);
 }

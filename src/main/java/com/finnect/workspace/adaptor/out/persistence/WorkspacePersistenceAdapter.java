@@ -23,11 +23,11 @@ class WorkspacePersistenceAdapter implements
 
     @Override
     public WorkspaceState createWorkspace(WorkspaceState state) {
-        WorkspaceJpaEntity workspaceJpaEntity = WorkspaceJpaEntity.builder()
+        WorkspaceEntity workspaceEntity = WorkspaceEntity.builder()
                 .workspaceName(state.getWorkspaceName())
                 .build();
 
-        WorkspaceState savedState = workspaceRepository.save(workspaceJpaEntity);
+        WorkspaceState savedState = workspaceRepository.save(workspaceEntity);
 
         return savedState;
     }
@@ -35,12 +35,12 @@ class WorkspacePersistenceAdapter implements
     @Transactional
     @Override
     public WorkspaceState updateWorkspace(WorkspaceState state) {
-        WorkspaceJpaEntity workspaceJpaEntity = workspaceRepository.findById(state.getWorkspaceId())
+        WorkspaceEntity workspaceEntity = workspaceRepository.findById(state.getWorkspaceId())
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 워크스페이스입니다."));
 
-        workspaceJpaEntity.updateWorkspace(state.getWorkspaceName());
+        workspaceEntity.updateWorkspace(state.getWorkspaceName());
 
-        return workspaceJpaEntity;
+        return workspaceEntity;
     }
 
     @Override

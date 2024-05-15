@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-class WorkspaceJpaEntity implements WorkspaceState {
+class WorkspaceEntity implements WorkspaceState {
 
     @Id
     @GeneratedValue()

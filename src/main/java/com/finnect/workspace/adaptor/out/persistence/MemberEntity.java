@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "member")
 @NoArgsConstructor
 @Getter
-public class MemberJpaEntity implements MemberState {
+public class MemberEntity implements MemberState {
 
     @EmbeddedId
     private MemberId memberId;
@@ -19,7 +19,7 @@ public class MemberJpaEntity implements MemberState {
     private String phone;
 
     @Builder
-    public MemberJpaEntity(MemberId memberId, String nickname, String role, String phone) {
+    public MemberEntity(MemberId memberId, String nickname, String role, String phone) {
         this.memberId = memberId;
         this.nickname = nickname;
         this.role = role;

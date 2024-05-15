@@ -18,7 +18,7 @@ class MemberPersistenceAdapter implements SaveMemberPort, FindMembersPort, GetMe
 
     @Override
     public MemberState saveMember(MemberState memberState) {
-        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+        MemberEntity memberEntity = MemberEntity.builder()
                 .memberId(
                         new MemberId(memberState.getUserId(), memberState.getWorkspaceId())
                 ).nickname(memberState.getNickname())
@@ -26,7 +26,7 @@ class MemberPersistenceAdapter implements SaveMemberPort, FindMembersPort, GetMe
                 .phone(memberState.getPhone())
                 .build();
 
-        MemberState savedState = memberRepository.save(memberJpaEntity);
+        MemberState savedState = memberRepository.save(memberEntity);
 
         return savedState;
     }

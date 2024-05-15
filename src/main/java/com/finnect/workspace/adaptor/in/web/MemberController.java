@@ -1,6 +1,7 @@
 package com.finnect.workspace.adaptor.in.web;
 
-import com.finnect.common.Response;
+import com.finnect.common.ApiUtils;
+import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.workspace.MemberState;
 import com.finnect.workspace.adaptor.in.web.req.CreateMemberRequest;
 import com.finnect.workspace.adaptor.in.web.res.CreateMemberResponse;
@@ -31,7 +32,7 @@ public class MemberController {
     private final FindMembersQuery findMembersQuery;
 
     @PostMapping("/workspaces/members")
-    public ResponseEntity<Response<CreateMemberResponse>> createWorkspace(@RequestBody CreateMemberRequest request) {
+    public ResponseEntity<ApiResult<CreateMemberResponse>> createWorkspace(@RequestBody CreateMemberRequest request) {
         CreateMemberCommand memberCommand = CreateMemberCommand.builder()
                 .userId(1L)
                 .workspaceId(1L)
@@ -49,11 +50,11 @@ public class MemberController {
                 state.getPhone()
         );
         CreateMemberResponse createMemberResponse = new CreateMemberResponse(memberDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.OK.value(), createMemberResponse));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.OK, createMemberResponse));
     }
 
     @GetMapping("/workspaces/members")
-    public ResponseEntity<Response> findMembers() {
+    public ResponseEntity<ApiResult<FindMembersResponse>> findMembers() {
         Long workspaceId = 1L;
 
         List<MemberWithoutIdDto> members = findMembersQuery.loadMembersByWorkspace(workspaceId)
@@ -61,6 +62,6 @@ public class MemberController {
                 .map(MemberWithoutIdDto::new)
                 .collect(Collectors.toList());
         FindMembersResponse findMembersResponse = new FindMembersResponse(members);
-        return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK.value(), findMembersResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, findMembersResponse));
     }
 }

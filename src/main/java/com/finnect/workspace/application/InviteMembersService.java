@@ -1,6 +1,6 @@
 package com.finnect.workspace.application;
 
-import com.finnect.workspace.InvitationState;
+import com.finnect.workspace.domain.state.InvitationState;
 import com.finnect.workspace.application.port.in.InviteMembersCommand;
 import com.finnect.workspace.application.port.in.InviteMembersUsecase;
 import com.finnect.workspace.domain.Invitation;

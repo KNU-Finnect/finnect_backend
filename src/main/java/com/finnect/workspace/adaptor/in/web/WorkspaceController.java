@@ -2,7 +2,7 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;
 import com.finnect.workspace.adaptor.in.web.req.InviteMembersRequest;
 import com.finnect.workspace.adaptor.in.web.req.RenameWorkspaceRequest;

@@ -1,6 +1,6 @@
 package com.finnect.workspace.application.port.out;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 
 import java.util.List;
 

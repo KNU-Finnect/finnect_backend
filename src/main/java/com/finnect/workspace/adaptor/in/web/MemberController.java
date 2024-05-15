@@ -2,7 +2,7 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.adaptor.in.web.req.CreateMemberRequest;
 import com.finnect.workspace.adaptor.in.web.res.CreateMemberResponse;
 import com.finnect.workspace.adaptor.in.web.res.FindMembersResponse;

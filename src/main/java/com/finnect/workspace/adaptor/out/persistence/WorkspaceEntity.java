@@ -1,7 +1,7 @@
 package com.finnect.workspace.adaptor.out.persistence;
 
 
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

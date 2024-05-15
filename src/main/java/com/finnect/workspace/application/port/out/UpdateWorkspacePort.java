@@ -1,6 +1,6 @@
 package com.finnect.workspace.application.port.out;
 
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 
 public interface UpdateWorkspacePort {
 

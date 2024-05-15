@@ -1,6 +1,6 @@
 package com.finnect.workspace.application;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.application.port.in.CreateMemberCommand;
 import com.finnect.workspace.application.port.in.CreateMemberUsecase;
 import com.finnect.workspace.application.port.out.SaveMemberPort;

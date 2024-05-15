@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.in.web.res.dto;
 
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.finnect.workspace.domain;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

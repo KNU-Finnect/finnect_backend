@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.in.web.res.dto;
 
-import com.finnect.workspace.InvitationState;
+import com.finnect.workspace.domain.state.InvitationState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

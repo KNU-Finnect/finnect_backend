@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.out.persistence;
 
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import com.finnect.workspace.application.port.out.UpdateWorkspacePort;

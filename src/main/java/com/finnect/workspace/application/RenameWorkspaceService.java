@@ -1,6 +1,6 @@
 package com.finnect.workspace.application;
 
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.RenameWorkspaceCommand;
 import com.finnect.workspace.application.port.in.RenameWorkspaceUsecase;
 import com.finnect.workspace.application.port.out.UpdateWorkspacePort;

@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.out.persistence;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.application.port.out.GetMemberPort;
 import com.finnect.workspace.application.port.out.FindMembersPort;
 import com.finnect.workspace.application.port.out.SaveMemberPort;

@@ -1,6 +1,6 @@
 package com.finnect.workspace.application;
 
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.GetWorkspacesQuery;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import lombok.RequiredArgsConstructor;

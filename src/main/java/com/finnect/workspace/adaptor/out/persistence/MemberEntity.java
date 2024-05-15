@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.out.persistence;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.Builder;

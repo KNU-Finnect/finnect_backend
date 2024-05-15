@@ -1,6 +1,6 @@
 package com.finnect.workspace.application.port.in;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 
 public interface CreateMemberUsecase {
 

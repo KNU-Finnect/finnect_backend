@@ -1,4 +1,4 @@
-package com.finnect.workspace;
+package com.finnect.workspace.domain.state;
 
 public interface InvitationState {
 

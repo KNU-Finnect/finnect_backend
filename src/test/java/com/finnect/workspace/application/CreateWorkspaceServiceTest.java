@@ -2,7 +2,7 @@ package com.finnect.workspace.application;
 
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceUsecase;
 import com.finnect.user.application.port.in.SetDefaultUsecase;
-import com.finnect.workspace.WorkspaceState;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.CreateWorkspaceCommand;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
 import com.finnect.workspace.domain.Workspace;

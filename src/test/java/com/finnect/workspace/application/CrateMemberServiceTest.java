@@ -1,6 +1,6 @@
 package com.finnect.workspace.application;
 
-import com.finnect.workspace.MemberState;
+import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.adaptor.out.persistence.MemberId;
 import com.finnect.workspace.adaptor.out.persistence.MemberEntity;
 import com.finnect.workspace.application.port.in.CreateMemberCommand;

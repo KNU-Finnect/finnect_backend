@@ -1,3 +1,5 @@
+*.yml
+
 .gradle
 build/
 *.properties

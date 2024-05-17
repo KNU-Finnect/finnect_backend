@@ -10,7 +10,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Getter;
 
 @Entity(name = "company")
-public class CompanyEntity {
+class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

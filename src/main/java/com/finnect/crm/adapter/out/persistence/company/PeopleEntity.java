@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.out.persistence.company.persistence;
+package com.finnect.crm.adapter.out.persistence.company;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.out.persistence.company.persistence;
+package com.finnect.crm.adapter.out.persistence.company;
 
 import com.finnect.crm.adapter.out.persistence.cell.DataRowEntity;
 import jakarta.persistence.Entity;

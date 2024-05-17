@@ -5,7 +5,7 @@ import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.crm.adapter.in.web.req.deal.CreateDealRequest;
 import com.finnect.crm.adapter.in.web.res.deal.CreateDealResponse;
 import com.finnect.crm.adapter.in.web.res.deal.DealDetailResponse;
-import com.finnect.crm.adapter.out.cell.persistence.CellId;
+import com.finnect.crm.adapter.out.persistence.cell.CellId;
 import com.finnect.crm.application.port.in.cell.LoadDataCellUseCase;
 import com.finnect.crm.application.port.in.cell.LoadDataColumnUseCase;
 import com.finnect.crm.application.port.in.deal.CreateDealUseCase;

@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.out.deal.persistence;
+package com.finnect.crm.adapter.out.persistence.deal;
 
 import com.finnect.crm.domain.deal.state.DealState;
 import com.finnect.crm.domain.deal.Deal;

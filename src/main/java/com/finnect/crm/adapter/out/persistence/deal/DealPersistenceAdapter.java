@@ -1,10 +1,9 @@
-package com.finnect.crm.adapter.out.deal;
+package com.finnect.crm.adapter.out.persistence.deal;
 
 import com.finnect.crm.domain.deal.state.DealState;
 import com.finnect.crm.application.port.out.deal.LoadDealPort;
 import com.finnect.crm.application.port.out.deal.SaveDealPort;
 import com.finnect.crm.domain.deal.Deal;
-import com.finnect.crm.adapter.out.deal.persistence.DealEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

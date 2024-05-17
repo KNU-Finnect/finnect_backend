@@ -1,6 +1,5 @@
-package com.finnect.crm.adapter.out.cell;
+package com.finnect.crm.adapter.out.persistence.cell;
 
-import com.finnect.crm.adapter.out.cell.persistence.DataCellEntity;
 import com.finnect.crm.application.port.out.cell.LoadDataCellPort;
 import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.cell.state.DataCellState;

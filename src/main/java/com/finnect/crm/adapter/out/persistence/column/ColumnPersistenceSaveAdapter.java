@@ -1,6 +1,5 @@
-package com.finnect.crm.adapter.out.column;
+package com.finnect.crm.adapter.out.persistence.column;
 
-import com.finnect.crm.adapter.out.column.persistence.DataColumnEntity;
 import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
 import com.finnect.crm.domain.cell.DataColumn;
 import com.finnect.crm.domain.cell.state.DataColumnState;

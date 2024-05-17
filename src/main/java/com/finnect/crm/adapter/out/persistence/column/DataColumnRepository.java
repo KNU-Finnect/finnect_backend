@@ -1,7 +1,7 @@
-package com.finnect.crm.adapter.out.column;
+package com.finnect.crm.adapter.out.persistence.column;
 
-import com.finnect.crm.adapter.out.column.persistence.DataColumnEntity;
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

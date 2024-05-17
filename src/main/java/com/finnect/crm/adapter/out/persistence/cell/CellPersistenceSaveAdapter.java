@@ -1,9 +1,7 @@
-package com.finnect.crm.adapter.out.cell;
+package com.finnect.crm.adapter.out.persistence.cell;
 
-import com.finnect.crm.adapter.out.cell.persistence.DataCellEntity;
-import com.finnect.crm.adapter.out.cell.persistence.DataRowEntity;
-import com.finnect.crm.adapter.out.column.DataColumnRepository;
-import com.finnect.crm.adapter.out.column.persistence.DataColumnEntity;
+import com.finnect.crm.adapter.out.persistence.column.DataColumnRepository;
+import com.finnect.crm.adapter.out.persistence.column.DataColumnEntity;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.application.port.out.cell.SaveDataRowPort;
 import com.finnect.crm.domain.cell.DataRow;

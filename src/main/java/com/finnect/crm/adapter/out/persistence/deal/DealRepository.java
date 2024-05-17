@@ -1,6 +1,5 @@
-package com.finnect.crm.adapter.out.deal;
+package com.finnect.crm.adapter.out.persistence.deal;
 
-import com.finnect.crm.adapter.out.deal.persistence.DealEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.out.column.persistence;
+package com.finnect.crm.adapter.out.persistence.column;
 
 import com.finnect.crm.domain.cell.DataColumn;
 import com.finnect.crm.domain.cell.DataColumn.ColumnType;

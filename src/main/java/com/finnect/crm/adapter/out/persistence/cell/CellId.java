@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.out.cell.persistence;
+package com.finnect.crm.adapter.out.persistence.cell;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;

@@ -1,6 +1,6 @@
-package com.finnect.crm.adapter.out.company.persistence;
+package com.finnect.crm.adapter.out.persistence.company.persistence;
 
-import com.finnect.crm.adapter.out.cell.persistence.DataRowEntity;
+import com.finnect.crm.adapter.out.persistence.cell.DataRowEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

@@ -4,5 +4,5 @@ import com.finnect.view.domain.View;
 import com.finnect.view.domain.state.ViewState;
 
 public interface CreateViewUseCase {
-    public ViewState createNewView(View view);
+    ViewState createNewView(View view);
 }

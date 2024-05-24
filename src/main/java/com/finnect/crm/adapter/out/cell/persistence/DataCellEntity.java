@@ -79,7 +79,7 @@ public class DataCellEntity implements DataCellState {
     public String toString() {
         return "DataCellEntity{" +
                 "cellId=" + cellId +
-                ", dataRow=" + dataRow +
+                ", dataRow=" + dataRow.getDataRowId() +
                 ", value='" + value + '\'' +
                 ", userId=" + userId +
                 ", peopleId=" + peopleId +

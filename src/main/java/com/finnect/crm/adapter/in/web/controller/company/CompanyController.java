@@ -20,7 +20,7 @@ public class CompanyController {
 
     private final CreateCompanyUsecase createCompanyUsecase;
 
-    @PostMapping("/workspace/companies")
+    @PostMapping("/workspaces/companies")
     public ResponseEntity<ApiUtils.ApiResult<CreateCompanyResponse>> createCompany(@RequestBody CreateCompanyRequest request) {
 
         CompanyState state = createCompanyUsecase.createCompany(

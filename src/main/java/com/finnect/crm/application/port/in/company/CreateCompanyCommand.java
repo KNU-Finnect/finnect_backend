@@ -2,6 +2,7 @@ package com.finnect.crm.application.port.in.company;
 
 import com.finnect.common.SelfValidating;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.nio.charset.StandardCharsets;
@@ -10,6 +11,8 @@ import java.util.regex.Pattern;
 @Getter
 public class CreateCompanyCommand extends SelfValidating<CreateCompanyCommand> {
 
+    @NotNull
+    private final Long workspaceId;
     @NotEmpty(message = "도메인은 공백이거나 빈 문자열일 수 없습니다.")
     private final String domain;
     @NotEmpty(message = "회사명은 공백이거나 빈 문자열일 수 없습니다.")
@@ -18,7 +21,8 @@ public class CreateCompanyCommand extends SelfValidating<CreateCompanyCommand> {
     private static final String URL_PATTERN = "^[a-zA-Z가-힣.\\-_/:]+$";
     private static final Pattern pattern = Pattern.compile(URL_PATTERN);
 
-    public CreateCompanyCommand(String domain, String companyName) {
+    public CreateCompanyCommand(Long workspaceId, String domain, String companyName) {
+        this.workspaceId = workspaceId;
         this.domain = domain;
         checkUrlFormat(domain);
         isSmallerThan("도메인", domain, 255);

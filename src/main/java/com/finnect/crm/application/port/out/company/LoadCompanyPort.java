@@ -7,6 +7,4 @@ import java.util.Optional;
 public interface LoadCompanyPort {
 
     CompanyState loadById(Long companyId);
-
-    Optional<CompanyState> loadByDomain(String domain);
 }

@@ -60,6 +60,9 @@ public class View implements ViewState {
     }
 
     public void appendFilter(List<Filter> filters){
+        if (filters.isEmpty()) {
+            return;
+        }
         this.filters.addAll(filters);
     }
 }

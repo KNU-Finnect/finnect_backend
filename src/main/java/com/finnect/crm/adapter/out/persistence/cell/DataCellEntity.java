@@ -74,4 +74,16 @@ public class DataCellEntity implements DataCellState {
                 .userId(this.userId)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "DataCellEntity{" +
+                "cellId=" + cellId +
+                ", dataRow=" + dataRow.getDataRowId() +
+                ", value='" + value + '\'' +
+                ", userId=" + userId +
+                ", peopleId=" + peopleId +
+                ", companyId=" + companyId +
+                '}';
+    }
 }

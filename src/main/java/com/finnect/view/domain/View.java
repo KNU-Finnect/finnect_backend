@@ -58,4 +58,8 @@ public class View implements ViewState {
     public List<ViewColumnState> getViewColumns() {
         return new ArrayList<>(viewColumns);
     }
+
+    public void appendFilter(List<Filter> filters){
+        this.filters.addAll(filters);
+    }
 }

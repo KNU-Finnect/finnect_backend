@@ -1,6 +1,6 @@
 package com.finnect.view.application.service;
 
-import com.finnect.view.adapter.out.SaveViewPort;
+import com.finnect.view.application.port.out.SaveViewPort;
 import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.state.ViewState;

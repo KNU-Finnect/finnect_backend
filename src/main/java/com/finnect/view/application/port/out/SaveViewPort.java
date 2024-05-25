@@ -1,4 +1,4 @@
-package com.finnect.view.adapter.out;
+package com.finnect.view.application.port.out;
 
 import com.finnect.view.domain.state.ViewState;
 

@@ -2,7 +2,9 @@ package com.finnect.view.domain;
 
 import com.finnect.view.domain.constant.FilterCondition;
 import lombok.Builder;
+import lombok.ToString;
 
+@ToString
 public class Filter implements com.finnect.view.domain.state.FilterState {
 
     private Long id;

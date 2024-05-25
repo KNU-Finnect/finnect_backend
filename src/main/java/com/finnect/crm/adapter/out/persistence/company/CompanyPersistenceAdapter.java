@@ -4,7 +4,9 @@ import com.finnect.crm.application.port.out.company.SaveCompanyPort;
 import com.finnect.crm.application.port.out.company.SearchCompanyPort;
 import com.finnect.crm.domain.company.CompanyState;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 class CompanyPersistenceAdapter
         implements SaveCompanyPort, SearchCompanyPort {

@@ -17,7 +17,6 @@ public class CreateViewResponse {
         this.workspaceId = viewState.getWorkspaceId();
         this.filters = viewState.getFilters().stream()
                 .map(filter -> FilterResponse.builder()
-                        .viewId(filter.getViewId())
                         .columnId(filter.getColumnId())
                         .condition(filter.getFilterCondition())
                         .value(filter.getValue())

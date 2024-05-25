@@ -10,7 +10,6 @@ import lombok.Getter;
 @Getter
 public class FilterResponse {
     private Long filterId;
-    private Long viewId;
     private Long columnId;
     private FilterCondition condition;
     private String value;

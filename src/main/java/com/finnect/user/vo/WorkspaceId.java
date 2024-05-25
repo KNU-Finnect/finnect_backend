@@ -1,6 +1,6 @@
 package com.finnect.user.vo;
 
-public record WorkspaceId(long value) {
+public record WorkspaceId(Long value) {
 
     @Override
     public String toString() {
@@ -9,7 +9,7 @@ public record WorkspaceId(long value) {
 
     public static WorkspaceId parseOrNull(String value) {
         try {
-            return new WorkspaceId(Long.parseLong(value));
+            return new WorkspaceId(Long.valueOf(value));
         } catch (Exception e) {
             return null;
         }

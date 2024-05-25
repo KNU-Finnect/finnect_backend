@@ -10,6 +10,7 @@ import com.finnect.user.application.port.in.ReissueUseCase;
 import com.finnect.user.application.port.in.command.ChangePasswordCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.in.command.SignupCommand;
+import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.vo.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,11 +65,11 @@ public class UserController {
                 .refreshToken(refreshToken)
                 .build();
 
-        String accessToken = reissueUseCase.reissue(command);
+        AccessTokenState accessToken = reissueUseCase.reissue(command);
 
         return ResponseEntity.ok(ApiUtils.success(
                 HttpStatus.CREATED,
-                accessToken
+                accessToken.toBearerString()
         ));
     }
 

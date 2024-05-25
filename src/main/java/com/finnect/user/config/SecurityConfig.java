@@ -1,8 +1,9 @@
 package com.finnect.user.config;
 
-import com.finnect.user.application.jwt.JwtProvider;
 import com.finnect.user.adapter.in.security.AuthenticationFilter;
 import com.finnect.user.adapter.in.security.AuthorizationFilter;
+import com.finnect.user.application.port.in.AuthorizeUseCase;
+import com.finnect.user.application.port.in.IssueUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,17 +30,22 @@ public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
-    private final JwtProvider tokenProvider;
+
+    private final IssueUseCase issueUseCase;
+    private final AuthorizeUseCase authorizeUseCase;
 
     @Autowired
     public SecurityConfig(
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler,
-            JwtProvider tokenProvider
+            IssueUseCase issueUseCase,
+            AuthorizeUseCase authorizeUseCase
     ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
-        this.tokenProvider = tokenProvider;
+
+        this.issueUseCase = issueUseCase;
+        this.authorizeUseCase = authorizeUseCase;
     }
 
     @Bean
@@ -85,13 +91,13 @@ public class SecurityConfig {
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(tokenProvider);
+        AuthenticationFilter filter = new AuthenticationFilter(issueUseCase);
         filter.setAuthenticationManager(authenticationManager(null));
         filter.setFilterProcessesUrl("/users/signin");
         return filter;
     }
 
     public AuthorizationFilter authorizationFilter() {
-        return new AuthorizationFilter(tokenProvider);
+        return new AuthorizationFilter(authorizeUseCase);
     }
 }

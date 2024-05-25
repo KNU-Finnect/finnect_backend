@@ -1,4 +1,4 @@
-package com.finnect.user.exception;
+package com.finnect.user.application.port.out.exception;
 
 import com.finnect.user.vo.UserId;
 

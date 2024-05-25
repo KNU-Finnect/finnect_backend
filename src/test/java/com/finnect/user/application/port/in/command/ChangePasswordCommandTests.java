@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class ChangePasswordCommandTests {
 
-    private final UserId GIVEN_USER_ID = new UserId(1);
+    private final UserId GIVEN_USER_ID = new UserId(1L);
 
     @Test
     void password_length_should_not_be_less_than_10() {

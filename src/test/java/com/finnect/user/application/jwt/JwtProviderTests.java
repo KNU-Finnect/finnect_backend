@@ -1,6 +1,6 @@
 package com.finnect.user.application.jwt;
 
-import com.finnect.user.vo.AccessToken;
+import com.finnect.user.domain.AccessToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,12 +26,12 @@ class JwtProviderTests {
     @Test
     void authentication_used_to_generate_token_should_equals_authentication_obtained_from_token() {
         // given
-        JwtProvider jwtProvider = new JwtProvider(SECRET, 180000L, 0L);
+        JwtProvider tokenProvider = new JwtProvider(SECRET, 180L);
         Authentication authenticationToken = givenAuthenticationToken();
 
         // when
-        AccessToken accessToken = jwtProvider.generateAccessToken(authenticationToken);
-        Authentication authentication = jwtProvider.obtainAuthentication(accessToken.value());
+        String accessToken = tokenProvider.generateAccessToken(authenticationToken);
+        Authentication authentication = tokenProvider.obtainAuthentication(accessToken);
 
         // then
         Assertions.assertEquals(authentication.getPrincipal(), GIVEN_USERNAME);
@@ -42,11 +42,11 @@ class JwtProviderTests {
     @Test
     void expired_token_should_be_invalid() {
         // given
-        JwtProvider jwtProvider = new JwtProvider(SECRET, 0L, 0L);
-        AccessToken accessToken = jwtProvider.generateAccessToken(givenAuthenticationToken());
+        JwtProvider tokenProvider = new JwtProvider(SECRET, 0L);
+        String accessToken = tokenProvider.generateAccessToken(givenAuthenticationToken());
 
         // when
-        boolean valid = jwtProvider.validateToken(accessToken.value());
+        boolean valid = tokenProvider.validateToken(accessToken);
 
         // then
         Assertions.assertFalse(valid);

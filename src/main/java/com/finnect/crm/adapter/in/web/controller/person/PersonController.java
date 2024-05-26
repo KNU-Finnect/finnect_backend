@@ -10,6 +10,7 @@ import com.finnect.crm.adapter.in.web.res.person.UpdatePersonResponse;
 import com.finnect.crm.application.port.in.person.*;
 import com.finnect.crm.domain.person.PersonState;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class PersonController {
     private final CreatePersonUsecase createPersonUsecase;
     private final UpdatePersonUsecase updatePersonUsecase;
     private final FindPeopleUsecase findPeopleUsecase;
+    private final DeletePersonUsecase deletePersonUsecase;
 
     @PostMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<CreatePersonResponse>> createPerson(@RequestBody CreatePersonRequest request) {
@@ -68,5 +70,16 @@ public class PersonController {
                 ApiUtils.success(HttpStatus.OK, FindPeopleResponse.of(
                         people.stream().map(PersonDto::from).collect(Collectors.toList()))
                 ));
+    }
+
+    @DeleteMapping("/workspaces/people/{personId}")
+    public ResponseEntity<ApiUtils.ApiResult<?>> deletePerson(@PathVariable("personId") Long personId) {
+        // TODO: PersonID 검사
+
+        deletePersonUsecase.delete(personId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ApiUtils.success(HttpStatus.OK, null)
+        );
     }
 }

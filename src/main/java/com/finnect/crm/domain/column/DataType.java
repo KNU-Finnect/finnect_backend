@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Getter;
 
 public enum DataType{
-    DEAL("DEAL"), COMPANY("CCOMPANY");
+    DEAL("DEAL"), COMPANY("COMPANY");
 
     @Getter
     private final String type;

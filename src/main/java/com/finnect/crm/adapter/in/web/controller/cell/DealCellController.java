@@ -24,7 +24,7 @@ public class DealCellController {
     private final CreateNewColumnUseCase createNewColumnUseCase;
 
     @PostMapping("/workspaces/deals/columns")
-    public ResponseEntity<ApiResult<?>> createNewColumn(@RequestBody CreateDealColumnRequest createDealColumnRequest){
+    public ResponseEntity<ApiResult<CreateDealColumnResponse>> createNewColumn(@RequestBody CreateDealColumnRequest createDealColumnRequest){
         log.info(createDealColumnRequest.toString());
         DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(createDealColumnRequest.toDomain());
 

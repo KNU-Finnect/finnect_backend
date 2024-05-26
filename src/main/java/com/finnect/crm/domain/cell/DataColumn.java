@@ -1,6 +1,8 @@
 package com.finnect.crm.domain.cell;
 
 import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.ColumnType;
+import com.finnect.crm.domain.column.DataType;
 import lombok.Builder;
 import lombok.Getter;
 

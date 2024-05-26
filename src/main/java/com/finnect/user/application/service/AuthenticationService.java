@@ -1,60 +1,50 @@
 package com.finnect.user.application.service;
 
-import com.finnect.user.application.port.in.ReissueUseCase;
-import com.finnect.user.application.port.in.command.ReissueCommand;
-import com.finnect.user.application.port.out.LoadUserPort;
-import com.finnect.user.application.jwt.JwtProvider;
-import com.finnect.user.domain.User;
+import com.finnect.user.application.port.in.AuthenticateUseCase;
+import com.finnect.user.application.port.in.UserDetailsQuery;
+import com.finnect.user.application.port.in.command.AuthenticateCommand;
 import com.finnect.user.domain.UserDetailsImpl;
-import com.finnect.user.exception.InvalidRefreshTokenException;
-import com.finnect.user.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService implements UserDetailsService, ReissueUseCase {
+public class AuthenticationService implements AuthenticateUseCase {
 
-    private final LoadUserPort loadUserPort;
+    private final UserDetailsQuery userDetailsQuery;
 
-    private final JwtProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthenticationService(
-            LoadUserPort loadUserPort,
-            JwtProvider tokenProvider
+            UserDetailsQuery userDetailsQuery,
+            PasswordEncoder passwordEncoder
     ) {
-        this.loadUserPort = loadUserPort;
+        this.userDetailsQuery = userDetailsQuery;
 
-        this.tokenProvider = tokenProvider;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user;
+    public Authentication authenticate(AuthenticateCommand command) {
+        // Find user
+        UserDetailsImpl userFound = (UserDetailsImpl) userDetailsQuery.loadUserByUsername(command.getUsername());
 
-        try {
-            user = User.from(loadUserPort.loadUser(username));
-        } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException(e.getMessage(), e);
+        // Verify password
+        if (!passwordEncoder.matches(command.getPassword(), userFound.getPassword())) {
+            throw new BadCredentialsException(userFound.getUsername());
         }
 
-        return UserDetailsImpl.from(user);
-    }
-
-    @Override
-    public String reissue(ReissueCommand command) {
-        Authentication authentication;
-
-        try {
-            authentication = tokenProvider.obtainAuthentication(command.getRefreshToken());
-        } catch (Exception e) {
-            throw new InvalidRefreshTokenException(e.getMessage(), e);
-        }
-
-        return tokenProvider.generateAccessToken(authentication).value();
+        // Complete login
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userFound.getUsername(),
+                "",
+                userFound.getAuthorities()
+        );
+        authenticationToken.setDetails(userFound.getId());
+        return authenticationToken;
     }
 }

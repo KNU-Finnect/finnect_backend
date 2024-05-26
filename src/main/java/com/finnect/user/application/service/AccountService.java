@@ -1,6 +1,5 @@
 package com.finnect.user.application.service;
 
-import com.finnect.user.application.port.in.ChangePasswordUseCase;
 import com.finnect.user.application.port.in.SignupUseCase;
 import com.finnect.user.application.port.in.command.ChangePasswordCommand;
 import com.finnect.user.application.port.in.command.SignupCommand;
@@ -13,24 +12,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountService implements SignupUseCase, ChangePasswordUseCase {
+public class AccountService implements SignupUseCase {
 
     private final CreateUserPort createUserPort;
-    private final LoadUserPort loadUserPort;
-    private final UpdateUserPort updateUserPort;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AccountService(
             CreateUserPort createUserPort,
-            LoadUserPort loadUserPort,
-            UpdateUserPort updateUserPort,
             PasswordEncoder passwordEncoder
     ) {
         this.createUserPort = createUserPort;
-        this.loadUserPort = loadUserPort;
-        this.updateUserPort = updateUserPort;
 
         this.passwordEncoder = passwordEncoder;
     }
@@ -46,13 +39,5 @@ public class AccountService implements SignupUseCase, ChangePasswordUseCase {
                 .build();
 
         createUserPort.createUser(user);
-    }
-
-    @Override
-    public void changePassword(ChangePasswordCommand command) {
-        User user = User.from(loadUserPort.loadUser(command.getUserId()));
-        user.changePassword(passwordEncoder.encode(command.getPassword()));
-
-        updateUserPort.updateUser(user);
     }
 }

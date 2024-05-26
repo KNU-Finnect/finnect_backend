@@ -1,8 +1,9 @@
 package com.finnect.crm.adapter.in.web.req.cell;
 
 import com.finnect.crm.domain.cell.DataColumn;
+import com.finnect.crm.domain.column.ColumnType;
+import com.finnect.crm.domain.column.DataType;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 public class CreateCompanyColumnRequest {
@@ -15,8 +16,8 @@ public class CreateCompanyColumnRequest {
     private final Boolean isHided;
 
     public DataColumn toDomain(){
-        DataColumn.DataType dataType = checkDataTypeValue();
-        DataColumn.ColumnType columnType = this.checkColumnTypeValue();
+        DataType dataType = checkDataTypeValue();
+        ColumnType columnType = this.checkColumnTypeValue();
 
         return DataColumn.builder()
                 .columnId(this.columnId)
@@ -29,16 +30,16 @@ public class CreateCompanyColumnRequest {
                 .build();
     }
 
-    private DataColumn.DataType checkDataTypeValue(){
-        DataColumn.DataType dataType = DataColumn.DataType.getDataType(this.dType);
+    private DataType checkDataTypeValue(){
+        DataType dataType = DataType.getDataType(this.dType);
         if(dataType == null){
             throw new IllegalArgumentException("DType이 존재하지 않습니다.");
         }
         return dataType;
     }
 
-    private DataColumn.ColumnType checkColumnTypeValue(){
-        DataColumn.ColumnType columnType = DataColumn.ColumnType.getColumnType(this.columnType);
+    private ColumnType checkColumnTypeValue(){
+        ColumnType columnType = ColumnType.getColumnType(this.columnType);
         if(columnType == null){
             throw new IllegalArgumentException("Column Type이 존재하지 않습니다.");
         }

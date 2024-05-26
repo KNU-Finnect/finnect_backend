@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class Perosn implements PersonState {
+public class Person implements PersonState {
 
     private final Long personId;
     private final Long companyId;
@@ -15,8 +15,8 @@ public class Perosn implements PersonState {
     private final String personEmail;
     private final String personPhone;
 
-    public static Perosn from(PersonState personState) {
-        return new Perosn(
+    public static Person from(PersonState personState) {
+        return new Person(
                 personState.getPersonId(),
                 personState.getCompanyId(),
                 personState.getPersonName(),

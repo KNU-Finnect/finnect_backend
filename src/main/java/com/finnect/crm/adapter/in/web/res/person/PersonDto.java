@@ -23,7 +23,7 @@ public class PersonDto implements PersonState {
                 state.getPersonName(),
                 state.getPersonRole(),
                 state.getPersonEmail(),
-                state.getPersonPhone()
+                state.getPersonPhone() != null ? state.getPersonPhone() : ""
         );
     }
 }

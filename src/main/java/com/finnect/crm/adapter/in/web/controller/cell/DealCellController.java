@@ -1,6 +1,8 @@
 package com.finnect.crm.adapter.in.web.controller.cell;
 
+import com.finnect.crm.adapter.in.web.req.cell.CreateCompanyColumnRequest;
 import com.finnect.crm.adapter.in.web.req.cell.CreateDealColumnRequest;
+import com.finnect.crm.adapter.in.web.res.cell.CreateCompanyColumnResponse;
 import com.finnect.crm.adapter.in.web.res.cell.CreateDealColumnResponse;
 import com.finnect.crm.application.port.in.cell.CreateNewColumnUseCase;
 import com.finnect.crm.domain.cell.state.DataColumnState;
@@ -30,5 +32,16 @@ public class DealCellController {
                 ApiUtils.success(HttpStatus.CREATED, CreateDealColumnResponse.toDTO(dataColumnState)),
                 HttpStatus.CREATED
         );
+    }
+
+    @PostMapping("/workspaces/companies/columns")
+    public ResponseEntity<ApiResult<CreateCompanyColumnResponse>> createCompanyColumn(@RequestBody CreateCompanyColumnRequest request){
+        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(request.toDomain());
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(
+                        ApiUtils.success(HttpStatus.CREATED, CreateCompanyColumnResponse.from(dataColumnState))
+                );
     }
 }

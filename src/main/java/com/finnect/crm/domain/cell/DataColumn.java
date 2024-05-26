@@ -71,4 +71,42 @@ public class DataColumn implements DataColumnState {
                 '}';
     }
 
+    public enum ColumnType {
+        TEXT("TEXT"), NUMBER("NUMBER");
+
+        @Getter
+        private final String type;
+
+        ColumnType(String str) {
+            this.type = str;
+        }
+
+        public static ColumnType getColumnType(String columnType) {
+            for(ColumnType type : ColumnType.values()){
+                if(type.getType().equals(columnType)){
+                    return type;
+                }
+            }
+            return null;
+        }
+    }
+
+    public enum DataType{
+        DEAL("DEAL"), COMPANY("COMPANY");
+
+        @Getter
+        private final String type;
+        DataType(String type) {
+            this.type = type;
+        }
+
+        public static DataType getDataType(String dataType){
+            for(DataType type : DataType.values()){
+                if(type.getType().equals(dataType)){
+                    return type;
+                }
+            }
+            return null;
+        }
+    }
 }

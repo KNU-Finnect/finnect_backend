@@ -1,5 +1,6 @@
 package com.finnect.crm.adapter.out.persistence.person;
 
+import com.finnect.crm.application.port.out.person.DeletePersonPort;
 import com.finnect.crm.application.port.out.person.LoadPeoplePort;
 import com.finnect.crm.application.port.out.person.LoadPersonPort;
 import com.finnect.crm.application.port.out.person.SavePersonPort;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-class PersonPersistenceAdapter implements SavePersonPort, LoadPersonPort, LoadPeoplePort {
+class PersonPersistenceAdapter implements SavePersonPort, LoadPersonPort, LoadPeoplePort, DeletePersonPort {
 
     private final PersonRepository personRepository;
 
@@ -30,5 +31,11 @@ class PersonPersistenceAdapter implements SavePersonPort, LoadPersonPort, LoadPe
     @Override
     public List<PersonState> loadPeopleByCompanyId(Long companyId) {
         return personRepository.findAllByCompanyIdOrderByPersonName(companyId);
+    }
+
+    @Override
+    public boolean delete(Long personId) {
+        personRepository.deleteById(personId);
+        return true;
     }
 }

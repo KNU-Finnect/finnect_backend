@@ -42,8 +42,10 @@ public class CreatePersonCommand extends SelfValidating<CreatePersonCommand> {
         checkFormat(personEmail, EMAIL_PATTERN);
 
         this.personPhone = personPhone;
-        isSmallerThan("연락처", personPhone, 50);
-        checkFormat(personPhone, PHONE_PATTERN);
+        if (personPhone != null) {
+            isSmallerThan("연락처", personPhone, 50);
+            checkFormat(personPhone, PHONE_PATTERN);
+        }
 
         this.validateSelf();
     }

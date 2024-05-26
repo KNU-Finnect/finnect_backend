@@ -8,12 +8,12 @@ import lombok.Getter;
 @Getter
 public class Person implements PersonState {
 
-    private final Long personId;
-    private final Long companyId;
-    private final String personName;
-    private final String personRole;
-    private final String personEmail;
-    private final String personPhone;
+    private Long personId;
+    private Long companyId;
+    private String personName;
+    private String personRole;
+    private String personEmail;
+    private String personPhone;
 
     public static Person from(PersonState personState) {
         return new Person(
@@ -24,5 +24,21 @@ public class Person implements PersonState {
                 personState.getPersonEmail(),
                 personState.getPersonPhone()
         );
+    }
+
+    public void rename(String newName) {
+        personName = newName;
+    }
+
+    public void updateRole(String newRole) {
+        personRole = newRole;
+    }
+
+    public void updateEmail(String newEmail) {
+        personEmail = newEmail;
+    }
+
+    public void updatePhone(String newPhone) {
+        personPhone = newPhone;
     }
 }

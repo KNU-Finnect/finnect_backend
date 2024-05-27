@@ -36,7 +36,7 @@ jobs:
           mkdir resources
           cd ./resources
           touch ./application.properties
-          echo "${{ secrets.ENV }}" >> ./application.propertiess
+          echo "${{ secrets.ENV }}" >> ./application.properties
 
     - name: Build with Gradle Wrapper
       run: ./gradlew clean

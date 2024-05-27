@@ -16,7 +16,7 @@ public class EmailCodeEntity implements EmailCodeState {
     private String email;
 
     @Getter
-    private int number;
+    private Integer number;
 
     @TimeToLive
     @Getter

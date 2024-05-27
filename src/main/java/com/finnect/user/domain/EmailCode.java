@@ -1,11 +1,11 @@
 package com.finnect.user.domain;
 
 import com.finnect.user.state.EmailCodeState;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Builder @RequiredArgsConstructor
+@Builder @AllArgsConstructor
 public class EmailCode implements EmailCodeState {
 
     @Getter

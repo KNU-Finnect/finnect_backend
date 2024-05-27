@@ -8,7 +8,7 @@ public class UserNotFoundException extends RuntimeException {
         super("User(userId = %s) is not found".formatted(userId));
     }
 
-    public UserNotFoundException(String username) {
-        super("User(username = %s) is not found".formatted(username));
+    public UserNotFoundException(String fieldName, String value) {
+        super("User(%s = %s) is not found".formatted(fieldName, value));
     }
 }

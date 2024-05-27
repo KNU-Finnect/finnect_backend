@@ -1,8 +1,11 @@
 package com.finnect.crm.domain.column;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.finnect.view.domain.constant.FilterCondition;
 import java.util.List;
 import lombok.Getter;
+@JsonFormat(shape = Shape.OBJECT)
 public enum ColumnType {
     TEXT("TEXT", List.of(
             FilterCondition.IS,

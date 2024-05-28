@@ -1,6 +1,7 @@
 package com.finnect.crm.application.service.deal;
 
 import com.finnect.crm.application.port.in.cell.CreateNewRowUseCase;
+import com.finnect.crm.application.port.in.dealLog.CreateDealLogUseCase;
 import com.finnect.crm.domain.cell.DataColumn;
 import com.finnect.crm.domain.cell.state.DataRowState;
 import com.finnect.crm.application.port.in.deal.CreateDealUseCase;
@@ -18,6 +19,7 @@ public class CreateDealService implements CreateDealUseCase {
 
     private final SaveDealPort saveDealPort;
     private final CreateNewRowUseCase createNewRowUseCase;
+    private final CreateDealLogUseCase createDealLogUseCase;
     @Override
     public DealState createDeal(Deal deal) {
 
@@ -30,6 +32,7 @@ public class CreateDealService implements CreateDealUseCase {
         deal.setDataRowId(dataRow.getDataRowId());
         deal = saveDealPort.saveDeal(deal);
         log.info(deal.toString());
+        createDealLogUseCase.createLogWithNewDeal(deal.getDealId());
         return deal;
     }
 }

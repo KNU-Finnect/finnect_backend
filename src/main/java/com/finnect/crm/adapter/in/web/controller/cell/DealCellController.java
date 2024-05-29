@@ -3,7 +3,7 @@ package com.finnect.crm.adapter.in.web.controller.cell;
 import com.finnect.crm.adapter.in.web.req.cell.CreateCompanyColumnRequest;
 import com.finnect.crm.adapter.in.web.req.cell.CreateDealColumnRequest;
 import com.finnect.crm.adapter.in.web.res.cell.CreateCompanyColumnResponse;
-import com.finnect.crm.adapter.in.web.res.cell.CreateDealColumnResponse;
+import com.finnect.crm.adapter.in.web.res.cell.DealColumnResponse;
 import com.finnect.crm.application.port.in.cell.CreateNewColumnUseCase;
 import com.finnect.crm.domain.cell.state.DataColumnState;
 import com.finnect.common.ApiUtils;
@@ -24,12 +24,12 @@ public class DealCellController {
     private final CreateNewColumnUseCase createNewColumnUseCase;
 
     @PostMapping("/workspaces/deals/columns")
-    public ResponseEntity<ApiResult<CreateDealColumnResponse>> createNewColumn(@RequestBody CreateDealColumnRequest createDealColumnRequest){
+    public ResponseEntity<ApiResult<DealColumnResponse>> createNewColumn(@RequestBody CreateDealColumnRequest createDealColumnRequest){
         log.info(createDealColumnRequest.toString());
         DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(createDealColumnRequest.toDomain());
 
         return new ResponseEntity<>(
-                ApiUtils.success(HttpStatus.CREATED, CreateDealColumnResponse.toDTO(dataColumnState)),
+                ApiUtils.success(HttpStatus.CREATED, DealColumnResponse.toDTO(dataColumnState)),
                 HttpStatus.CREATED
         );
     }

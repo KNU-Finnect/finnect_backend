@@ -26,6 +26,13 @@ public class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadCol
     }
 
     @Override
+    public DataColumn loadDataColumnByColumnId(DataColumnState dataColumnState) {
+        return dataColumnRepository.findById(dataColumnState.getColumnId())
+                .orElseThrow(() -> new IllegalArgumentException("없는 DataColumnId 입니다."))
+                .toDomain();
+    }
+
+    @Override
     public int loadDealColumnCount(Long workspaceId) {
         return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.DEAL);
     }

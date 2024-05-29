@@ -24,4 +24,14 @@ public class CellPersistenceLoadAdapter implements LoadDataCellPort {
                 .toList();
     }
 
+    @Override
+    public List<DataCell> loadDataCellsByColumnId(DataCellState dataCellState) {
+        List<DataCellEntity> dataCellEntities = dataCellRepository
+                .findDataCellEntitiesByCellIdColumnId(dataCellState.getColumnId());
+        return dataCellEntities
+                .stream()
+                .map(DataCellEntity::toDomain)
+                .toList();
+    }
+
 }

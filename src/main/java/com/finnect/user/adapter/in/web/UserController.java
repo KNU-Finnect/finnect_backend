@@ -25,6 +25,8 @@ public class UserController {
     private final SignupUseCase signupUseCase;
     private final ReissueUseCase reissueUseCase;
     private final SendEmailCodeUseCase sendEmailCodeUseCase;
+    private final FindUsernameUseCase findUsernameUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
 
     @Autowired
@@ -32,11 +34,15 @@ public class UserController {
             SignupUseCase signupUseCase,
             ReissueUseCase reissueUseCase,
             SendEmailCodeUseCase sendEmailCodeUseCase,
+            FindUsernameUseCase findUsernameUseCase,
+            ResetPasswordUseCase resetPasswordUseCase,
             ChangePasswordUseCase changePasswordUseCase
     ) {
         this.signupUseCase = signupUseCase;
         this.reissueUseCase = reissueUseCase;
         this.sendEmailCodeUseCase = sendEmailCodeUseCase;
+        this.findUsernameUseCase = findUsernameUseCase;
+        this.resetPasswordUseCase = resetPasswordUseCase;
         this.changePasswordUseCase = changePasswordUseCase;
     }
 
@@ -91,18 +97,75 @@ public class UserController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/signup")
-    public ResponseEntity<ApiResult<Object>> emailAuthVerify(@RequestBody EmailAuthVerifyRequest request) {
+    public ResponseEntity<ApiResult<Object>> emailAuthSignup(@RequestBody EmailAuthVerifyRequest request) {
         VerifyEmailCodeCommand command = VerifyEmailCodeCommand.builder()
                 .email(request.email())
                 .codeNumber(request.codeNumber())
                 .build();
 
-        signupUseCase.verifyEmailCode(command);
+        boolean isEmailVerified = signupUseCase.verifyEmailCode(command);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.OK,
-                null
-        ));
+        if (isEmailVerified) {
+            return ResponseEntity.ok(ApiUtils.success(
+                    HttpStatus.OK,
+                    null
+            ));
+        }
+        else {
+            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/email-auth/username")
+    public ResponseEntity<ApiResult<Object>> emailAuthUsername(@RequestBody EmailAuthVerifyRequest request) {
+        VerifyEmailCodeCommand command1 = VerifyEmailCodeCommand.builder()
+                .email(request.email())
+                .codeNumber(request.codeNumber())
+                .build();
+
+        boolean isEmailVerified = findUsernameUseCase.verifyEmailCode(command1);
+
+        if (isEmailVerified) {
+            FindUsernameCommand command2 = FindUsernameCommand.builder()
+                    .email(request.email())
+                    .build();
+
+            String username = findUsernameUseCase.findUsername(command2);
+
+            return ResponseEntity.ok(ApiUtils.success(
+                    HttpStatus.OK,
+                    username
+            ));
+        } else {
+            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/email-auth/password")
+    public ResponseEntity<ApiResult<Object>> emailAuthPassword(@RequestBody EmailAuthVerifyRequest request) {
+        VerifyEmailCodeCommand command1 = VerifyEmailCodeCommand.builder()
+                .email(request.email())
+                .codeNumber(request.codeNumber())
+                .build();
+
+        boolean isEmailVerified = resetPasswordUseCase.verifyEmailCode(command1);
+
+        if (isEmailVerified) {
+            ResetPasswordCommand command2 = ResetPasswordCommand.builder()
+                    .email(request.email())
+                    .build();
+
+            String password = resetPasswordUseCase.resetPassword(command2);
+
+            return ResponseEntity.ok(ApiUtils.success(
+                    HttpStatus.OK,
+                    password
+            ));
+        } else {
+            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+        }
     }
 
     @PreAuthorize("isAuthenticated()")

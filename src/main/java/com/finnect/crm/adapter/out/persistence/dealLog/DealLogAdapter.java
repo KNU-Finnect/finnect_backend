@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class DealLogAdapter implements SaveDealLogPort, LoadDealLogPort {
+class DealLogAdapter implements SaveDealLogPort, LoadDealLogPort {
     private final DealLogRepository dealLogRepository;
     @Override
     public void saveDealLog(DealLogState dealLog) {

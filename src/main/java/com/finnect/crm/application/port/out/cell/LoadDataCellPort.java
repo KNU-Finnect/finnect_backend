@@ -7,4 +7,6 @@ import java.util.List;
 public interface LoadDataCellPort {
 
     List<DataCell> loadDataCellsByRowId(DataCellState dataCellState);
+
+    List<DataCell> loadDataCellsByColumnId(DataCellState dataCellState);
 }

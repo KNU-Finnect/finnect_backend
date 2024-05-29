@@ -6,6 +6,7 @@ import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.domain.EmailCode;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -17,15 +18,18 @@ public class SendEmailCodeService implements SendEmailCodeUseCase {
     private final SaveEmailCodePort saveEmailCodePort;
 
     private final JavaMailSender emailSender;
+    private final Long emailExpirationSecond;
 
     @Autowired
     public SendEmailCodeService(
             SaveEmailCodePort saveEmailCodePort,
-            JavaMailSender emailSender
+            JavaMailSender emailSender,
+            @Value("${backend.email-expiration-second}") Long emailExpirationSecond
     ) {
         this.saveEmailCodePort = saveEmailCodePort;
 
         this.emailSender = emailSender;
+        this.emailExpirationSecond = emailExpirationSecond;
     }
 
     @Override
@@ -33,6 +37,7 @@ public class SendEmailCodeService implements SendEmailCodeUseCase {
         EmailCode emailCode = EmailCode.builder()
                 .email(command.getEmail())
                 .number(RandomUtils.nextInt(0, 999999))
+                .expirationSecond(emailExpirationSecond)
                 .build();
 
         MimeMessagePreparator perparator = mimeMessage -> {

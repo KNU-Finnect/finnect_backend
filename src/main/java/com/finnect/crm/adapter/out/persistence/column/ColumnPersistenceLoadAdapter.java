@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCountPort {
+class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCountPort {
     private final DataColumnRepository dataColumnRepository;
     @Override
     public List<DataColumn> loadDataColumnsByWorkspaceId(DataColumnState dataColumnState) {

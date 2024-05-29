@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ColumnPersistenceSaveAdapter implements SaveDataColumnPort {
+class ColumnPersistenceSaveAdapter implements SaveDataColumnPort {
 
     private final DataColumnRepository dataColumnRepository;
     @Override

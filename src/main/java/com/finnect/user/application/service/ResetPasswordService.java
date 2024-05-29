@@ -7,6 +7,7 @@ import com.finnect.user.application.port.in.command.VerifyEmailCodeCommand;
 import com.finnect.user.application.port.in.exception.EmailCodeNotVerifiedException;
 import com.finnect.user.application.port.out.LoadEmailCodePort;
 import com.finnect.user.application.port.out.LoadUserPort;
+import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.domain.EmailCode;
 import com.finnect.user.domain.User;
@@ -21,6 +22,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
     private final UpdateUserPort updateUserPort;
 
     private final LoadEmailCodePort loadEmailCodePort;
+    private final SaveEmailCodePort saveEmailCodePort;
 
     private final PasswordGenerator passwordGenerator;
     private final PasswordEncoder passwordEncoder;
@@ -30,6 +32,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
             LoadUserPort loadUserPort,
             UpdateUserPort updateUserPort,
             LoadEmailCodePort loadEmailCodePort,
+            SaveEmailCodePort saveEmailCodePort,
             PasswordGenerator passwordGenerator,
             PasswordEncoder passwordEncoder
     ) {
@@ -37,6 +40,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
         this.updateUserPort = updateUserPort;
 
         this.loadEmailCodePort = loadEmailCodePort;
+        this.saveEmailCodePort = saveEmailCodePort;
 
         this.passwordGenerator = passwordGenerator;
         this.passwordEncoder = passwordEncoder;
@@ -46,6 +50,8 @@ public class ResetPasswordService implements ResetPasswordUseCase {
     public boolean verifyEmailCode(VerifyEmailCodeCommand command) {
         EmailCode emailCode = EmailCode.from(loadEmailCodePort.loadEmailCode(command.getEmail()));
         emailCode.verify(command.getCodeNumber());
+
+        saveEmailCodePort.saveEmailCode(emailCode);
 
         return emailCode.isVerified();
     }
@@ -61,6 +67,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
         User user = User.from(loadUserPort.loadUserByEmail(emailCode.getEmail()));
         String password = passwordGenerator.generateRandomPassword();
         user.changePassword(passwordEncoder.encode(password));
+
         updateUserPort.updateUser(user);
 
         return password;

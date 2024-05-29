@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-public class DealCellPersistenceAdapter implements LoadDealWithCellPort {
+class DealCellPersistenceAdapter implements LoadDealWithCellPort {
     @PersistenceContext
     private final EntityManager em;
 

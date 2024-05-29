@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CellPersistenceLoadAdapter implements LoadDataCellPort {
+class CellPersistenceLoadAdapter implements LoadDataCellPort {
     private final DataCellRepository dataCellRepository;
 
     @Override

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
+class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
     private final DataCellRepository dataCellRepository;
     private final DataColumnRepository dataColumnRepository;
     private final DataRowRepository dataRowRepository;

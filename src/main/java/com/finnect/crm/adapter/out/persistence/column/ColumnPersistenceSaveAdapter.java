@@ -14,7 +14,7 @@ public class ColumnPersistenceSaveAdapter implements SaveDataColumnPort {
 
     private final DataColumnRepository dataColumnRepository;
     @Override
-    public DataColumn saveNewColumn(DataColumnState column) {
+    public DataColumn saveColumn(DataColumnState column) {
         DataColumnEntity dataColumnEntity = DataColumnEntity.toEntity(column);
         dataColumnRepository.save(dataColumnEntity);
         return dataColumnEntity.toDomain();

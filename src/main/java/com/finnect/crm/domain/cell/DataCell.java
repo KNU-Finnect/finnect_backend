@@ -50,6 +50,14 @@ public class DataCell implements DataCellState {
         return this.companyId;
     }
 
+    public void setValue(String value){
+        this.value = null;
+    }
+
+    public void resetValue(){
+        this.setValue("");
+    }
+
     @Override
     public String toString() {
         return "DataCell{" +

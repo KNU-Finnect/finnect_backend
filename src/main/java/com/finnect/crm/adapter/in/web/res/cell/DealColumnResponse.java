@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CreateDealColumnResponse {
+public class DealColumnResponse {
     private Long columnId;
     private Long workspaceId;
     private String columnName;
@@ -16,8 +16,8 @@ public class CreateDealColumnResponse {
     private Double columnIndex;
     private Boolean isHided;
     @Builder
-    public CreateDealColumnResponse(Long columnId, Long workspaceId, String columnName, DataType dType, ColumnType columnType,
-                                    Double columnIndex, Boolean isHided) {
+    public DealColumnResponse(Long columnId, Long workspaceId, String columnName, DataType dType, ColumnType columnType,
+                              Double columnIndex, Boolean isHided) {
         this.columnId = columnId;
         this.workspaceId = workspaceId;
         this.columnName = columnName;
@@ -27,8 +27,8 @@ public class CreateDealColumnResponse {
         this.isHided = isHided;
     }
 
-    public static CreateDealColumnResponse toDTO(DataColumnState columnState){
-        return CreateDealColumnResponse.builder()
+    public static DealColumnResponse toDTO(DataColumnState columnState){
+        return DealColumnResponse.builder()
                 .columnId(columnState.getColumnId())
                 .workspaceId(columnState.getColumnId())
                 .columnName(columnState.getColumnName())

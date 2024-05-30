@@ -4,7 +4,9 @@ import com.finnect.crm.adapter.out.persistence.column.DataColumnRepository;
 import com.finnect.crm.adapter.out.persistence.column.DataColumnEntity;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.application.port.out.cell.SaveDataRowPort;
+import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.cell.DataRow;
+import com.finnect.crm.domain.cell.state.DataCellState;
 import com.finnect.crm.domain.cell.state.DataColumnState;
 import com.finnect.crm.domain.cell.state.DataRowState;
 import java.util.List;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
+class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
     private final DataCellRepository dataCellRepository;
     private final DataColumnRepository dataColumnRepository;
     private final DataRowRepository dataRowRepository;
@@ -44,6 +46,14 @@ public class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort
                                 .build())
                         .toList();
         dataCellRepository.saveAll(cellEntities);
+    }
+
+    @Override
+    public void saveDataCells(List<DataCellState> dataCells) {
+        List<DataCellEntity> dataCellEntities = dataCells.stream()
+                .map(DataCellEntity::toEntity)
+                .toList();
+        dataCellRepository.saveAll(dataCellEntities);
     }
 
     @Override

@@ -56,7 +56,11 @@ public class DataColumn implements DataColumnState {
         return this.dType;
     }
 
-
+    public void modifyColumnInfo(DataColumn before){
+        this.columnId = before.getColumnId();
+        this.dType = before.getDType();
+        this.workspaceId = before.getWorkspaceId();
+    }
     @Override
     public String toString() {
         return "DataColumn{" +

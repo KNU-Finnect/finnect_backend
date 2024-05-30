@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class DealPersistenceAdapter implements SaveDealPort, LoadDealPort {
+class DealPersistenceAdapter implements SaveDealPort, LoadDealPort {
 
     private final DealRepository dealRepository;
 

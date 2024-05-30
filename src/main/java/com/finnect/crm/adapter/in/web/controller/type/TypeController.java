@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.in.type;
+package com.finnect.crm.adapter.in.web.controller.type;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;

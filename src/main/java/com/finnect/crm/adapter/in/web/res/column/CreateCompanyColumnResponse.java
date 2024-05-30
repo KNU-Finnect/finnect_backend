@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.in.web.res.cell;
+package com.finnect.crm.adapter.in.web.res.column;
 
 import com.finnect.crm.domain.cell.state.DataColumnState;
 import lombok.AccessLevel;

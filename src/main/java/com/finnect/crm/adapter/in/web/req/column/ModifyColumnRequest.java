@@ -1,8 +1,7 @@
 package com.finnect.crm.adapter.in.web.req.column;
 
-import com.finnect.crm.domain.cell.DataColumn;
+import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.ColumnType;
-import com.finnect.crm.domain.column.DataType;
 import lombok.Getter;
 
 

@@ -1,4 +1,4 @@
-package com.finnect.crm.domain.cell.state;
+package com.finnect.crm.domain.column.state;
 
 import com.finnect.crm.domain.column.ColumnType;
 import com.finnect.crm.domain.column.DataType;

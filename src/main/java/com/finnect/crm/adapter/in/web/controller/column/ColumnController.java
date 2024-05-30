@@ -9,7 +9,7 @@ import com.finnect.crm.adapter.in.web.res.column.CreateCompanyColumnResponse;
 import com.finnect.crm.adapter.in.web.res.column.DealColumnResponse;
 import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.crm.application.port.in.column.ModifyColumnUseCase;
-import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

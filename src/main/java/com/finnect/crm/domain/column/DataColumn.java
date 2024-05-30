@@ -1,8 +1,6 @@
-package com.finnect.crm.domain.cell;
+package com.finnect.crm.domain.column;
 
-import com.finnect.crm.domain.cell.state.DataColumnState;
-import com.finnect.crm.domain.column.ColumnType;
-import com.finnect.crm.domain.column.DataType;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import lombok.Builder;
 
 public class DataColumn implements DataColumnState {

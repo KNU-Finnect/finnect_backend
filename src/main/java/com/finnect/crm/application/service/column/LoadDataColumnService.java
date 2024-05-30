@@ -2,8 +2,8 @@ package com.finnect.crm.application.service.column;
 
 import com.finnect.crm.application.port.in.column.LoadDataColumnUseCase;
 import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
-import com.finnect.crm.domain.cell.DataColumn;
-import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.DataColumn;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

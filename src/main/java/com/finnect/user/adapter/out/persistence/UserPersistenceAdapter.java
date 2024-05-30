@@ -41,9 +41,15 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
     }
 
     @Override
-    public UserState loadUser(String username) throws UserNotFoundException {
+    public UserState loadUserByUsername(String username) throws UserNotFoundException {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
+                .orElseThrow(() -> new UserNotFoundException("username", username));
+    }
+
+    @Override
+    public UserState loadUserByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("email", email));
     }
 
     @Override

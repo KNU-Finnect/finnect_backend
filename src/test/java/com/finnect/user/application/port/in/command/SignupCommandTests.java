@@ -130,6 +130,19 @@ class SignupCommandTests {
     }
 
     @Test
+    void email_should_not_be_incorrect() {
+        Assertions.assertThrows(ConstraintViolationException.class, () ->
+                SignupCommand.builder()
+                        .username(CORRECT_USERNAME)
+                        .password(CORRECT_PASSWORD)
+                        .email("user@google")
+                        .firstName(CORRECT_FIRST_NAME)
+                        .lastName(CORRECT_LAST_NAME)
+                        .build()
+        );
+    }
+
+    @Test
     void first_name_should_not_contain_special_char() {
         Assertions.assertThrows(ConstraintViolationException.class, () ->
                 SignupCommand.builder()

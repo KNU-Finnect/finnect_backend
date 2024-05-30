@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ResetDataColumnService implements ResetDataCellUseCase {
+public class ResetDataCellService implements ResetDataCellUseCase {
     private final LoadDataCellPort loadDataCellPort;
     private final SaveCellPort saveCellPort;
     @Override

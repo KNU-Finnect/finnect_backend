@@ -1,6 +1,6 @@
 package com.finnect.crm.application.service.cell;
 
-import com.finnect.crm.application.port.in.cell.CreateNewColumnUseCase;
+import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
 import com.finnect.crm.domain.cell.DataColumn;

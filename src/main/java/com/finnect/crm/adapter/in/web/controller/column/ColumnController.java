@@ -7,7 +7,7 @@ import com.finnect.crm.adapter.in.web.req.column.CreateDealColumnRequest;
 import com.finnect.crm.adapter.in.web.req.column.ModifyColumnRequest;
 import com.finnect.crm.adapter.in.web.res.column.CreateCompanyColumnResponse;
 import com.finnect.crm.adapter.in.web.res.column.DealColumnResponse;
-import com.finnect.crm.application.port.in.cell.CreateNewColumnUseCase;
+import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.crm.application.port.in.column.ModifyColumnUseCase;
 import com.finnect.crm.domain.cell.state.DataColumnState;
 import lombok.RequiredArgsConstructor;

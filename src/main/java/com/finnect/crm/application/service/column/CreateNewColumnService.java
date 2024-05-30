@@ -1,4 +1,4 @@
-package com.finnect.crm.application.service.cell;
+package com.finnect.crm.application.service.column;
 
 import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;

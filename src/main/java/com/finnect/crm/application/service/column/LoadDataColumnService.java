@@ -1,4 +1,4 @@
-package com.finnect.crm.application.service.cell;
+package com.finnect.crm.application.service.column;
 
 import com.finnect.crm.application.port.in.column.LoadDataColumnUseCase;
 import com.finnect.crm.application.port.out.column.LoadDataColumnPort;

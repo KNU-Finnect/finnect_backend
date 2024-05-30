@@ -2,8 +2,8 @@ package com.finnect.crm.adapter.in.web.controller.column;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.crm.adapter.in.web.req.cell.CreateCompanyColumnRequest;
-import com.finnect.crm.adapter.in.web.req.cell.CreateDealColumnRequest;
+import com.finnect.crm.adapter.in.web.req.column.CreateCompanyColumnRequest;
+import com.finnect.crm.adapter.in.web.req.column.CreateDealColumnRequest;
 import com.finnect.crm.adapter.in.web.req.column.ModifyColumnRequest;
 import com.finnect.crm.adapter.in.web.res.cell.CreateCompanyColumnResponse;
 import com.finnect.crm.adapter.in.web.res.cell.DealColumnResponse;

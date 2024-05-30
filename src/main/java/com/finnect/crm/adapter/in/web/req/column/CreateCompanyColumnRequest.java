@@ -1,4 +1,4 @@
-package com.finnect.crm.adapter.in.web.req.cell;
+package com.finnect.crm.adapter.in.web.req.column;
 
 import com.finnect.crm.domain.cell.DataColumn;
 import com.finnect.crm.domain.column.ColumnType;

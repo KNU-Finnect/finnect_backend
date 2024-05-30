@@ -21,27 +21,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class DealCellController {
 
-    private final CreateNewColumnUseCase createNewColumnUseCase;
 
-    @PostMapping("/workspaces/deals/columns")
-    public ResponseEntity<ApiResult<DealColumnResponse>> createNewColumn(@RequestBody CreateDealColumnRequest createDealColumnRequest){
-        log.info(createDealColumnRequest.toString());
-        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(createDealColumnRequest.toDomain());
-
-        return new ResponseEntity<>(
-                ApiUtils.success(HttpStatus.CREATED, DealColumnResponse.toDTO(dataColumnState)),
-                HttpStatus.CREATED
-        );
-    }
-
-    @PostMapping("/workspaces/companies/columns")
-    public ResponseEntity<ApiResult<CreateCompanyColumnResponse>> createCompanyColumn(@RequestBody CreateCompanyColumnRequest request){
-        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(request.toDomain());
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                        ApiUtils.success(HttpStatus.CREATED, CreateCompanyColumnResponse.from(dataColumnState))
-                );
-    }
 }

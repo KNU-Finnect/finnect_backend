@@ -39,7 +39,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
             JwtProvider tokenProvider,
-            @Value("${backend.refresh-expiration-second}") Long refreshExpirationSecond
+            @Value("${jwt.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
         this.userDetailsQuery = userDetailsQuery;
 

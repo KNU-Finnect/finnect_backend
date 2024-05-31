@@ -1,6 +1,6 @@
-package com.finnect.crm.adapter.in.web.res.cell;
+package com.finnect.crm.adapter.in.web.res.column;
 
-import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.column.ColumnType;
 import com.finnect.crm.domain.column.DataType;
 import lombok.Builder;

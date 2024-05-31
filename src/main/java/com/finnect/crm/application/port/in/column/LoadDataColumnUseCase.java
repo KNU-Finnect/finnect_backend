@@ -2,8 +2,9 @@ package com.finnect.crm.application.port.in.column;
 
 import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.state.DataColumnState;
+import java.util.List;
 
-public interface ModifyColumnUseCase {
+public interface LoadDataColumnUseCase {
 
-    DataColumnState modifyColumnInfo(DataColumn before);
+    List<DataColumnState> loadDataColumns(DataColumn dataColumn);
 }

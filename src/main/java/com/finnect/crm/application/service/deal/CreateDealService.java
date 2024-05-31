@@ -2,7 +2,7 @@ package com.finnect.crm.application.service.deal;
 
 import com.finnect.crm.application.port.in.cell.CreateNewRowUseCase;
 import com.finnect.crm.application.port.in.dealLog.CreateDealLogUseCase;
-import com.finnect.crm.domain.cell.DataColumn;
+import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.cell.state.DataRowState;
 import com.finnect.crm.application.port.in.deal.CreateDealUseCase;
 import com.finnect.crm.application.port.out.deal.SaveDealPort;

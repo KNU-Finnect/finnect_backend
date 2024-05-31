@@ -6,8 +6,8 @@ import com.finnect.crm.application.port.in.column.ModifyColumnUseCase;
 import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
 import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
 import com.finnect.crm.domain.cell.DataCell;
-import com.finnect.crm.domain.cell.DataColumn;
-import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.DataColumn;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

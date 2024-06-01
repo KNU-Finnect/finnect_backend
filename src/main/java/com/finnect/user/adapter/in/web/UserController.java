@@ -10,6 +10,7 @@ import com.finnect.user.application.port.in.*;
 import com.finnect.user.application.port.in.command.*;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.vo.UserId;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -49,6 +51,7 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @PostMapping("/signup")
     public ResponseEntity<ApiResult<Object>> signup(@RequestBody SignupRequest request) {
+        log.info("/users/signup: {}", request);
         SignupCommand command = SignupCommand.builder()
                 .username(request.username())
                 .password(request.password())
@@ -68,6 +71,8 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @GetMapping("/reissue")
     public ResponseEntity<ApiResult<String>> reissue(@CookieValue("Refresh") String refreshToken) {
+        log.info("/users/reissue: {}", refreshToken);
+
         ReissueCommand command = ReissueCommand.builder()
                 .refreshToken(refreshToken)
                 .build();
@@ -83,6 +88,8 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth")
     public ResponseEntity<ApiResult<Object>> emailAuthPost(@RequestBody EmailAuthPostRequest request) {
+        log.info("/users/email-auth: {}", request);
+
         SendEmailCodeCommand command = SendEmailCodeCommand.builder()
                 .email(request.email())
                 .build();
@@ -98,6 +105,8 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/signup")
     public ResponseEntity<ApiResult<Object>> emailAuthSignup(@RequestBody EmailAuthVerifyRequest request) {
+        log.info("/users/email-auth/signup: {}", request);
+
         VerifyEmailCodeCommand command = VerifyEmailCodeCommand.builder()
                 .email(request.email())
                 .codeNumber(request.codeNumber())
@@ -119,6 +128,8 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/username")
     public ResponseEntity<ApiResult<Object>> emailAuthUsername(@RequestBody EmailAuthVerifyRequest request) {
+        log.info("/users/email-auth/username: {}", request);
+
         VerifyEmailCodeCommand command1 = VerifyEmailCodeCommand.builder()
                 .email(request.email())
                 .codeNumber(request.codeNumber())
@@ -145,6 +156,8 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/password")
     public ResponseEntity<ApiResult<Object>> emailAuthPassword(@RequestBody EmailAuthVerifyRequest request) {
+        log.info("/users/email-auth/password: {}", request);
+
         VerifyEmailCodeCommand command1 = VerifyEmailCodeCommand.builder()
                 .email(request.email())
                 .codeNumber(request.codeNumber())
@@ -171,6 +184,8 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/password")
     public ResponseEntity<ApiResult<String>> password(@RequestBody PasswordRequest request) {
+        log.info("/users/password: {}", request);
+
         UserId userId = UserId.parseOrNull(
                 SecurityContextHolder.getContext().getAuthentication().getDetails().toString()
         );

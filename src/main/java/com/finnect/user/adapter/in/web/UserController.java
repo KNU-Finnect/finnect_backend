@@ -129,17 +129,12 @@ public class UserController {
                 .codeNumber(request.codeNumber())
                 .build();
 
-        boolean isEmailVerified = signupUseCase.verifyEmailCode(command);
+        signupUseCase.verifyEmailCode(command);
 
-        if (isEmailVerified) {
-            return ResponseEntity.ok(ApiUtils.success(
-                    HttpStatus.OK,
-                    null
-            ));
-        }
-        else {
-            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, ""));
-        }
+        return ResponseEntity.ok(ApiUtils.success(
+                HttpStatus.OK,
+                null
+        ));
     }
 
     @PreAuthorize("permitAll()")
@@ -152,22 +147,18 @@ public class UserController {
                 .codeNumber(request.codeNumber())
                 .build();
 
-        boolean isEmailVerified = findUsernameUseCase.verifyEmailCode(command1);
+        findUsernameUseCase.verifyEmailCode(command1);
 
-        if (isEmailVerified) {
-            FindUsernameCommand command2 = FindUsernameCommand.builder()
-                    .email(request.email())
-                    .build();
+        FindUsernameCommand command2 = FindUsernameCommand.builder()
+                .email(request.email())
+                .build();
 
-            String username = findUsernameUseCase.findUsername(command2);
+        String username = findUsernameUseCase.findUsername(command2);
 
-            return ResponseEntity.ok(ApiUtils.success(
-                    HttpStatus.OK,
-                    username
-            ));
-        } else {
-            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, ""));
-        }
+        return ResponseEntity.ok(ApiUtils.success(
+                HttpStatus.OK,
+                username
+        ));
     }
 
     @PreAuthorize("permitAll()")
@@ -180,22 +171,18 @@ public class UserController {
                 .codeNumber(request.codeNumber())
                 .build();
 
-        boolean isEmailVerified = resetPasswordUseCase.verifyEmailCode(command1);
+        resetPasswordUseCase.verifyEmailCode(command1);
 
-        if (isEmailVerified) {
-            ResetPasswordCommand command2 = ResetPasswordCommand.builder()
-                    .email(request.email())
-                    .build();
+        ResetPasswordCommand command2 = ResetPasswordCommand.builder()
+                .email(request.email())
+                .build();
 
-            String password = resetPasswordUseCase.resetPassword(command2);
+        String password = resetPasswordUseCase.resetPassword(command2);
 
-            return ResponseEntity.ok(ApiUtils.success(
-                    HttpStatus.OK,
-                    password
-            ));
-        } else {
-            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, ""));
-        }
+        return ResponseEntity.ok(ApiUtils.success(
+                HttpStatus.OK,
+                password
+        ));
     }
 
     @PreAuthorize("isAuthenticated()")

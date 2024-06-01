@@ -47,13 +47,15 @@ public class ResetPasswordService implements ResetPasswordUseCase {
     }
 
     @Override
-    public boolean verifyEmailCode(VerifyEmailCodeCommand command) {
+    public void verifyEmailCode(VerifyEmailCodeCommand command) {
         EmailCode emailCode = EmailCode.from(loadEmailCodePort.loadEmailCode(command.getEmail()));
         emailCode.verify(command.getCodeNumber());
 
         saveEmailCodePort.saveEmailCode(emailCode);
 
-        return emailCode.isVerified();
+        if (!emailCode.isVerified()) {
+            throw new EmailCodeNotVerifiedException(emailCode.getEmail());
+        }
     }
 
     @Override

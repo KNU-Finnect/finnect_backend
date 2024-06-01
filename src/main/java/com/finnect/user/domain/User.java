@@ -36,6 +36,10 @@ public class User implements UserState {
         this.password = password;
     }
 
+    public boolean hasDefaultWorkspace() {
+        return defaultWorkspaceId != null;
+    }
+
 
     public UserInfo getInfo() {
         return UserInfo.from(this);

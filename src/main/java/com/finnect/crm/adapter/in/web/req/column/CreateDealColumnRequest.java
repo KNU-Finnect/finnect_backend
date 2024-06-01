@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 public class CreateDealColumnRequest  {
     private Long columnId;
-    private Long workspaceId;
     private String columnName;
     private String dType;
     private String columnType;
@@ -19,7 +18,6 @@ public class CreateDealColumnRequest  {
     public CreateDealColumnRequest(Long columnId, Long workspaceId, String columnName, String dType, String columnType,
                                    Double columnIndex, Boolean isHided) {
         this.columnId = columnId;
-        this.workspaceId = workspaceId;
         this.columnName = columnName;
         this.dType = dType;
         this.columnType = columnType;
@@ -27,13 +25,13 @@ public class CreateDealColumnRequest  {
         this.isHided = isHided;
     }
 
-    public DataColumn toDomain(){
+    public DataColumn toDomain(Long workspaceId){
         DataType dataType = checkDataTypeValue();
         ColumnType columnType = this.checkColumnTypeValue();
 
         return DataColumn.builder()
                 .columnId(this.columnId)
-                .workspaceId(this.workspaceId)
+                .workspaceId(workspaceId)
                 .columnName(this.columnName)
                 .dType(dataType)
                 .columnType(columnType)
@@ -45,7 +43,6 @@ public class CreateDealColumnRequest  {
     public String toString() {
         return "CreateDealColumnRequest{" +
                 "columnId=" + columnId +
-                ", workspaceId=" + workspaceId +
                 ", columnName='" + columnName + '\'' +
                 ", dType='" + dType + '\'' +
                 ", columnType='" + columnType + '\'' +

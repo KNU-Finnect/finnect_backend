@@ -62,7 +62,7 @@ public class PasswordGeneratorTests {
         String password = passwordGenerator.generateRandomPassword();
 
         // then
-        Assertions.assertTrue(password.matches(".*[-_].*"));
+        Assertions.assertTrue(password.matches(".*[-!*_].*"));
     }
 
     @Test

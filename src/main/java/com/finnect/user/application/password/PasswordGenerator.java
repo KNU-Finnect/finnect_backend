@@ -16,7 +16,7 @@ public class PasswordGenerator {
         // 영어 대문자, 영어 소문자, 특수문자를 각각 하나씩 먼저 넣어준다.
         builder.append(RandomStringUtils.randomAlphabetic(1).toUpperCase());
         builder.append(RandomStringUtils.randomAlphabetic(1).toLowerCase());
-        builder.append(RandomStringUtils.random(1, "-_"));
+        builder.append(RandomStringUtils.random(1, "-!*_"));
 
         // 나머지는 랜덤으로 채운다.
         builder.append(RandomStringUtils.randomAlphabetic(7, 12));

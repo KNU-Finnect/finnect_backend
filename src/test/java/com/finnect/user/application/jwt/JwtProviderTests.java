@@ -1,6 +1,5 @@
 package com.finnect.user.application.jwt;
 
-import com.finnect.user.domain.AccessToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,7 +9,7 @@ class JwtProviderTests {
 
     private final String SECRET = "or69fQhmqn3DAmmb7oQPAIAgb3v0GN9aGjxrdlxu6FIB288g5oWzscuf33ONtnpo";
 
-    private final String GIVEN_USERNAME = "user-1";
+    private final String GIVEN_USERNAME = "user@gmail.com";
     private final String GIVEN_PASSWORD = "";
     private final String GIVEN_USER_ID = "1";
 

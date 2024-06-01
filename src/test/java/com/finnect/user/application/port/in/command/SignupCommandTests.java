@@ -6,50 +6,11 @@ import org.junit.jupiter.api.Test;
 
 class SignupCommandTests {
 
-    private final String CORRECT_USERNAME = "user-1";
+    private final String CORRECT_USERNAME = "user@gmail.com";
     private final String CORRECT_PASSWORD = "Password-1";
-    private final String CORRECT_EMAIL = "user@google.com";
+    private final String CORRECT_EMAIL = "user@gmail.com";
     private final String CORRECT_FIRST_NAME = "Kim";
     private final String CORRECT_LAST_NAME = "Cheolsu";
-
-    @Test
-    void username_length_should_not_be_less_than_5() {
-        Assertions.assertThrows(ConstraintViolationException.class, () ->
-                SignupCommand.builder()
-                        .username("us-1")
-                        .password(CORRECT_PASSWORD)
-                        .email(CORRECT_EMAIL)
-                        .firstName(CORRECT_FIRST_NAME)
-                        .lastName(CORRECT_LAST_NAME)
-                        .build()
-        );
-    }
-
-    @Test
-    void username_length_should_not_be_greater_than_20() {
-        Assertions.assertThrows(ConstraintViolationException.class, () ->
-                SignupCommand.builder()
-                        .username("user-1_user-2_user-3_user-4")
-                        .password(CORRECT_PASSWORD)
-                        .email(CORRECT_EMAIL)
-                        .firstName(CORRECT_FIRST_NAME)
-                        .lastName(CORRECT_LAST_NAME)
-                        .build()
-        );
-    }
-
-    @Test
-    void username_should_not_contain_korean() {
-        Assertions.assertThrows(ConstraintViolationException.class, () ->
-                SignupCommand.builder()
-                        .username("user-유저-1")
-                        .password(CORRECT_PASSWORD)
-                        .email(CORRECT_EMAIL)
-                        .firstName(CORRECT_FIRST_NAME)
-                        .lastName(CORRECT_LAST_NAME)
-                        .build()
-        );
-    }
 
     @Test
     void password_length_should_not_be_less_than_10() {

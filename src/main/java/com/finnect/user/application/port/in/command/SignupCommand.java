@@ -13,7 +13,6 @@ import lombok.NonNull;
 public class SignupCommand extends SelfValidating<SignupCommand> {
 
     @NonNull
-    @Size(min = 5, max = 20) @Pattern(regexp = "^[a-z0-9-_]+$")
     private final String username;
 
     @NonNull

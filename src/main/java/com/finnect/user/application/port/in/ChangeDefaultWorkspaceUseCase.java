@@ -1,6 +1,9 @@
 package com.finnect.user.application.port.in;
 
+import com.finnect.user.vo.UserId;
+import com.finnect.user.vo.WorkspaceId;
+
 public interface ChangeDefaultWorkspaceUseCase {
 
-    boolean changeDefaultWorkspace(Long workspaceId);
+    void changeDefaultWorkspace(UserId userId, WorkspaceId workspaceId);
 }

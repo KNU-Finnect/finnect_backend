@@ -88,6 +88,7 @@ public class DealEntity implements DealState {
                 .userId(deal.getUserId())
                 .workspaceId(deal.getWorkspaceId())
                 .dataRowId(deal.getDataRowId())
+                .companyId(deal.getCompanyId())
                 .build();
     }
 

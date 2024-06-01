@@ -30,6 +30,8 @@ public class ColumnController {
     private final ModifyColumnUseCase modifyColumnUseCase;
     private final CreateNewColumnUseCase createNewColumnUseCase;
 
+
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/workspaces/deals/columns")
     public ResponseEntity<ApiResult<DealColumnResponse>> modifyColumn
             (@RequestBody ModifyColumnRequest requests){

@@ -18,38 +18,38 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class UserExceptionHandler {
 
     @ExceptionHandler(UserDuplicateException.class)
-    public ResponseEntity<ApiResult<Object>> userDuplicate(UserDuplicateException e) {
+    public ResponseEntity<ApiResult<String>> userDuplicate(UserDuplicateException e) {
         log.error(e.toString());
 
-        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.CONFLICT));
+        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.CONFLICT, e.getMessage()));
     }
 
     @ExceptionHandler(EmailCodeNotVerifiedException.class)
-    public ResponseEntity<ApiResult<Object>> emailCodeNotVerified(EmailCodeNotVerifiedException e) {
+    public ResponseEntity<ApiResult<String>> emailCodeNotVerified(EmailCodeNotVerifiedException e) {
         log.error(e.toString());
 
-        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.FORBIDDEN));
+        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.FORBIDDEN, e.getMessage()));
     }
 
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiResult<Object>> userNotFound(UserNotFoundException e) {
+    public ResponseEntity<ApiResult<String>> userNotFound(UserNotFoundException e) {
         log.error(e.toString());
 
-        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 
     @ExceptionHandler(RefreshTokenNotFoundException.class)
-    public ResponseEntity<ApiResult<Object>> refreshTokenNotFound(RefreshTokenNotFoundException e) {
+    public ResponseEntity<ApiResult<String>> refreshTokenNotFound(RefreshTokenNotFoundException e) {
         log.error(e.toString());
 
-        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 
     @ExceptionHandler(EmailCodeNotFoundException.class)
-    public ResponseEntity<ApiResult<Object>> emailCodeNotFound(EmailCodeNotFoundException e) {
+    public ResponseEntity<ApiResult<String>> emailCodeNotFound(EmailCodeNotFoundException e) {
         log.error(e.toString());
 
-        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 }

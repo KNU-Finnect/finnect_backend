@@ -121,7 +121,7 @@ public class UserController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/signup")
-    public ResponseEntity<ApiResult<Object>> emailAuthSignup(@RequestBody EmailAuthVerifyRequest request) {
+    public ResponseEntity<ApiResult<String>> emailAuthSignup(@RequestBody EmailAuthVerifyRequest request) {
         log.info("/users/email-auth/signup: {}", request);
 
         VerifyEmailCodeCommand command = VerifyEmailCodeCommand.builder()
@@ -138,13 +138,13 @@ public class UserController {
             ));
         }
         else {
-            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, ""));
         }
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/username")
-    public ResponseEntity<ApiResult<Object>> emailAuthUsername(@RequestBody EmailAuthVerifyRequest request) {
+    public ResponseEntity<ApiResult<String>> emailAuthUsername(@RequestBody EmailAuthVerifyRequest request) {
         log.info("/users/email-auth/username: {}", request);
 
         VerifyEmailCodeCommand command1 = VerifyEmailCodeCommand.builder()
@@ -166,13 +166,13 @@ public class UserController {
                     username
             ));
         } else {
-            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, ""));
         }
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping("/email-auth/password")
-    public ResponseEntity<ApiResult<Object>> emailAuthPassword(@RequestBody EmailAuthVerifyRequest request) {
+    public ResponseEntity<ApiResult<String>> emailAuthPassword(@RequestBody EmailAuthVerifyRequest request) {
         log.info("/users/email-auth/password: {}", request);
 
         VerifyEmailCodeCommand command1 = VerifyEmailCodeCommand.builder()
@@ -194,7 +194,7 @@ public class UserController {
                     password
             ));
         } else {
-            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND));
+            return ResponseEntity.ok(ApiUtils.fail(HttpStatus.NOT_FOUND, ""));
         }
     }
 

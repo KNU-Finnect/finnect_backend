@@ -51,7 +51,12 @@ public class DealController {
                            WorkspaceAuthority.from(SecurityContextHolder
                                    .getContext()
                                    .getAuthentication()
-                                   .getAuthorities()).workspaceId().value()
+                                   .getAuthorities()).workspaceId().value(),
+                           Long.valueOf((String) SecurityContextHolder
+                                   .getContext()
+                                   .getAuthentication()
+                                   .getDetails()
+                           )
                    )
         );
 

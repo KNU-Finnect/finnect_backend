@@ -36,6 +36,10 @@ public class User implements UserState {
     public void changeDefaultWorkspace(WorkspaceId workspaceId) {
         this.defaultWorkspaceId = workspaceId;
     }
+  
+    public boolean hasDefaultWorkspace() {
+        return defaultWorkspaceId != null;
+    }
 
 
     public UserInfo getInfo() {

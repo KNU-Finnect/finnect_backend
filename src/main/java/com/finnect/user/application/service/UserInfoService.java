@@ -2,6 +2,7 @@ package com.finnect.user.application.service;
 
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.ChangePasswordUseCase;
+import com.finnect.user.application.port.in.CheckDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.command.ChangePasswordCommand;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserInfoService implements ChangePasswordUseCase, ChangeDefaultWorkspaceUseCase {
+public class UserInfoService implements ChangePasswordUseCase, CheckDefaultWorkspaceUseCase, ChangeDefaultWorkspaceUseCase {
 
     private final LoadUserPort loadUserPort;
     private final UpdateUserPort updateUserPort;
@@ -46,5 +47,11 @@ public class UserInfoService implements ChangePasswordUseCase, ChangeDefaultWork
         user.changeDefaultWorkspace(workspaceId);
 
         updateUserPort.updateUser(user);
+    }
+  
+    public boolean checkDefaultWorkspace(UserId userId) {
+        User user = User.from(loadUserPort.loadUser(userId));
+
+        return user.hasDefaultWorkspace();
     }
 }

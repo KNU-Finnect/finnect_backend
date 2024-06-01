@@ -1,7 +1,7 @@
 package com.finnect.workspace.application;
 
-import com.finnect.user.application.port.in.CheckDefaultWorkspaceUsecase;
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
+import com.finnect.user.application.port.in.CheckDefaultWorkspaceUseCase;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
 import com.finnect.workspace.domain.state.WorkspaceState;
@@ -21,14 +21,14 @@ import org.springframework.stereotype.Component;
 public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
     private final CreateWorkspacePort createWorkspacePort;
-    private final CheckDefaultWorkspaceUsecase checkDefaultWorkspaceUsecase;
     private final ChangeDefaultWorkspaceUseCase changeDefaultWorkspaceUseCase;
+    private final CheckDefaultWorkspaceUseCase checkDefaultWorkspaceUseCase;
 
     @Override
     public WorkspaceState createWorkspace(CreateWorkspaceCommand cmd) {
         UserId userId = new UserId(cmd.getUserId());
 
-        boolean hasDefault = checkDefaultWorkspaceUsecase.checkDefaultWorkspace(cmd.getUserId());
+        boolean hasDefault = checkDefaultWorkspaceUseCase.checkDefaultWorkspace(userId);
 
         WorkspaceId workspaceId = new WorkspaceId(cmd.getWorkspaceId());
         Workspace workspace = new Workspace(cmd.getWorkspaceName());

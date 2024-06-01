@@ -1,12 +1,9 @@
-package com.finnect.crm.application.port.out.company;
+package com.finnect.crm.application.port.in.company;
 
 import com.finnect.crm.domain.company.CompanyState;
-
 import java.util.List;
 
-public interface LoadCompanyPort {
-
-    CompanyState loadById(Long companyId);
+public interface LoadCompanyUseCase {
 
     List<CompanyState> loadCompaniesByWorkspaceId(Long workspaceId);
 }

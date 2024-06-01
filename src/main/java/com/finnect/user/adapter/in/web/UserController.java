@@ -2,21 +2,19 @@ package com.finnect.user.adapter.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.user.adapter.in.web.request.EmailAuthPostRequest;
-import com.finnect.user.adapter.in.web.request.EmailAuthVerifyRequest;
-import com.finnect.user.adapter.in.web.request.PasswordRequest;
-import com.finnect.user.adapter.in.web.request.SignupRequest;
+import com.finnect.user.adapter.in.web.request.*;
 import com.finnect.user.application.port.in.*;
 import com.finnect.user.application.port.in.command.*;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.vo.UserId;
+import com.finnect.user.vo.WorkspaceId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -69,9 +67,9 @@ public class UserController {
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping("/reissue")
-    public ResponseEntity<ApiResult<String>> reissue(@CookieValue("Refresh") String refreshToken) {
-        log.info("/users/reissue: {}", refreshToken);
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResult<Object>> reissue(@CookieValue("Refresh") String refreshToken) {
+        log.info("/users/reissue");
 
         ReissueCommand command = ReissueCommand.builder()
                 .refreshToken(refreshToken)
@@ -79,10 +77,29 @@ public class UserController {
 
         AccessTokenState accessToken = reissueUseCase.reissue(command);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.CREATED,
-                accessToken.toBearerString()
-        ));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
+                .build();
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/reissue-workspace")
+    public ResponseEntity<ApiResult<Object>> reissueWorkspace(
+            @CookieValue("Refresh") String refreshToken,
+            @RequestBody ReissueWorkspaceRequest request
+    ) {
+        log.info("/users/reissue-workspace: {}", request);
+
+        ReissueWorkspaceCommand command = ReissueWorkspaceCommand.builder()
+                .refreshToken(refreshToken)
+                .workspaceId(new WorkspaceId(request.workspaceId()))
+                .build();
+
+        AccessTokenState accessToken = reissueUseCase.reissueWorkspace(command);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
+                .build();
     }
 
     @PreAuthorize("permitAll()")

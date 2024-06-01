@@ -1,5 +1,6 @@
 package com.finnect.user.adapter.out.persistence;
 
+import com.finnect.user.application.port.out.ExistsUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.state.UserState;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, UpdateUserPort {
+public class UserPersistenceAdapter implements CreateUserPort, ExistsUserPort, LoadUserPort, UpdateUserPort {
 
     private final UserRepository userRepository;
 
@@ -20,6 +21,7 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
     public UserPersistenceAdapter(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     @Override
     public void createUser(UserState userState) {
@@ -33,6 +35,13 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
 
         userRepository.save(userEntity);
     }
+
+
+    @Override
+    public boolean existsUserByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
 
     @Override
     public UserState loadUser(UserId userId) throws UserNotFoundException {
@@ -51,6 +60,7 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("email", email));
     }
+
 
     @Override
     public void updateUser(UserState userState) {

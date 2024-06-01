@@ -2,6 +2,7 @@ package com.finnect.user.domain;
 
 import com.finnect.user.state.RefreshTokenState;
 import com.finnect.user.vo.UserId;
+import com.finnect.user.vo.WorkspaceId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,9 @@ public class RefreshToken implements RefreshTokenState {
     private final UserId userId;
 
     @Getter
+    private final WorkspaceId workspaceId;
+
+    @Getter
     private final Long expirationSecond;
 
     @Override
@@ -26,6 +30,7 @@ public class RefreshToken implements RefreshTokenState {
         return RefreshToken.builder()
                 .token(refreshToken.toString())
                 .userId(refreshToken.getUserId())
+                .workspaceId(refreshToken.getWorkspaceId())
                 .expirationSecond(refreshToken.getExpirationSecond())
                 .build();
     }

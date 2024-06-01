@@ -6,7 +6,6 @@ import com.finnect.user.adapter.in.web.request.*;
 import com.finnect.user.application.port.in.*;
 import com.finnect.user.application.port.in.command.*;
 import com.finnect.user.state.AccessTokenState;
-import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +68,7 @@ public class UserController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResult<String>> reissue(@CookieValue("Refresh") String refreshToken) {
+    public ResponseEntity<ApiResult<Object>> reissue(@CookieValue("Refresh") String refreshToken) {
         log.info("/users/reissue");
 
         ReissueCommand command = ReissueCommand.builder()
@@ -84,23 +83,22 @@ public class UserController {
     }
 
     @PreAuthorize("permitAll()")
-    @PostMapping("/reissue/workspace")
-    public ResponseEntity<ApiResult<String>> reissueWorkspace(
+    @PostMapping("/reissue-workspace")
+    public ResponseEntity<ApiResult<Object>> reissueWorkspace(
             @CookieValue("Refresh") String refreshToken,
             @RequestBody ReissueWorkspaceRequest request
     ) {
-        log.info("/users/reissue/workspace: {}", request);
+        log.info("/users/reissue-workspace: {}", request);
 
         ReissueWorkspaceCommand command = ReissueWorkspaceCommand.builder()
                 .refreshToken(refreshToken)
                 .workspaceId(new WorkspaceId(request.workspaceId()))
                 .build();
 
-        TokenPairState tokenPair = reissueUseCase.reissueWorkspace(command);
+        AccessTokenState accessToken = reissueUseCase.reissueWorkspace(command);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, tokenPair.getAccessToken().toBearerString())
-                .header(HttpHeaders.SET_COOKIE, tokenPair.getRefreshToken().toString())
+                .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
                 .build();
     }
 

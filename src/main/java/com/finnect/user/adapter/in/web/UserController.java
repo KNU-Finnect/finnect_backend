@@ -6,7 +6,9 @@ import com.finnect.user.adapter.in.web.request.*;
 import com.finnect.user.application.port.in.*;
 import com.finnect.user.application.port.in.command.*;
 import com.finnect.user.state.AccessTokenState;
+import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
+import com.finnect.user.vo.WorkspaceId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -79,6 +80,27 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
+                .build();
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/reissue/workspace")
+    public ResponseEntity<ApiResult<String>> reissueWorkspace(
+            @CookieValue("Refresh") String refreshToken,
+            @RequestBody ReissueWorkspaceRequest request
+    ) {
+        log.info("/users/reissue/workspace: {}", request);
+
+        ReissueWorkspaceCommand command = ReissueWorkspaceCommand.builder()
+                .refreshToken(refreshToken)
+                .workspaceId(new WorkspaceId(request.workspaceId()))
+                .build();
+
+        TokenPairState tokenPair = reissueUseCase.reissueWorkspace(command);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, tokenPair.getAccessToken().toBearerString())
+                .header(HttpHeaders.SET_COOKIE, tokenPair.getRefreshToken().toString())
                 .build();
     }
 

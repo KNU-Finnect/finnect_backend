@@ -32,6 +32,12 @@ public class RefreshTokenEntity implements RefreshTokenState {
         return new WorkspaceId(workspaceId);
     }
 
+
+    @Override
+    public String toString() {
+        return token;
+    }
+
     public static RefreshTokenEntity from(RefreshTokenState refreshToken) {
         WorkspaceId workspaceId = refreshToken.getWorkspaceId();
 

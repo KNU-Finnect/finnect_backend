@@ -3,12 +3,9 @@ package com.finnect.user.domain;
 import com.finnect.user.state.UserState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Builder @RequiredArgsConstructor
+@Builder @AllArgsConstructor
 @Getter
 public class User implements UserState {
 
@@ -29,11 +26,19 @@ public class User implements UserState {
     @NonNull
     private final String lastName;
 
-    private final WorkspaceId defaultWorkspaceId;
+    private WorkspaceId defaultWorkspaceId;
 
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void changeDefaultWorkspace(WorkspaceId workspaceId) {
+        this.defaultWorkspaceId = workspaceId;
+    }
+  
+    public boolean hasDefaultWorkspace() {
+        return defaultWorkspaceId != null;
     }
 
 

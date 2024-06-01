@@ -16,7 +16,7 @@ public class ChangePasswordCommand extends SelfValidating<ChangePasswordCommand>
     private final UserId userId;
 
     @NonNull
-    @Size(min = 10, max = 15) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[-!*_])[a-zA-Z0-9-_]+$")
+    @Size(min = 10, max = 15) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[-!*_])[a-zA-Z0-9-!*_]+$")
     private final String password;
 
     public ChangePasswordCommand(

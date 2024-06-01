@@ -1,7 +1,7 @@
 package com.finnect.workspace.application;
 
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceUsecase;
-import com.finnect.user.application.port.in.SetDefaultUsecase;
+import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.CreateWorkspaceCommand;
 import com.finnect.workspace.application.port.in.CreateWorkspaceUsecase;
@@ -20,7 +20,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
     private final CreateWorkspacePort createWorkspacePort;
     private final CheckDefaultWorkspaceUsecase checkDefaultWorkspaceUsecase;
-    private final SetDefaultUsecase setDefaultUsecase;
+    private final ChangeDefaultWorkspaceUseCase changeDefaultWorkspaceUseCase;
 
     @Override
     public WorkspaceState createWorkspace(CreateWorkspaceCommand cmd) {
@@ -31,7 +31,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
         WorkspaceState savedState = createWorkspacePort.createWorkspace(workspace);
 
         if (hasDefault)
-            setDefaultUsecase.setDefault(savedState.getWorkspaceId());
+            changeDefaultWorkspaceUseCase.setDefault(savedState.getWorkspaceId());
 
         return savedState;
     }

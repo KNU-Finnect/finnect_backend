@@ -76,13 +76,15 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
     @Override
     public AccessTokenState reissue(ReissueCommand command) {
         RefreshToken refreshToken = RefreshToken.from(loadRefreshTokenPort.loadToken(command.getRefreshToken()));
-        UserDetails user = userDetailsQuery.loadUserByRefreshToken(refreshToken);
+
+        UserDetailsImpl user = (UserDetailsImpl) userDetailsQuery.loadUserByRefreshToken(refreshToken);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 "",
                 user.getAuthorities()
         );
+        authenticationToken.setDetails(user.getId());
 
         return new AccessToken(tokenProvider.generateAccessToken(authenticationToken));
     }
@@ -92,13 +94,14 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         RefreshToken refreshToken = RefreshToken.from(loadRefreshTokenPort.loadToken(command.getRefreshToken()));
         refreshToken.moveWorkspace(command.getWorkspaceId());
 
-        UserDetails user = userDetailsQuery.loadUserByRefreshToken(refreshToken);
+        UserDetailsImpl user = (UserDetailsImpl) userDetailsQuery.loadUserByRefreshToken(refreshToken);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 "",
                 user.getAuthorities()
         );
+        authenticationToken.setDetails(user.getId());
 
         saveRefreshTokenPort.saveToken(refreshToken);
 

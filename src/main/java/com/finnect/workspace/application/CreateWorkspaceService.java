@@ -2,6 +2,7 @@ package com.finnect.workspace.application;
 
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.SetDefaultUsecase;
+import com.finnect.user.vo.UserId;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.CreateWorkspaceCommand;
 import com.finnect.workspace.application.port.in.CreateWorkspaceUsecase;
@@ -24,7 +25,9 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
     @Override
     public WorkspaceState createWorkspace(CreateWorkspaceCommand cmd) {
-        boolean hasDefault = checkDefaultWorkspaceUsecase.checkDefaultWorkspace(cmd.getUserId());
+        UserId userId = new UserId(cmd.getUserId());
+
+        boolean hasDefault = checkDefaultWorkspaceUsecase.checkDefaultWorkspace(userId);
 
         Workspace workspace = new Workspace(cmd.getWorkspaceName());
 

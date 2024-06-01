@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.in;
 
-public interface CheckDefaultWorkspaceUsecase {
+public interface CheckDefaultWorkspaceUseCase {
 
     boolean checkDefaultWorkspace(Long userId);
 }

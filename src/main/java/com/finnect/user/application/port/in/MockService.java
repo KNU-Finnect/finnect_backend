@@ -3,7 +3,7 @@ package com.finnect.user.application.port.in;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MockService implements CheckDefaultWorkspaceUsecase, SetDefaultUsecase {
+public class MockService implements CheckDefaultWorkspaceUseCase, SetDefaultUsecase {
 
     @Override
     public boolean checkDefaultWorkspace(Long userId) {

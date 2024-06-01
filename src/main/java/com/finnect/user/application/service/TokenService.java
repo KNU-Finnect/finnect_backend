@@ -5,12 +5,15 @@ import com.finnect.user.application.port.in.*;
 import com.finnect.user.application.port.in.command.AuthorizeCommand;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
+import com.finnect.user.application.port.in.command.ReissueWorkspaceCommand;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.domain.*;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
+import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.user.vo.WorkspaceId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,6 +61,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(UUID.randomUUID().toString())
                 .userId(UserId.parseOrNull(authentication.getDetails().toString()))
+                .workspaceId(WorkspaceAuthority.from(authentication.getAuthorities()).workspaceId())
                 .expirationSecond(refreshExpirationSecond)
                 .build();
 
@@ -72,7 +76,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
     @Override
     public AccessTokenState reissue(ReissueCommand command) {
         RefreshToken refreshToken = RefreshToken.from(loadRefreshTokenPort.loadToken(command.getRefreshToken()));
-        UserDetails user = userDetailsQuery.loadUserById(refreshToken.getUserId());
+        UserDetails user = userDetailsQuery.loadUserByRefreshToken(refreshToken);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
@@ -81,6 +85,29 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         );
 
         return new AccessToken(tokenProvider.generateAccessToken(authenticationToken));
+    }
+
+    @Override
+    public TokenPairState reissueWorkspace(ReissueWorkspaceCommand command) {
+        RefreshToken refreshToken = RefreshToken.from(loadRefreshTokenPort.loadToken(command.getRefreshToken()));
+        refreshToken.moveWorkspace(command.getWorkspaceId());
+
+        UserDetails user = userDetailsQuery.loadUserByRefreshToken(refreshToken);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                user.getUsername(),
+                "",
+                user.getAuthorities()
+        );
+
+        saveRefreshTokenPort.saveToken(refreshToken);
+
+        AccessToken accessToken = new AccessToken(tokenProvider.generateAccessToken(authenticationToken));
+
+        return TokenPair.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     @Override

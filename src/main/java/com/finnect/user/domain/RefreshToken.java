@@ -3,11 +3,11 @@ package com.finnect.user.domain;
 import com.finnect.user.state.RefreshTokenState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Builder @RequiredArgsConstructor
+@Builder @AllArgsConstructor
 public class RefreshToken implements RefreshTokenState {
 
     private final String token;
@@ -16,10 +16,16 @@ public class RefreshToken implements RefreshTokenState {
     private final UserId userId;
 
     @Getter
-    private final WorkspaceId workspaceId;
+    private WorkspaceId workspaceId;
 
     @Getter
     private final Long expirationSecond;
+
+
+    public void moveWorkspace(WorkspaceId workspaceId) {
+        this.workspaceId = workspaceId;
+    }
+
 
     @Override
     public String toString() {

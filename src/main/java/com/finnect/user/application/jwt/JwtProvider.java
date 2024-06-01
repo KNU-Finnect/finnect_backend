@@ -1,5 +1,7 @@
 package com.finnect.user.application.jwt;
 
+import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.user.vo.WorkspaceId;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtParser;
@@ -15,10 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -56,10 +55,12 @@ public class JwtProvider {
         Claims claims = parser.parseClaimsJws(token).getBody();
         String userId = String.valueOf(claims.get("uid"));
         String username = claims.getSubject();
+        WorkspaceId workspaceId = WorkspaceId.parseOrNull(String.valueOf(claims.get("wid")));
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 username,
-                ""
+                "",
+                Collections.singleton(new WorkspaceAuthority(workspaceId))
         );
         authenticationToken.setDetails(userId);
         return authenticationToken;

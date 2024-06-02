@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 @Getter
 public class CreateWorkspaceCommand extends SelfValidating<CreateWorkspaceCommand> {
 
-    private final Long workspaceId;
     @NotEmpty(message = "워크스페이스의 이름은 빈 문자열이거나 공백일 수 없습니다.")
     private final String workspaceName;
     @NotNull
@@ -19,7 +18,6 @@ public class CreateWorkspaceCommand extends SelfValidating<CreateWorkspaceComman
 
     @Builder
     public CreateWorkspaceCommand(String workspaceName, Long userId) {
-        this.workspaceId = null;
         this.workspaceName = workspaceName;
         isSmallerThan(this.workspaceName, 50);
         this.userId = userId;

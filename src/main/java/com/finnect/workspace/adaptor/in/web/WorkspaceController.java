@@ -3,6 +3,7 @@ package com.finnect.workspace.adaptor.in.web;
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.user.vo.UserId;
+import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;
 import com.finnect.workspace.adaptor.in.web.req.InviteMembersRequest;
@@ -64,8 +65,17 @@ public class WorkspaceController {
     @PreAuthorize("permitAll()")
     @PutMapping("/workspaces")
     public ResponseEntity<ApiResult<RenameWorkspaceResponse>> renameWorkspace(@RequestBody RenameWorkspaceRequest request) {
+        Long workspaceId;
+        try {
+            workspaceId = WorkspaceAuthority.from(
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            ).workspaceId().value();
+        } catch (Exception e) {
+            throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
+        }
+
         RenameWorkspaceCommand renameCommand = RenameWorkspaceCommand.builder()
-                .workspaceId(1L)
+                .workspaceId(workspaceId)
                 .newName(request.getWorkspaceName())
                 .build();
 

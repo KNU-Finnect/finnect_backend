@@ -1,4 +1,4 @@
-package com.finnect.workspace.error;
+package com.finnect.common.error;
 
 import lombok.Getter;
 

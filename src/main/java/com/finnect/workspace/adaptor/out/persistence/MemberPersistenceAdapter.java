@@ -4,7 +4,7 @@ import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.application.port.out.GetMemberPort;
 import com.finnect.workspace.application.port.out.FindMembersPort;
 import com.finnect.workspace.application.port.out.SaveMemberPort;
-import com.finnect.workspace.error.NotFoundException;
+import com.finnect.common.error.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -27,6 +27,16 @@ public class Member implements MemberState {
                 .build();
     }
 
+    public static Member toDamin(CreateMemberCommand command) {
+        return Member.builder()
+                .userId(command.getUserId())
+                .workspaceId(command.getWorkspaceId())
+                .nickname(command.getNickname())
+                .role("")
+                .phone("")
+                .build();
+    }
+
     public void update(String nickname, String role, String phone) {
         if (nickname != null)
             this.nickname = nickname;

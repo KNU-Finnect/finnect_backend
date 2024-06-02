@@ -34,6 +34,7 @@ public class MemberController {
     private final CreateMemberUsecase createMemberUsecase;
     private final FindMembersQuery findMembersQuery;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/members")
     public ResponseEntity<ApiResult<CreateMemberResponse>> createWorkspace(@RequestBody CreateMemberRequest request) {
         Long userId;
@@ -60,7 +61,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.OK, createMemberResponse));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/members")
     public ResponseEntity<ApiResult<FindMembersResponse>> findMembers() {
         Long workspaceId;

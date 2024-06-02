@@ -36,7 +36,7 @@ public class WorkspaceController {
     private final InviteMembersUsecase inviteMembersUsecase;
     private final GetWorkspacesQuery getWorkspacesQuery;
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces")
     public ResponseEntity<ApiResult<CreateWorkspaceResponse>> createWorkspace(@RequestBody CreateWorkspaceRequest request) {
         Long userId;
@@ -59,7 +59,7 @@ public class WorkspaceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.CREATED, createWorkspaceResponse));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/workspaces")
     public ResponseEntity<ApiResult<RenameWorkspaceResponse>> renameWorkspace(@RequestBody RenameWorkspaceRequest request) {
         Long workspaceId;
@@ -83,7 +83,7 @@ public class WorkspaceController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, renameWorkspaceResponse));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces")
     public ResponseEntity<ApiResult<GetWorkspacesResponse>> getWorkspaces() {
         Long userId;
@@ -101,7 +101,7 @@ public class WorkspaceController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, getWorkspacesResponse));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/invitation")
     public ResponseEntity<ApiResult<InviteMembersResponse>> inviteMembers(@RequestBody InviteMembersRequest request) {
         List<InviteMembersCommand> cmds = request.getEmails()

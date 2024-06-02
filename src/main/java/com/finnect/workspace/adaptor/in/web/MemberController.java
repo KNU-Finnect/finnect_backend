@@ -2,6 +2,7 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
+import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.adaptor.in.web.req.CreateMemberRequest;
 import com.finnect.workspace.adaptor.in.web.res.CreateMemberResponse;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,9 +56,17 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.OK, createMemberResponse));
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/workspaces/members")
     public ResponseEntity<ApiResult<FindMembersResponse>> findMembers() {
-        Long workspaceId = 1L;
+        Long workspaceId;
+        try {
+            workspaceId = WorkspaceAuthority.from(
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            ).workspaceId().value();
+        } catch (Exception e) {
+            throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
+        }
 
         List<MemberWithoutIdDto> members = findMembersQuery.loadMembersByWorkspace(workspaceId)
                 .stream()

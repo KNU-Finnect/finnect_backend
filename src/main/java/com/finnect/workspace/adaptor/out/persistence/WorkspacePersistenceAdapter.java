@@ -4,7 +4,7 @@ import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import com.finnect.workspace.application.port.out.UpdateWorkspacePort;
-import com.finnect.workspace.error.NotFoundException;
+import com.finnect.common.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

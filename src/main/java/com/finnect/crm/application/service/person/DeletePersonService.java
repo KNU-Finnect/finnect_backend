@@ -3,7 +3,7 @@ package com.finnect.crm.application.service.person;
 import com.finnect.crm.application.port.in.person.DeletePersonUsecase;
 import com.finnect.crm.application.port.out.person.DeletePersonPort;
 import com.finnect.crm.application.port.out.person.LoadPersonPort;
-import com.finnect.workspace.error.NotFoundException;
+import com.finnect.common.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

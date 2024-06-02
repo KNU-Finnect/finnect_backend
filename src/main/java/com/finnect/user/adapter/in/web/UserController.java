@@ -79,7 +79,7 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
-                .build();
+                .body(ApiUtils.success(HttpStatus.OK, null));
     }
 
     @PreAuthorize("permitAll()")
@@ -99,7 +99,7 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
-                .build();
+                .body(ApiUtils.success(HttpStatus.OK, null));
     }
 
     @PreAuthorize("permitAll()")

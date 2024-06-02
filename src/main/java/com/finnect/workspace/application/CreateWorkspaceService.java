@@ -2,8 +2,11 @@ package com.finnect.workspace.application;
 
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceUseCase;
+import com.finnect.user.application.port.in.GetNameUseCase;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
+import com.finnect.workspace.application.port.in.CreateMemberCommand;
+import com.finnect.workspace.application.port.in.CreateMemberUsecase;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.CreateWorkspaceCommand;
 import com.finnect.workspace.application.port.in.CreateWorkspaceUsecase;
@@ -13,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
     private final CreateWorkspacePort createWorkspacePort;
     private final ChangeDefaultWorkspaceUseCase changeDefaultWorkspaceUseCase;
     private final CheckDefaultWorkspaceUseCase checkDefaultWorkspaceUseCase;
+    private final GetNameUseCase getNameUseCase;
+    private final CreateMemberUsecase createMemberUsecase;
 
     @Override
     public WorkspaceState createWorkspace(CreateWorkspaceCommand cmd) {
@@ -35,6 +41,15 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
             changeDefaultWorkspaceUseCase.changeDefaultWorkspace(
                     userId,
                     new WorkspaceId(savedState.getWorkspaceId()));
+
+        String name = getNameUseCase.getNameById(userId);
+        createMemberUsecase.createMember(
+                CreateMemberCommand.builder()
+                        .userId(userId.value())
+                        .workspaceId(savedState.getWorkspaceId())
+                        .nickname(name)
+                        .build()
+        );
 
         return savedState;
     }

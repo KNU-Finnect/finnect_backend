@@ -10,17 +10,14 @@ import com.finnect.crm.adapter.in.web.res.person.UpdatePersonResponse;
 import com.finnect.crm.application.port.in.person.*;
 import com.finnect.crm.domain.person.PersonState;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class PersonController {
     private final CreatePersonUsecase createPersonUsecase;

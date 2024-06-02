@@ -1,5 +1,7 @@
 package com.finnect.user.adapter.in.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finnect.common.ApiUtils;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.state.TokenPairState;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -59,5 +62,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Cookie cookie = new Cookie("Refresh", tokenPair.getRefreshToken().toString());
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(ApiUtils.success(HttpStatus.OK, null));
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 }

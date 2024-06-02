@@ -40,8 +40,6 @@ public class MemberController {
                 .userId(1L)
                 .workspaceId(1L)
                 .nickname(request.getNickname())
-                .role(request.getRole())
-                .phone(request.getPhone())
                 .build();
 
         MemberState state = createMemberUsecase.createMember(memberCommand);

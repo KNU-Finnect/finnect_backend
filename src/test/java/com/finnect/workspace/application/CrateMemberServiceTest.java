@@ -37,15 +37,13 @@ public class CrateMemberServiceTest {
         String nickname = "test nickname";
         String role = "test role";
         String phone = "010-1234-5678";
-        CreateMemberCommand command = new CreateMemberCommand(userId, workspaceId, nickname, role, phone);
+        CreateMemberCommand command = new CreateMemberCommand(userId, workspaceId, nickname);
 
         // when
         when(saveMemberPort.saveMember(any(MemberState.class)))
                 .thenReturn(MemberEntity.builder()
                         .memberId(new MemberId(userId, workspaceId))
                         .nickname(nickname)
-                        .role(role)
-                        .phone(phone)
                         .build());
 
         MemberState state = service.createMember(command);
@@ -54,7 +52,5 @@ public class CrateMemberServiceTest {
         assertEquals(state.getUserId(), userId);
         assertEquals(state.getWorkspaceId(), workspaceId);
         assertEquals(state.getNickname(), nickname);
-        assertEquals(state.getRole(), role);
-        assertEquals(state.getPhone(), phone);
     }
 }

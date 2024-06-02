@@ -20,7 +20,7 @@ public class CreateMemberService implements CreateMemberUsecase {
     public MemberState createMember(CreateMemberCommand cmd) {
 
         Member member = new Member(
-                cmd.getUserId(), cmd.getWorkspaceId(), cmd.getNickname(), cmd.getRole(), cmd.getPhone()
+                cmd.getUserId(), cmd.getWorkspaceId(), cmd.getNickname(), "", ""
         );
 
         MemberState savedMember = saveMemberPort.saveMember(member);

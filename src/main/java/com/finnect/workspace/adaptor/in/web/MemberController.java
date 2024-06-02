@@ -36,10 +36,16 @@ public class MemberController {
 
     @PostMapping("/workspaces/members")
     public ResponseEntity<ApiResult<CreateMemberResponse>> createWorkspace(@RequestBody CreateMemberRequest request) {
+        Long userId;
+        try {
+            userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getDetails().toString());
+        } catch (Exception e) {
+            throw new RuntimeException("토큰에 사용자 ID가 누락되었습니다.");
+        }
+
         CreateMemberCommand memberCommand = CreateMemberCommand.builder()
-                .userId(1L)
-                .workspaceId(1L)
-                .nickname(request.getNickname())
+                .userId(userId)
+                .workspaceId(request.getWorkspaceId())
                 .build();
 
         MemberState state = createMemberUsecase.createMember(memberCommand);

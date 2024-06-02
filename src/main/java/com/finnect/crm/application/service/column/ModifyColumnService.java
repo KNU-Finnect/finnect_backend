@@ -23,7 +23,7 @@ public class ModifyColumnService implements ModifyColumnUseCase {
         DataColumn before = loadDataColumnPort.loadDataColumnByColumnId(after);
         after.modifyColumnInfo(before);
         if(!after.getColumnType().equals(before.getColumnType())){
-            modifyDataCellUseCase.resetColumnInfoByModifyColumn(
+            modifyDataCellUseCase.resetCellInfoByModifyColumn(
                     DataCell.builder()
                             .cellId(new CellId( null, after.getColumnId()) )
                             .build()

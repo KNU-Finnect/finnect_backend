@@ -4,5 +4,7 @@ import com.finnect.crm.domain.cell.DataCell;
 
 public interface ModifyDataCellUseCase {
 
-    void resetColumnInfoByModifyColumn(DataCell dataCell);
+    void resetCellInfoByModifyColumn(DataCell dataCell);
+
+    void modifyCellInfo(DataCell dataCell);
 }

@@ -15,9 +15,15 @@ public class ModifyDataCellService implements ModifyDataCellUseCase {
     private final LoadDataCellPort loadDataCellPort;
     private final SaveCellPort saveCellPort;
     @Override
-    public void resetColumnInfoByModifyColumn(DataCell dataCell) {
+    public void resetCellInfoByModifyColumn(DataCell dataCell) {
         List<DataCell> dataCells = loadDataCellPort.loadDataCellsByColumnId(dataCell);
         dataCells.forEach(DataCell::resetValue);
         saveCellPort.saveDataCells(new ArrayList<>(dataCells));
+    }
+
+    @Override
+    public void modifyCellInfo(DataCell after) {
+        DataCell before = loadDataCellPort.loadDataCell(after);
+        saveCellPort.saveDataCell(after);
     }
 }

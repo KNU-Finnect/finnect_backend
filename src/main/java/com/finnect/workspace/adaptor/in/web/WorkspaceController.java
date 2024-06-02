@@ -37,7 +37,6 @@ public class WorkspaceController {
     private final RenameWorkspaceUsecase renameWorkspaceUsecase;
     private final InviteMembersUsecase inviteMembersUsecase;
     private final GetWorkspacesQuery getWorkspacesQuery;
-    private final CreateMemberUsecase createMemberUsecase;
 
     @PreAuthorize("permitAll()")
     @PostMapping("/workspaces")

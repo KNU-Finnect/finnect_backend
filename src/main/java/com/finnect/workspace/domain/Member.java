@@ -1,12 +1,14 @@
 package com.finnect.workspace.domain;
 
+import com.finnect.workspace.application.port.in.CreateMemberCommand;
 import com.finnect.workspace.domain.state.MemberState;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor @Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE) @Builder
 public class Member implements MemberState {
     private Long userId;
     private Long workspaceId;

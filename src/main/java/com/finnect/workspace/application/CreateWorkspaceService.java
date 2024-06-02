@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Getter
 @Slf4j
+@Transactional
 public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
     private final CreateWorkspacePort createWorkspacePort;

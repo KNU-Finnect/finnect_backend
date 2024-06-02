@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 class WorkspaceEntity implements WorkspaceState {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workspaceId;
 
     @Column

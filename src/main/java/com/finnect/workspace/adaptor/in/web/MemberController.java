@@ -20,10 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/workspaces/members")
 public class MemberController {
 
     private final CreateMemberUsecase createMemberUsecase;
@@ -39,7 +37,7 @@ public class MemberController {
     private final UpdateMemberUsecase updateMemberUsecase;
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/workspaces/members")
+    @PostMapping
     public ResponseEntity<ApiResult<CreateMemberResponse>> createWorkspace(@RequestBody CreateMemberRequest request) {
         Long userId;
         try {
@@ -62,7 +60,7 @@ public class MemberController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/workspaces/members")
+    @GetMapping
     public ResponseEntity<ApiResult<FindMembersResponse>> findMembers() {
         Long workspaceId;
         try {

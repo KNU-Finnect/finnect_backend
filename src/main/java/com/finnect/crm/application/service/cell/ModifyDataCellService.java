@@ -1,6 +1,6 @@
 package com.finnect.crm.application.service.cell;
 
-import com.finnect.crm.application.port.in.cell.ResetDataCellUseCase;
+import com.finnect.crm.application.port.in.cell.ModifyDataCellUseCase;
 import com.finnect.crm.application.port.out.cell.LoadDataCellPort;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.domain.cell.DataCell;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ResetDataCellService implements ResetDataCellUseCase {
+public class ModifyDataCellService implements ModifyDataCellUseCase {
     private final LoadDataCellPort loadDataCellPort;
     private final SaveCellPort saveCellPort;
     @Override

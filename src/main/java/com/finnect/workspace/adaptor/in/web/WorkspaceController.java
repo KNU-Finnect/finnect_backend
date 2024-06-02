@@ -89,7 +89,12 @@ public class WorkspaceController {
     @PreAuthorize("permitAll()")
     @GetMapping("/workspaces")
     public ResponseEntity<ApiResult<GetWorkspacesResponse>> getWorkspaces() {
-        Long userId = 1L;
+        Long userId;
+        try {
+            userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getDetails().toString());
+        } catch (Exception e) {
+            throw new BadRequestException("토큰에 사용자 ID가 누락되었습니다.");
+        }
 
         List<WorkspaceDto> workspaceStates = getWorkspacesQuery.getWorkspaces(userId)
                 .stream()

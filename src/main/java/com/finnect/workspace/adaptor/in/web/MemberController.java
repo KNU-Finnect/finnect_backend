@@ -55,12 +55,7 @@ public class MemberController {
 
         MemberState state = createMemberUsecase.createMember(memberCommand);
 
-        MemberDto memberDto = new MemberDto(
-                state.getUserId(),
-                state.getNickname(),
-                state.getRole(),
-                state.getPhone()
-        );
+        MemberDto memberDto = MemberDto.from(state);
         CreateMemberResponse createMemberResponse = new CreateMemberResponse(memberDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.OK, createMemberResponse));
     }

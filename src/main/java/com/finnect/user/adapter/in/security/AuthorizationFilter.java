@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             authorizeUseCase.authorize(command);
         } else {
             logger.info("No bearer tokens");
+            SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);

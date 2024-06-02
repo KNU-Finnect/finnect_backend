@@ -10,13 +10,17 @@ import com.finnect.crm.adapter.in.web.res.column.DealColumnResponse;
 import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.crm.application.port.in.column.ModifyColumnUseCase;
 import com.finnect.crm.domain.column.state.DataColumnState;
+import com.finnect.user.vo.WorkspaceAuthority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,6 +30,8 @@ public class ColumnController {
     private final ModifyColumnUseCase modifyColumnUseCase;
     private final CreateNewColumnUseCase createNewColumnUseCase;
 
+
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/workspaces/deals/columns")
     public ResponseEntity<ApiResult<DealColumnResponse>> modifyColumn
             (@RequestBody ModifyColumnRequest requests){
@@ -36,12 +42,22 @@ public class ColumnController {
             ));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/deals/columns")
     public ResponseEntity<ApiResult<DealColumnResponse>> createNewColumn(
-            @RequestBody CreateDealColumnRequest createDealColumnRequest){
-        log.info(createDealColumnRequest.toString());
-        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(createDealColumnRequest.toDomain());
+            @RequestBody CreateDealColumnRequest createDealColumnRequest,
+            @RequestHeader("Authorization") String authorizationHeader){
+        log.info(authorizationHeader);
 
+        log.info(SecurityContextHolder.getContext().getAuthentication().toString());
+        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(
+                createDealColumnRequest.toDomain(
+                        WorkspaceAuthority.from(SecurityContextHolder
+                                .getContext()
+                                .getAuthentication()
+                                .getAuthorities()).workspaceId().value()
+                )
+        );
         return new ResponseEntity<>(
                 ApiUtils.success(HttpStatus.CREATED, DealColumnResponse.toDTO(dataColumnState)),
                 HttpStatus.CREATED
@@ -60,4 +76,5 @@ public class ColumnController {
                         ApiUtils.success(HttpStatus.CREATED, CreateCompanyColumnResponse.from(dataColumnState))
                 );
     }
+
 }

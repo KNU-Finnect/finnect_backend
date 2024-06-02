@@ -13,4 +13,7 @@ public interface SaveCellPort {
 
 
     void saveDataCells(List<DataCellState> dataCells);
+
+
+    void saveDataCell(DataCellState dataCell);
 }

@@ -1,7 +1,7 @@
 package com.finnect.crm.application.service.column;
 
 import com.finnect.crm.adapter.out.persistence.cell.CellId;
-import com.finnect.crm.application.port.in.cell.ResetDataCellUseCase;
+import com.finnect.crm.application.port.in.cell.ModifyDataCellUseCase;
 import com.finnect.crm.application.port.in.column.ModifyColumnUseCase;
 import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
 import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
@@ -16,14 +16,14 @@ import org.springframework.stereotype.Service;
 public class ModifyColumnService implements ModifyColumnUseCase {
     private final LoadDataColumnPort loadDataColumnPort;
     private final SaveDataColumnPort saveDataColumnPort;
-    private final ResetDataCellUseCase resetDataCellUseCase;
+    private final ModifyDataCellUseCase modifyDataCellUseCase;
     @Override
     public DataColumnState modifyColumnInfo
             (DataColumn after) {
         DataColumn before = loadDataColumnPort.loadDataColumnByColumnId(after);
         after.modifyColumnInfo(before);
         if(!after.getColumnType().equals(before.getColumnType())){
-            resetDataCellUseCase.resetColumnInfoByModifyColumn(
+            modifyDataCellUseCase.resetCellInfoByModifyColumn(
                     DataCell.builder()
                             .cellId(new CellId( null, after.getColumnId()) )
                             .build()

@@ -34,4 +34,14 @@ class CellPersistenceLoadAdapter implements LoadDataCellPort {
                 .toList();
     }
 
+    @Override
+    public DataCell loadDataCell(DataCellState dataCellState) {
+        return dataCellRepository
+                .findById(
+                        new CellId(dataCellState.getRowId(), dataCellState.getColumnId())
+                )
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 Cell 정보가 없습니다."))
+                .toDomain();
+    }
+
 }

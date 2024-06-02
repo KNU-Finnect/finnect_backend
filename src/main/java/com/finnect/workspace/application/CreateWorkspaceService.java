@@ -26,16 +26,12 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
     @Override
     public WorkspaceState createWorkspace(CreateWorkspaceCommand cmd) {
-        UserId userId = new UserId(cmd.getUserId());
-
-        boolean hasDefault = checkDefaultWorkspaceUseCase.checkDefaultWorkspace(userId);
 
         Workspace workspace = new Workspace(cmd.getWorkspaceName());
-
         WorkspaceState savedState = createWorkspacePort.createWorkspace(workspace);
 
-        log.info(userId + "의 default workspace: " + hasDefault);
-        if (!hasDefault)
+        UserId userId = new UserId(cmd.getUserId());
+        if (!checkDefaultWorkspaceUseCase.checkDefaultWorkspace(userId))
             changeDefaultWorkspaceUseCase.changeDefaultWorkspace(
                     userId,
                     new WorkspaceId(savedState.getWorkspaceId()));

@@ -41,12 +41,12 @@ public class WorkspaceController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/workspaces")
-    public ResponseEntity<ApiResult<CreateWorkspaceResponse>> createWorkspace(@RequestBody CreateWorkspaceRequest request) throws BadRequestException {
+    public ResponseEntity<ApiResult<CreateWorkspaceResponse>> createWorkspace(@RequestBody CreateWorkspaceRequest request) {
         Long userId;
         try {
             userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getDetails().toString());
         } catch (Exception e) {
-            throw new BadRequestException("토큰에 사용자 ID가 누락되었습니다.");
+            throw new RuntimeException("토큰에 사용자 ID가 누락되었습니다.");
         }
 
         CreateWorkspaceCommand workspaceCommand = CreateWorkspaceCommand.builder()
@@ -93,7 +93,7 @@ public class WorkspaceController {
         try {
             userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getDetails().toString());
         } catch (Exception e) {
-            throw new BadRequestException("토큰에 사용자 ID가 누락되었습니다.");
+            throw new RuntimeException("토큰에 사용자 ID가 누락되었습니다.");
         }
 
         List<WorkspaceDto> workspaceStates = getWorkspacesQuery.getWorkspaces(userId)

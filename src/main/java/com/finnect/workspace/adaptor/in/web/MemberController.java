@@ -2,6 +2,8 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
+import com.finnect.user.application.port.in.GetNameUseCase;
+import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.domain.state.MemberState;
 import com.finnect.workspace.adaptor.in.web.req.CreateMemberRequest;
@@ -33,6 +35,7 @@ public class MemberController {
 
     private final CreateMemberUsecase createMemberUsecase;
     private final FindMembersQuery findMembersQuery;
+    private final GetNameUseCase getNameUseCase;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/members")
@@ -47,6 +50,7 @@ public class MemberController {
         CreateMemberCommand memberCommand = CreateMemberCommand.builder()
                 .userId(userId)
                 .workspaceId(request.getWorkspaceId())
+                .nickname(getNameUseCase.getNameById(UserId.parseOrNull(userId.toString())))
                 .build();
 
         MemberState state = createMemberUsecase.createMember(memberCommand);

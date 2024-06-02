@@ -2,7 +2,6 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;
@@ -18,7 +17,6 @@ import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceWithoutIdDto;
 import com.finnect.workspace.application.port.in.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

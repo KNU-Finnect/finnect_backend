@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finnect.common.ApiUtils;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.command.IssueCommand;
+import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.state.TokenPairState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -49,7 +50,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         logger.info("Successful authentication: %s".formatted(authResult));
 
         IssueCommand command = IssueCommand.builder()
-                .authentication(authResult)
+                .authentication(UserAuthentication.from(authResult))
                 .build();
 
         TokenPairState tokenPair = issueUseCase.issue(command);

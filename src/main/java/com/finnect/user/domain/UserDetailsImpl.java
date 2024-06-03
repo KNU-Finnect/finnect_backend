@@ -1,6 +1,5 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.state.RefreshTokenState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.state.UserState;
 import com.finnect.user.vo.WorkspaceAuthority;

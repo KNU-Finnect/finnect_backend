@@ -1,9 +1,9 @@
 package com.finnect.user.application.port.in;
 
 import com.finnect.user.application.port.in.command.AuthenticateCommand;
-import org.springframework.security.core.Authentication;
+import com.finnect.user.state.UserAuthenticationState;
 
 public interface AuthenticateUseCase {
 
-    Authentication authenticate(AuthenticateCommand command);
+    UserAuthenticationState authenticate(AuthenticateCommand command);
 }

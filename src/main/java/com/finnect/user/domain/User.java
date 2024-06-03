@@ -3,7 +3,10 @@ package com.finnect.user.domain;
 import com.finnect.user.state.UserState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
 
 @Builder @AllArgsConstructor
 @Getter

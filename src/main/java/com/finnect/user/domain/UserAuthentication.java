@@ -3,7 +3,10 @@ package com.finnect.user.domain;
 import com.finnect.user.state.UserAuthenticationState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 
 import java.util.Collection;

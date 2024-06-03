@@ -25,6 +25,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final IssueUseCase issueUseCase;
 
+    private final Long refreshExpirationSecond;
+
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
@@ -61,6 +63,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Cookie cookie = new Cookie("Refresh", tokenPair.getRefreshToken().toString());
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(refreshExpirationSecond.intValue());
         response.addCookie(cookie);
 
         ObjectMapper mapper = new ObjectMapper();

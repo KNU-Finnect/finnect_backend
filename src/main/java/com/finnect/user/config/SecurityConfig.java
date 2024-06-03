@@ -5,6 +5,7 @@ import com.finnect.user.adapter.in.security.AuthorizationFilter;
 import com.finnect.user.application.port.in.AuthorizeUseCase;
 import com.finnect.user.application.port.in.IssueUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -38,18 +39,23 @@ public class SecurityConfig {
     private final IssueUseCase issueUseCase;
     private final AuthorizeUseCase authorizeUseCase;
 
+    private final Long refreshExpirationSecond;
+
     @Autowired
     public SecurityConfig(
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler,
             IssueUseCase issueUseCase,
-            AuthorizeUseCase authorizeUseCase
+            AuthorizeUseCase authorizeUseCase,
+            @Value("refresh-expiration-second") Long refreshExpirationSecond
     ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
 
         this.issueUseCase = issueUseCase;
         this.authorizeUseCase = authorizeUseCase;
+
+        this.refreshExpirationSecond = refreshExpirationSecond;
     }
 
     @Bean
@@ -97,7 +103,7 @@ public class SecurityConfig {
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(issueUseCase);
+        AuthenticationFilter filter = new AuthenticationFilter(issueUseCase, refreshExpirationSecond);
         filter.setAuthenticationManager(authenticationManager(null));
         filter.setFilterProcessesUrl("/users/signin");
         return filter;

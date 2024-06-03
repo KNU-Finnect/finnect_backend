@@ -42,10 +42,6 @@ public class User implements UserState {
     }
 
 
-    public UserInfo getInfo() {
-        return UserInfo.from(this);
-    }
-
     public static User from(UserState user) {
         return User.builder()
                 .id(user.getId())

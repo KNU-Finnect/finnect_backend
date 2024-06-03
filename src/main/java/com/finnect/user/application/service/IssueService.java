@@ -1,12 +1,12 @@
 package com.finnect.user.application.service;
 
-import com.finnect.user.adapter.out.jwt.JwtProvider;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.ReissueUseCase;
 import com.finnect.user.application.port.in.UserDetailsQuery;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.in.command.ReissueWorkspaceCommand;
+import com.finnect.user.application.port.out.GenerateAccessTokenPort;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.domain.*;
@@ -28,7 +28,7 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
     private final LoadRefreshTokenPort loadRefreshTokenPort;
     private final SaveRefreshTokenPort saveRefreshTokenPort;
 
-    private final JwtProvider tokenProvider;
+    private final GenerateAccessTokenPort generateAccessTokenPort;
     private final Long refreshExpirationSecond;
 
 
@@ -37,7 +37,7 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
             UserDetailsQuery userDetailsQuery,
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
-            JwtProvider tokenProvider,
+            GenerateAccessTokenPort generateAccessTokenPort,
             @Value("${backend.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
         this.userDetailsQuery = userDetailsQuery;
@@ -45,7 +45,7 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
         this.loadRefreshTokenPort = loadRefreshTokenPort;
         this.saveRefreshTokenPort = saveRefreshTokenPort;
 
-        this.tokenProvider = tokenProvider;
+        this.generateAccessTokenPort = generateAccessTokenPort;
         this.refreshExpirationSecond = refreshExpirationSecond;
     }
 
@@ -53,7 +53,7 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
     public TokenPairState issue(IssueCommand command) {
         UserAuthentication authentication = command.getAuthentication();
 
-        AccessToken accessToken = new AccessToken(tokenProvider.generateAccessToken(authentication));
+        AccessToken accessToken = new AccessToken(generateAccessTokenPort.generateAccessToken(authentication));
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(UUID.randomUUID().toString())
                 .userId(UserId.parseOrNull(authentication.getUserId()))
@@ -81,7 +81,7 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
                 .workspaceAuthority(WorkspaceAuthority.from(user.getAuthorities()))
                 .build();
 
-        return new AccessToken(tokenProvider.generateAccessToken(authentication));
+        return new AccessToken(generateAccessTokenPort.generateAccessToken(authentication));
     }
 
     @Override
@@ -99,6 +99,6 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
 
         saveRefreshTokenPort.saveToken(refreshToken);
 
-        return new AccessToken(tokenProvider.generateAccessToken(authentication));
+        return new AccessToken(generateAccessTokenPort.generateAccessToken(authentication));
     }
 }

@@ -13,14 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService implements AuthenticateUseCase {
+public class AuthenticateService implements AuthenticateUseCase {
 
     private final UserDetailsQuery userDetailsQuery;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthenticationService(
+    public AuthenticateService(
             UserDetailsQuery userDetailsQuery,
             PasswordEncoder passwordEncoder
     ) {

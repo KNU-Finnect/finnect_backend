@@ -1,11 +1,9 @@
 package com.finnect.user.application.service;
 
 import com.finnect.user.adapter.out.jwt.JwtProvider;
-import com.finnect.user.application.port.in.AuthorizeUseCase;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.ReissueUseCase;
 import com.finnect.user.application.port.in.UserDetailsQuery;
-import com.finnect.user.application.port.in.command.AuthorizeCommand;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.in.command.ReissueWorkspaceCommand;
@@ -14,7 +12,6 @@ import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.domain.*;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
-import com.finnect.user.state.UserAuthenticationState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseCase {
+public class IssueService implements IssueUseCase, ReissueUseCase {
 
     private final UserDetailsQuery userDetailsQuery;
 
@@ -36,7 +33,7 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
 
 
     @Autowired
-    public TokenService(
+    public IssueService(
             UserDetailsQuery userDetailsQuery,
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
@@ -103,12 +100,5 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         saveRefreshTokenPort.saveToken(refreshToken);
 
         return new AccessToken(tokenProvider.generateAccessToken(authentication));
-    }
-
-    @Override
-    public UserAuthenticationState authorize(AuthorizeCommand command) {
-        AccessToken accessToken = new AccessToken(command.getToken());
-
-        return tokenProvider.obtainAuthentication(accessToken.toString());
     }
 }

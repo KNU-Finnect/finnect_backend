@@ -34,6 +34,11 @@ class PersonPersistenceAdapter implements SavePersonPort, LoadPersonPort, LoadPe
     }
 
     @Override
+    public List<PersonState> loadPeopleByWorkspaceId(Long companyId) {
+        return personRepository.findAllByWorkspaceId(companyId);
+    }
+
+    @Override
     public boolean delete(Long personId) {
         personRepository.deleteById(personId);
         return true;

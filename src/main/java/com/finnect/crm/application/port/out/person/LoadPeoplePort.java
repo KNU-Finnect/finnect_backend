@@ -7,4 +7,6 @@ import java.util.List;
 public interface LoadPeoplePort {
 
     List<PersonState> loadPeopleByCompanyId(Long companyId);
+
+    List<PersonState> loadPeopleByWorkspaceId(Long companyId);
 }

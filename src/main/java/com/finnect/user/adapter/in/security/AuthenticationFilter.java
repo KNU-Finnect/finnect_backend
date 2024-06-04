@@ -64,8 +64,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         ResponseCookie refreshCookie = ResponseCookie.from("Refresh", tokenPair.getRefreshToken().toString())
                 .path("/")
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
+                .secure(false)
+                .sameSite("Lax")
                 .maxAge(refreshExpirationSecond.intValue())
                 .build();
         response.setHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());

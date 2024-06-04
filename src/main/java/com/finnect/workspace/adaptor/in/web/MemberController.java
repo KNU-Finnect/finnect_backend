@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final CreateMemberUsecase createMemberUsecase;
-    private final FindMembersQuery findMembersQuery;
+    private final FindMembersUsecase findMembersUsecase;
     private final GetNameUseCase getNameUseCase;
     private final UpdateMemberUsecase updateMemberUsecase;
 
@@ -71,7 +71,7 @@ public class MemberController {
             throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
         }
 
-        List<MemberWithoutIdDto> members = findMembersQuery.loadMembersByWorkspace(workspaceId)
+        List<MemberWithoutIdDto> members = findMembersUsecase.loadMembersByWorkspace(workspaceId)
                 .stream()
                 .map(MemberWithoutIdDto::new)
                 .collect(Collectors.toList());

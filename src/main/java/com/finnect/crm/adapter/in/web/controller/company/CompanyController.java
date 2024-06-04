@@ -50,16 +50,27 @@ public class CompanyController {
         );
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/workspaces/companies")
     public ResponseEntity<ApiResult<LoadCompaniesResponse>> loadCompany() {
+        Long workspaceId;
+        try {
+            workspaceId = WorkspaceAuthority.from(
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            ).workspaceId().value();
+        } catch (Exception e) {
+            throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
+        }
+
         List<CompanyState> companies =
-                loadCompanyUseCase.loadCompaniesByWorkspaceId(1L);
+                loadCompanyUseCase.loadCompaniesByWorkspaceId(workspaceId);
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiUtils.success(HttpStatus.OK,
                     new LoadCompaniesResponse(
                         companies.stream()
                         .map(CompanyDto::from)
-                    .toList()
+                        .toList()
                 ))
         );
     }

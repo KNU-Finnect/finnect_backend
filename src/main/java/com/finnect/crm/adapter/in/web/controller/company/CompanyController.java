@@ -29,7 +29,7 @@ public class CompanyController {
     private final CreateCompanyUsecase createCompanyUsecase;
     private final LoadCompanyUseCase loadCompanyUseCase;
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/companies")
     public ResponseEntity<ApiUtils.ApiResult<CreateCompanyResponse>> createCompany(@RequestBody CreateCompanyRequest request) {
         Long workspaceId;
@@ -50,7 +50,7 @@ public class CompanyController {
         );
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/companies")
     public ResponseEntity<ApiResult<LoadCompaniesResponse>> loadCompany() {
         Long workspaceId;
@@ -69,8 +69,8 @@ public class CompanyController {
                 ApiUtils.success(HttpStatus.OK,
                     new LoadCompaniesResponse(
                         companies.stream()
-                        .map(CompanyDto::from)
-                        .toList()
+                            .map(CompanyDto::from)
+                            .toList()
                 ))
         );
     }

@@ -9,9 +9,11 @@ import com.finnect.crm.adapter.in.web.res.person.PersonDto;
 import com.finnect.crm.adapter.in.web.res.person.UpdatePersonResponse;
 import com.finnect.crm.application.port.in.person.*;
 import com.finnect.crm.domain.person.PersonState;
+import com.finnect.user.vo.WorkspaceAuthority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,6 +64,25 @@ public class PersonController {
     @GetMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findPeople(@RequestParam("companyId") Long companyId) {
         List<PersonState> people = findPeopleUsecase.findPeopleByCompany(companyId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ApiUtils.success(HttpStatus.OK, FindPeopleResponse.of(
+                        people.stream().map(PersonDto::from).collect(Collectors.toList()))
+                ));
+    }
+
+    @GetMapping("/workspaces/people")
+    public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findAllPeople() {
+        Long workspaceId;
+        try {
+            workspaceId = WorkspaceAuthority.from(
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            ).workspaceId().value();
+        } catch (Exception e) {
+            throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
+        }
+
+        List<PersonState> people = findPeopleUsecase.findPeopleByWorkspace(workspaceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiUtils.success(HttpStatus.OK, FindPeopleResponse.of(

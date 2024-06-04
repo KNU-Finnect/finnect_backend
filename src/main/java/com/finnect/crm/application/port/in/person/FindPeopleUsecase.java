@@ -7,4 +7,7 @@ import java.util.List;
 public interface FindPeopleUsecase {
 
     List<PersonState> findPeopleByCompany(Long companyId);
+
+
+    List<PersonState> findPeopleByWorkspace(Long workspaceId);
 }

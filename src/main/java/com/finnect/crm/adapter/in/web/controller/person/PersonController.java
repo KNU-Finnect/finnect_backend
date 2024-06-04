@@ -71,7 +71,7 @@ public class PersonController {
                 ));
     }
 
-    @GetMapping("/workspaces/people")
+    @GetMapping("/workspaces/peoples/all")
     public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findAllPeople() {
         Long workspaceId;
         try {

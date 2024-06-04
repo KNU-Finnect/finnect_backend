@@ -67,7 +67,7 @@ public class CompanyController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiUtils.success(HttpStatus.OK,
-                    new LoadCompaniesResponse(
+                    LoadCompaniesResponse.of(
                         companies.stream()
                             .map(CompanyDto::from)
                             .toList()

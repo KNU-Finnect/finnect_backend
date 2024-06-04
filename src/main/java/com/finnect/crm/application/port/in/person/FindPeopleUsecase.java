@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FindPeopleUsecase {
 
-    List<PersonState> findPeople(Long companyId);
+    List<PersonState> findPeopleByCompany(Long companyId);
 }

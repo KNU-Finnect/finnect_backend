@@ -18,7 +18,7 @@ class FindPersonService implements FindPeopleUsecase {
 
 
     @Override
-    public List<PersonState> findPeople(Long companyId) {
+    public List<PersonState> findPeopleByCompany(Long companyId) {
         //TODO: Company가 존재하는지 검사
 
         return loadPeoplePort.loadPeopleByCompanyId(companyId);

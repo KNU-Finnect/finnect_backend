@@ -61,7 +61,7 @@ public class PersonController {
 
     @GetMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findPeople(@RequestParam("companyId") Long companyId) {
-        List<PersonState> people = findPeopleUsecase.findPeople(companyId);
+        List<PersonState> people = findPeopleUsecase.findPeopleByCompany(companyId);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiUtils.success(HttpStatus.OK, FindPeopleResponse.of(

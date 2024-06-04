@@ -47,7 +47,7 @@ public class SecurityConfig {
             AccessDeniedHandler accessDeniedHandler,
             IssueUseCase issueUseCase,
             AuthorizeUseCase authorizeUseCase,
-            @Value("refresh-expiration-second") Long refreshExpirationSecond
+            @Value("backend.refresh-expiration-second") Long refreshExpirationSecond
     ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;

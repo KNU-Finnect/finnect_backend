@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -56,21 +57,24 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         TokenPairState tokenPair = issueUseCase.issue(command);
 
-        response.setHeader(
-                HttpHeaders.AUTHORIZATION,
-                tokenPair.getAccessToken().toBearerString()
-        );
+        // Access Token
+        response.setHeader(HttpHeaders.AUTHORIZATION, tokenPair.getAccessToken().toBearerString());
 
-        Cookie cookie = new Cookie("Refresh", tokenPair.getRefreshToken().toString());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(refreshExpirationSecond.intValue());
-        response.addCookie(cookie);
+        // Refresh Token
+        ResponseCookie refreshCookie = ResponseCookie.from("Refresh", tokenPair.getRefreshToken().toString())
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(refreshExpirationSecond.intValue())
+                .build();
+        response.setHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
+        // API Response
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(ApiUtils.success(HttpStatus.OK, null));
 
+        // Request Body
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

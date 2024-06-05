@@ -8,7 +8,6 @@ import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.state.TokenPairState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -58,27 +57,31 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         TokenPairState tokenPair = issueUseCase.issue(command);
 
-        // Access Token
+        // Access Token 헤더
         response.setHeader(HttpHeaders.AUTHORIZATION, tokenPair.getAccessToken().toBearerString());
 
-        // Refresh Token
-        ResponseCookie refreshCookie = ResponseCookie.from("Refresh", tokenPair.getRefreshToken().toString())
+        // Refresh Token 쿠키
+        ResponseCookie cookie = ResponseCookie.from("Refresh", tokenPair.getRefreshToken().toString())
                 .path("/")
                 .httpOnly(false) // 본래 true여야 하지만 보안 정책이 너무 까다로워서 이 프로젝트에서는 false로 사용한다.
                 .secure(false) // 본래 true여야 하지만 보안 정책이 너무 까다로워서 이 프로젝트에서는 false로 사용한다.
                 .sameSite("Lax")
                 .maxAge(refreshExpirationSecond.intValue())
                 .build();
-        response.setHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        // API Response
+        // Response Body
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(ApiUtils.success(HttpStatus.OK, null));
+        String responseBody = mapper.writeValueAsString(
+                ApiUtils.success(
+                        HttpStatus.OK,
+                        tokenPair.getRefreshToken().toString()
+                )
+        );
 
-        // Request Body
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
+        response.getWriter().write(responseBody);
     }
 }

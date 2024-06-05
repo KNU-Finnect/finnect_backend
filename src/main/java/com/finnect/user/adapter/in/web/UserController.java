@@ -8,6 +8,7 @@ import com.finnect.user.application.port.in.command.*;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
+import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -97,6 +98,22 @@ public class UserController {
                 .body(ApiUtils.success(HttpStatus.OK, null));
     }
 
+    @PermitAll
+    @PostMapping("/reissue2")
+    public ResponseEntity<ApiResult<Object>> reissue2(@RequestBody Reissue2Request request) {
+        log.info("/users/reissue2");
+
+        ReissueCommand command = ReissueCommand.builder()
+                .refreshToken(request.refreshToken())
+                .build();
+
+        AccessTokenState accessToken = reissueUseCase.reissue(command);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
+                .body(ApiUtils.success(HttpStatus.OK, null));
+    }
+
     @PreAuthorize("permitAll()")
     @PostMapping("/reissue-workspace")
     public ResponseEntity<ApiResult<Object>> reissueWorkspace(
@@ -107,6 +124,25 @@ public class UserController {
 
         ReissueWorkspaceCommand command = ReissueWorkspaceCommand.builder()
                 .refreshToken(refreshToken)
+                .workspaceId(new WorkspaceId(request.workspaceId()))
+                .build();
+
+        AccessTokenState accessToken = reissueUseCase.reissueWorkspace(command);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, accessToken.toBearerString())
+                .body(ApiUtils.success(HttpStatus.OK, null));
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/reissue2-workspace")
+    public ResponseEntity<ApiResult<Object>> reissue2Workspace(
+            @RequestBody Reissue2WorkspaceRequest request
+    ) {
+        log.info("/users/reissue2-workspace: {}", request);
+
+        ReissueWorkspaceCommand command = ReissueWorkspaceCommand.builder()
+                .refreshToken(request.refreshToken())
                 .workspaceId(new WorkspaceId(request.workspaceId()))
                 .build();
 

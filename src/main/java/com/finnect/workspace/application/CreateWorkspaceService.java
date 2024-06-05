@@ -1,5 +1,6 @@
 package com.finnect.workspace.application;
 
+import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.GetNameUseCase;
@@ -30,6 +31,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
     private final CheckDefaultWorkspaceUseCase checkDefaultWorkspaceUseCase;
     private final GetNameUseCase getNameUseCase;
     private final CreateMemberUsecase createMemberUsecase;
+    private final CreateNewColumnUseCase createNewColumnUseCase;
 
     @Override
     public WorkspaceState createWorkspace(CreateWorkspaceCommand cmd) {
@@ -43,6 +45,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
                     userId,
                     new WorkspaceId(savedState.getWorkspaceId()));
 
+        // 멤버 생성
         String name = getNameUseCase.getNameById(userId);
         createMemberUsecase.createMember(
                 CreateMemberCommand.builder()
@@ -51,6 +54,9 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
                         .nickname(name)
                         .build()
         );
+
+        // default column 생성
+        createNewColumnUseCase.createDefaultColumn(savedState.getWorkspaceId());
 
         return savedState;
     }

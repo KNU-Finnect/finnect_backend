@@ -45,6 +45,7 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
                 .columnName("생성일")
                 .columnIndex(1.0)
                 .dType(DataType.DEAL)
+                .isHided(false)
                 .build()
         );
         defaultColumns.add(DataColumn.builder()
@@ -53,6 +54,7 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
                 .columnName("거래액")
                 .columnIndex(5.0)
                 .dType(DataType.DEAL)
+                .isHided(false)
                 .build()
         );
         defaultColumns.add(DataColumn.builder()
@@ -61,6 +63,7 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
                 .columnName("Category")
                 .columnIndex(10.0)
                 .dType(DataType.DEAL)
+                .isHided(false)
                 .build()
         );
         return defaultColumns;
@@ -75,6 +78,7 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
                 .columnName("Category")
                 .columnIndex(1.0)
                 .dType(DataType.COMPANY)
+                .isHided(false)
                 .build()
         );
         defaultColumns.add(DataColumn.builder()
@@ -83,6 +87,7 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
                 .columnName("설명")
                 .columnIndex(5.0)
                 .dType(DataType.COMPANY)
+                .isHided(false)
                 .build()
         );
         return defaultColumns;

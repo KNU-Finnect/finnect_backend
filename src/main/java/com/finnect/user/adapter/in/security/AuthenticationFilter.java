@@ -63,8 +63,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         // Refresh Token
         ResponseCookie refreshCookie = ResponseCookie.from("Refresh", tokenPair.getRefreshToken().toString())
                 .path("/")
-                .httpOnly(true)
-                .secure(false)
+                .httpOnly(false) // 본래 true여야 하지만 보안 정책이 너무 까다로워서 이 프로젝트에서는 false로 사용한다.
+                .secure(false) // 본래 true여야 하지만 보안 정책이 너무 까다로워서 이 프로젝트에서는 false로 사용한다.
                 .sameSite("Lax")
                 .maxAge(refreshExpirationSecond.intValue())
                 .build();

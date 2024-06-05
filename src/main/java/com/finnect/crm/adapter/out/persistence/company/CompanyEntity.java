@@ -34,9 +34,4 @@ class CompanyEntity implements CompanyState {
                 .companyName(state.getCompanyName())
                 .build();
     }
-
-    @Override
-    public Long getDataRowId() {
-        return this.dataRowId;
-    }
 }

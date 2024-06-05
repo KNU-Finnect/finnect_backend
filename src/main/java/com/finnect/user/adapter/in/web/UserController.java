@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final SignupUseCase signupUseCase;
+    private final SignoutUseCase signoutUseCase;
     private final ReissueUseCase reissueUseCase;
     private final SendEmailCodeUseCase sendEmailCodeUseCase;
     private final FindUsernameUseCase findUsernameUseCase;
@@ -32,6 +33,7 @@ public class UserController {
     @Autowired
     public UserController(
             SignupUseCase signupUseCase,
+            SignoutUseCase signoutUseCase,
             ReissueUseCase reissueUseCase,
             SendEmailCodeUseCase sendEmailCodeUseCase,
             FindUsernameUseCase findUsernameUseCase,
@@ -39,6 +41,7 @@ public class UserController {
             ChangePasswordUseCase changePasswordUseCase
     ) {
         this.signupUseCase = signupUseCase;
+        this.signoutUseCase = signoutUseCase;
         this.reissueUseCase = reissueUseCase;
         this.sendEmailCodeUseCase = sendEmailCodeUseCase;
         this.findUsernameUseCase = findUsernameUseCase;
@@ -62,6 +65,20 @@ public class UserController {
         signupUseCase.signup(command);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, null));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/signout")
+    public ResponseEntity<ApiResult<Object>> signout(@CookieValue("Refresh") String refreshToken) {
+        log.info("/users/signout");
+
+        SignoutCommand command = SignoutCommand.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        signoutUseCase.signout(command);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, null));
     }
 
     @PreAuthorize("permitAll()")
@@ -111,10 +128,7 @@ public class UserController {
 
         sendEmailCodeUseCase.sendEmailCode(command);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.OK,
-                null
-        ));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, null));
     }
 
     @PreAuthorize("permitAll()")
@@ -129,10 +143,7 @@ public class UserController {
 
         signupUseCase.verifyEmailCode(command);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.OK,
-                null
-        ));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, null));
     }
 
     @PreAuthorize("permitAll()")
@@ -153,10 +164,7 @@ public class UserController {
 
         String username = findUsernameUseCase.findUsername(command2);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.OK,
-                username
-        ));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, username));
     }
 
     @PreAuthorize("permitAll()")
@@ -177,10 +185,7 @@ public class UserController {
 
         String password = resetPasswordUseCase.resetPassword(command2);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.OK,
-                password
-        ));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, password));
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -200,9 +205,6 @@ public class UserController {
 
         changePasswordUseCase.changePassword(command);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.OK,
-                null
-        ));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, null));
     }
 }

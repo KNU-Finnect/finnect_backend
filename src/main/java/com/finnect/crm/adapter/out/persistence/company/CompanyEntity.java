@@ -5,14 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "company")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE) @Builder
 @Getter
 class CompanyEntity implements CompanyState {
 
@@ -29,17 +26,12 @@ class CompanyEntity implements CompanyState {
     private String companyName;
 
     public static CompanyEntity from(CompanyState state) {
-        return new CompanyEntity(
-                state.getWorkspaceId(),
-                state.getWorkspaceId(),
-                state.getDataRowId(),
-                state.getDomain(),
-                state.getCompanyName()
-        );
-    }
-
-    @Override
-    public Long getDataRowId() {
-        return this.dataRowId;
+        return CompanyEntity.builder()
+                .companyId(state.getCompanyId())
+                .workspaceId(state.getWorkspaceId())
+                .dataRowId(state.getDataRowId())
+                .domain(state.getDomain())
+                .companyName(state.getCompanyName())
+                .build();
     }
 }

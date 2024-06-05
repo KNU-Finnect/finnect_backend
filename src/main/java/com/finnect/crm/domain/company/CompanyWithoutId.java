@@ -12,14 +12,10 @@ public class CompanyWithoutId implements CompanyState {
     private final Long workspaceId;
     private final String domain;
     private final String companyName;
+    private final Long dataRowId;
 
     @Override
     public Long getCompanyId() {
-        return null;
-    }
-
-    @Override
-    public Long getDataRowId() {
         return null;
     }
 }

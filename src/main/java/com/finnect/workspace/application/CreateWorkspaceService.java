@@ -55,6 +55,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
                         .build()
         );
 
+        // default column 생성
         createNewColumnUseCase.createDefaultColumn(savedState.getWorkspaceId());
 
         return savedState;

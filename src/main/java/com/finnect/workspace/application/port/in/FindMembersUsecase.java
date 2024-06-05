@@ -4,7 +4,7 @@ import com.finnect.workspace.domain.state.MemberState;
 
 import java.util.List;
 
-public interface FindMembersQuery {
+public interface FindMembersUsecase {
 
     List<MemberState> loadMembersByWorkspace(Long workspaceID);
 }

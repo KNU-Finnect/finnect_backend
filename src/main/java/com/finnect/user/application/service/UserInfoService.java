@@ -48,7 +48,8 @@ public class UserInfoService implements ChangePasswordUseCase, CheckDefaultWorks
 
         updateUserPort.updateUser(user);
     }
-  
+
+    @Override
     public boolean checkDefaultWorkspace(UserId userId) {
         User user = User.from(loadUserPort.loadUser(userId));
 

@@ -1,7 +1,9 @@
-package com.finnect.user.application.jwt;
+package com.finnect.user.adapter.out.jwt;
 
-import com.finnect.user.vo.WorkspaceAuthority;
-import com.finnect.user.vo.WorkspaceId;
+import com.finnect.user.adapter.out.jwt.entity.JwtAuthentication;
+import com.finnect.user.application.port.out.GenerateAccessTokenPort;
+import com.finnect.user.application.port.out.ObtainAuthenticationPort;
+import com.finnect.user.state.UserAuthenticationState;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtParser;
@@ -11,17 +13,17 @@ import io.jsonwebtoken.security.Keys;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
-public class JwtProvider {
+public class JwtProvider implements ObtainAuthenticationPort, GenerateAccessTokenPort {
 
     private final Long expirationSecond;
 
@@ -42,7 +44,7 @@ public class JwtProvider {
                 .build();
     }
 
-    public Boolean validateToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Claims claims = parser.parseClaimsJws(token).getBody();
             return claims.getExpiration().after(new Date());
@@ -51,30 +53,22 @@ public class JwtProvider {
         }
     }
 
-    public Authentication obtainAuthentication(String token) {
+    public UserAuthenticationState obtainAuthentication(String token) {
         Claims claims = parser.parseClaimsJws(token).getBody();
-        String userId = String.valueOf(claims.get("uid"));
-        String username = claims.getSubject();
-        WorkspaceId workspaceId = WorkspaceId.parseOrNull(String.valueOf(claims.get("wid")));
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                username,
-                "",
-                Collections.singleton(new WorkspaceAuthority(workspaceId))
-        );
-        authenticationToken.setDetails(userId);
-        return authenticationToken;
+        return JwtAuthentication.builder()
+                .userId(String.valueOf(claims.get("uid")))
+                .username(claims.getSubject())
+                .authorities(Collections.singleton("wid=%s".formatted(String.valueOf(claims.get("wid")))))
+                .build();
     }
 
-    public String generateAccessToken(@NonNull Authentication authentication) {
+    public String generateAccessToken(@NonNull UserAuthenticationState authentication) {
         Date now = new Date();
-        List<String> authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
 
         Map<String, String> claims = new HashMap<>();
-        claims.put("uid", String.valueOf(authentication.getDetails()));
-        for (String authority: authorities) {
+        claims.put("uid", String.valueOf(authentication.getUserId()));
+        for (String authority: authentication.getAuthorities()) {
             String[] s = authority.split("=");
             claims.put(s[0], s[1]);
         }
@@ -82,7 +76,7 @@ public class JwtProvider {
         String token = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setClaims(claims)
-                .setSubject(authentication.getName())
+                .setSubject(authentication.getUsername())
                 .setIssuer("finnect")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expirationSecond * 1000))

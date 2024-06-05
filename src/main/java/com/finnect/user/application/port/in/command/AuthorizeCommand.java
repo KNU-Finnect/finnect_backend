@@ -1,14 +1,22 @@
 package com.finnect.user.application.port.in.command;
 
+import com.finnect.common.SelfValidating;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@Builder @RequiredArgsConstructor
-@Getter
-public class AuthorizeCommand {
+@Builder
+public class AuthorizeCommand extends SelfValidating<AuthorizeCommand> {
 
-    @NonNull
-    private final String token;
+    private final String bearerToken;
+
+    public AuthorizeCommand(
+            String bearerToken
+    ) {
+        this.bearerToken = "%s".formatted(bearerToken);
+
+        validateSelf();
+    }
+
+    public String getToken() {
+        return bearerToken.replaceFirst("Bearer ", "");
+    }
 }

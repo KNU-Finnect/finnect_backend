@@ -1,51 +1,43 @@
 package com.finnect.user.application.service;
 
-import com.finnect.user.application.jwt.JwtProvider;
-import com.finnect.user.application.port.in.AuthorizeUseCase;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.ReissueUseCase;
 import com.finnect.user.application.port.in.UserDetailsQuery;
-import com.finnect.user.application.port.in.command.AuthorizeCommand;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.in.command.ReissueWorkspaceCommand;
+import com.finnect.user.application.port.out.GenerateAccessTokenPort;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
-import com.finnect.user.domain.AccessToken;
-import com.finnect.user.domain.RefreshToken;
-import com.finnect.user.domain.TokenPair;
-import com.finnect.user.domain.UserDetailsImpl;
+import com.finnect.user.domain.*;
 import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseCase {
+public class IssueService implements IssueUseCase, ReissueUseCase {
 
     private final UserDetailsQuery userDetailsQuery;
 
     private final LoadRefreshTokenPort loadRefreshTokenPort;
     private final SaveRefreshTokenPort saveRefreshTokenPort;
 
-    private final JwtProvider tokenProvider;
+    private final GenerateAccessTokenPort generateAccessTokenPort;
     private final Long refreshExpirationSecond;
 
 
     @Autowired
-    public TokenService(
+    public IssueService(
             UserDetailsQuery userDetailsQuery,
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
-            JwtProvider tokenProvider,
+            GenerateAccessTokenPort generateAccessTokenPort,
             @Value("${backend.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
         this.userDetailsQuery = userDetailsQuery;
@@ -53,19 +45,19 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
         this.loadRefreshTokenPort = loadRefreshTokenPort;
         this.saveRefreshTokenPort = saveRefreshTokenPort;
 
-        this.tokenProvider = tokenProvider;
+        this.generateAccessTokenPort = generateAccessTokenPort;
         this.refreshExpirationSecond = refreshExpirationSecond;
     }
 
     @Override
     public TokenPairState issue(IssueCommand command) {
-        Authentication authentication = command.getAuthentication();
+        UserAuthentication authentication = command.getAuthentication();
 
-        AccessToken accessToken = new AccessToken(tokenProvider.generateAccessToken(authentication));
+        AccessToken accessToken = new AccessToken(generateAccessTokenPort.generateAccessToken(authentication));
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(UUID.randomUUID().toString())
-                .userId(UserId.parseOrNull(authentication.getDetails().toString()))
-                .workspaceId(WorkspaceAuthority.from(authentication.getAuthorities()).workspaceId())
+                .userId(UserId.parseOrNull(authentication.getUserId()))
+                .workspaceId(WorkspaceAuthority.of(authentication.getAuthorities()).workspaceId())
                 .expirationSecond(refreshExpirationSecond)
                 .build();
 
@@ -83,14 +75,13 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
 
         UserDetailsImpl user = (UserDetailsImpl) userDetailsQuery.loadUserByRefreshToken(refreshToken);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                user.getUsername(),
-                "",
-                user.getAuthorities()
-        );
-        authenticationToken.setDetails(user.getId());
+        UserAuthentication authentication = UserAuthentication.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .workspaceAuthority(WorkspaceAuthority.from(user.getAuthorities()))
+                .build();
 
-        return new AccessToken(tokenProvider.generateAccessToken(authenticationToken));
+        return new AccessToken(generateAccessTokenPort.generateAccessToken(authentication));
     }
 
     @Override
@@ -100,27 +91,14 @@ public class TokenService implements IssueUseCase, ReissueUseCase, AuthorizeUseC
 
         UserDetailsImpl user = (UserDetailsImpl) userDetailsQuery.loadUserByRefreshToken(refreshToken);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                user.getUsername(),
-                "",
-                user.getAuthorities()
-        );
-        authenticationToken.setDetails(user.getId());
+        UserAuthentication authentication = UserAuthentication.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .workspaceAuthority(WorkspaceAuthority.from(user.getAuthorities()))
+                .build();
 
         saveRefreshTokenPort.saveToken(refreshToken);
 
-        return new AccessToken(tokenProvider.generateAccessToken(authenticationToken));
-    }
-
-    @Override
-    public void authorize(AuthorizeCommand command) {
-        AccessToken accessToken = new AccessToken(command.getToken());
-
-        if (tokenProvider.validateToken(accessToken.toString())) {
-            Authentication authentication = tokenProvider.obtainAuthentication(accessToken.toString());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } else {
-            SecurityContextHolder.clearContext();
-        }
+        return new AccessToken(generateAccessTokenPort.generateAccessToken(authentication));
     }
 }

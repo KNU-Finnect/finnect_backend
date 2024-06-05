@@ -1,12 +1,15 @@
 package com.finnect.user.application.port.in.command;
 
-import lombok.*;
-import org.springframework.security.core.Authentication;
+import com.finnect.user.domain.UserAuthentication;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Builder @RequiredArgsConstructor
 @Getter
 public class IssueCommand {
 
     @NonNull
-    private final Authentication authentication;
+    private final UserAuthentication authentication;
 }

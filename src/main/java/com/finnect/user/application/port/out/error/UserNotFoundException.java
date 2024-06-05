@@ -1,8 +1,9 @@
-package com.finnect.user.application.port.out.exception;
+package com.finnect.user.application.port.out.error;
 
+import com.finnect.common.error.NotFoundException;
 import com.finnect.user.vo.UserId;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends NotFoundException {
 
     public UserNotFoundException(UserId userId) {
         super("User(userId = %s) is not found".formatted(userId));

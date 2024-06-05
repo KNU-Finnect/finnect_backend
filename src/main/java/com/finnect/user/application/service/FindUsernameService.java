@@ -3,7 +3,7 @@ package com.finnect.user.application.service;
 import com.finnect.user.application.port.in.FindUsernameUseCase;
 import com.finnect.user.application.port.in.command.FindUsernameCommand;
 import com.finnect.user.application.port.in.command.VerifyEmailCodeCommand;
-import com.finnect.user.application.port.in.exception.EmailCodeNotVerifiedException;
+import com.finnect.user.application.port.in.error.EmailCodeNotVerifiedException;
 import com.finnect.user.application.port.out.LoadEmailCodePort;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.SaveEmailCodePort;

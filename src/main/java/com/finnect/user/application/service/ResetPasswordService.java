@@ -4,7 +4,7 @@ import com.finnect.user.application.password.PasswordGenerator;
 import com.finnect.user.application.port.in.ResetPasswordUseCase;
 import com.finnect.user.application.port.in.command.ResetPasswordCommand;
 import com.finnect.user.application.port.in.command.VerifyEmailCodeCommand;
-import com.finnect.user.application.port.in.exception.EmailCodeNotVerifiedException;
+import com.finnect.user.application.port.in.error.EmailCodeNotVerifiedException;
 import com.finnect.user.application.port.out.LoadEmailCodePort;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.SaveEmailCodePort;

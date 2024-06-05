@@ -3,7 +3,7 @@ package com.finnect.user.application.service;
 import com.finnect.user.application.port.in.GetNameUseCase;
 import com.finnect.user.application.port.in.UserDetailsQuery;
 import com.finnect.user.application.port.out.LoadUserPort;
-import com.finnect.user.application.port.out.exception.UserNotFoundException;
+import com.finnect.user.application.port.out.error.UserNotFoundException;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.state.RefreshTokenState;

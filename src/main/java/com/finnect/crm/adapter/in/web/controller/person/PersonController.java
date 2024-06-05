@@ -3,12 +3,10 @@ package com.finnect.crm.adapter.in.web.controller.person;
 import com.finnect.common.ApiUtils;
 import com.finnect.crm.adapter.in.web.req.person.CreatePersonRequest;
 import com.finnect.crm.adapter.in.web.req.person.UpdatePersonRequest;
-import com.finnect.crm.adapter.in.web.res.person.CreatePersonResponse;
-import com.finnect.crm.adapter.in.web.res.person.FindPeopleResponse;
-import com.finnect.crm.adapter.in.web.res.person.PersonDto;
-import com.finnect.crm.adapter.in.web.res.person.UpdatePersonResponse;
+import com.finnect.crm.adapter.in.web.res.person.*;
 import com.finnect.crm.application.port.in.person.*;
 import com.finnect.crm.domain.person.PersonState;
+import com.finnect.crm.domain.person.PersonWithCompanyState;
 import com.finnect.user.vo.WorkspaceAuthority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -71,8 +69,8 @@ public class PersonController {
                 ));
     }
 
-    @GetMapping("/workspaces/peoples/all")
-    public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findAllPeople() {
+    @GetMapping("/workspaces/people/all")
+    public ResponseEntity<ApiUtils.ApiResult<FindAllPeopleResponse>> findAllPeople() {
         Long workspaceId;
         try {
             workspaceId = WorkspaceAuthority.from(
@@ -82,11 +80,11 @@ public class PersonController {
             throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
         }
 
-        List<PersonState> people = findPeopleUsecase.findPeopleByWorkspace(workspaceId);
+        List<PersonWithCompanyState> people = findPeopleUsecase.findPeopleByWorkspace(workspaceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                ApiUtils.success(HttpStatus.OK, FindPeopleResponse.of(
-                        people.stream().map(PersonDto::from).collect(Collectors.toList()))
+                ApiUtils.success(HttpStatus.OK, FindAllPeopleResponse.of(
+                        people.stream().map(PersonWithCompanyDto::from).collect(Collectors.toList()))
                 ));
     }
 

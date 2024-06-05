@@ -49,7 +49,7 @@ public class UserController {
         this.changePasswordUseCase = changePasswordUseCase;
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/signup")
     public ResponseEntity<ApiResult<Object>> signup(@RequestBody SignupRequest request) {
         log.info("/users/signup: {}", request);

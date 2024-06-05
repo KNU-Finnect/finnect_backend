@@ -2,6 +2,7 @@ package com.finnect.user.adapter.out.cache;
 
 import com.finnect.user.adapter.out.cache.entity.RefreshTokenEntity;
 import com.finnect.user.adapter.out.cache.entity.RefreshTokenRepository;
+import com.finnect.user.application.port.out.DeleteRefreshTokenPort;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.application.port.out.exception.RefreshTokenNotFoundException;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RefreshTokenCacheAdapter implements LoadRefreshTokenPort, SaveRefreshTokenPort {
+public class RefreshTokenCacheAdapter implements LoadRefreshTokenPort, SaveRefreshTokenPort, DeleteRefreshTokenPort {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -30,5 +31,10 @@ public class RefreshTokenCacheAdapter implements LoadRefreshTokenPort, SaveRefre
         RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.from(refreshTokenState);
 
         refreshTokenRepository.save(refreshTokenEntity);
+    }
+
+    @Override
+    public void deleteRefreshToken(String refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
     }
 }

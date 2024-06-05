@@ -50,6 +50,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<ApiResult<Object>> signup(@RequestBody SignupRequest request) {
         log.info("/users/signup: {}", request);
+
         SignupCommand command = SignupCommand.builder()
                 .username(request.username())
                 .password(request.password())
@@ -60,10 +61,7 @@ public class UserController {
 
         signupUseCase.signup(command);
 
-        return ResponseEntity.ok(ApiUtils.success(
-                HttpStatus.CREATED,
-                null
-        ));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, null));
     }
 
     @PreAuthorize("permitAll()")

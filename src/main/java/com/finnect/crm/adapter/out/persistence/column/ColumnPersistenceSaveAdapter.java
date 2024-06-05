@@ -3,6 +3,7 @@ package com.finnect.crm.adapter.out.persistence.column;
 import com.finnect.crm.application.port.out.column.SaveDataColumnPort;
 import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.state.DataColumnState;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,5 +19,13 @@ class ColumnPersistenceSaveAdapter implements SaveDataColumnPort {
         DataColumnEntity dataColumnEntity = DataColumnEntity.toEntity(column);
         dataColumnRepository.save(dataColumnEntity);
         return dataColumnEntity.toDomain();
+    }
+
+    @Override
+    public void saveColumns(List<DataColumnState> columns) {
+        List<DataColumnEntity> dataColumnEntities = columns.stream()
+                                                    .map(DataColumnEntity::toEntity)
+                                                    .toList();
+        dataColumnRepository.saveAll(dataColumnEntities);
     }
 }

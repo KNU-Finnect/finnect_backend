@@ -29,9 +29,9 @@ jobs:
           mkdir -p ./src/main/resources
           echo "${{ secrets.ENV }}" > ./src/main/resources/application.properties
 
-      - name: Decode keystore file
+      - name: Create key file
         run: |
-          echo ${{ secrets.KEYSTORE_BASE64 }} | base64 --decode > ${{ github.workspace }}/keystore.p12
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./src/main/resources/keystore.p12
 
       - name: Clean project
         run: ./gradlew clean

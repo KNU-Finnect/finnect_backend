@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Getter
 @Slf4j
-@Transactional
 public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 
     private final CreateWorkspacePort createWorkspacePort;
@@ -48,6 +47,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
                     new WorkspaceId(savedState.getWorkspaceId()));
 
         // 멤버 생성
+        log.info("Step1");
         String name = getNameUseCase.getNameById(userId);
         createMemberUsecase.createMember(
                 CreateMemberCommand.builder()
@@ -56,11 +56,16 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
                         .nickname(name)
                         .build()
         );
+
+        log.info("Step2");
+
+        log.info(savedState.getWorkspaceId().toString());
         //defaultView 생성
         createViewUseCase.createDefaultView(savedState.getWorkspaceId());
 
-        // default column 생성
-        createNewColumnUseCase.createDefaultColumn(savedState.getWorkspaceId());
+        log.info("Step3");
+//        // default column 생성
+//        createNewColumnUseCase.createDefaultColumn(savedState.getWorkspaceId());
 
         return savedState;
     }

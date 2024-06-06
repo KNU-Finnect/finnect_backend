@@ -37,9 +37,11 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
 
     @Override
     public List<ViewState> saveDefaultViews(List<ViewState> views) {
+
         List<ViewEntity> defaultViews = views.stream()
                 .map(ViewEntity::toEntity)
             .toList();
+        log.info("Generated");
         viewRepository.saveAll(defaultViews);
         return new ArrayList<>(defaultViews);
     }

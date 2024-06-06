@@ -28,7 +28,7 @@ class WorkspacePersistenceAdapter implements
                 .build();
 
         WorkspaceState savedState = workspaceRepository.save(workspaceEntity);
-
+        System.out.println("savedState = " + savedState);
         return savedState;
     }
 

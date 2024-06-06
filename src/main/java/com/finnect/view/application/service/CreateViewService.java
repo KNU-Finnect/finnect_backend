@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -23,8 +24,12 @@ public class CreateViewService implements CreateViewUseCase {
     }
 
     @Override
+    @Transactional
     public void createDefaultView(Long workspaceId) {
         List<View> defaultView = new ArrayList<>();
+
+        log.info(String.valueOf(workspaceId));
+
         defaultView.add(
                 View.builder()
                         .workspaceId(workspaceId)
@@ -32,6 +37,7 @@ public class CreateViewService implements CreateViewUseCase {
                         .isMain(true)
                         .dType(DataType.COMPANY)
                 .build());
+
         defaultView.add(
                 View.builder()
                         .workspaceId(workspaceId)
@@ -40,6 +46,9 @@ public class CreateViewService implements CreateViewUseCase {
                         .dType(DataType.DEAL)
                 .build()
         );
+
+        log.info("default View Generated");
+        log.info(defaultView.toString());
         saveViewPort.saveDefaultViews(new ArrayList<>(defaultView));
     }
 }

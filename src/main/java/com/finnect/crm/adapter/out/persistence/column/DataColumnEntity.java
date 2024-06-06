@@ -11,22 +11,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Builder;
+import lombok.Getter;
 
 @Entity(name = "data_column")
 public class DataColumnEntity implements DataColumnState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long columnId;
 
+    @Getter
     private Long workspaceId;
 
+    @Getter
     private String columnName;
+
     @Enumerated(EnumType.STRING)
+    @Getter
     private DataType dType;
 
     @Enumerated(EnumType.STRING)
+    @Getter
     private ColumnType columnType;
+    @Getter
     private Double columnIndex;
     private Boolean isHided;
 
@@ -45,42 +53,9 @@ public class DataColumnEntity implements DataColumnState {
         this.isHided = isHided;
     }
 
-
-
-
-    @Override
-    public Long getColumnId() {
-        return this.columnId;
-    }
-
-    @Override
-    public Long getWorkspaceId() {
-        return this.workspaceId;
-    }
-
-    @Override
-    public String getColumnName() {
-        return null;
-    }
-
-    @Override
-    public ColumnType getColumnType() {
-        return null;
-    }
-
-    @Override
-    public Double getColumnIndex() {
-        return null;
-    }
-
     @Override
     public Boolean isHided() {
-        return null;
-    }
-
-    @Override
-    public DataType getDType() {
-        return null;
+        return this.isHided;
     }
 
     public static DataColumnEntity toEntity(DataColumnState columnState){

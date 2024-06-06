@@ -4,9 +4,11 @@ import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.crm.application.port.in.cell.LoadDealWithCellUseCase;
 import com.finnect.crm.domain.deal.DealCell;
+import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.CreateViewRequest;
 import com.finnect.view.adapter.in.web.req.FilterRequest;
 import com.finnect.view.adapter.in.web.res.CreateViewResponse;
+import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;
 import com.finnect.view.adapter.in.web.res.ViewInfoResponse;
 import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.application.port.in.LoadViewUseCase;
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +48,7 @@ public class ViewController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/workspaces/views/{viewId}")
+    @GetMapping("/workspaces/deals/views/{viewId}")
     public ResponseEntity<ApiResult<ViewInfoResponse>> getView(
             @PathVariable Long viewId,
             @RequestParam(required = false) List<FilterRequest> filters,
@@ -69,4 +73,25 @@ public class ViewController {
                 , HttpStatus.OK);
     }
 
+    @GetMapping("/workspaces/deals/views/origin")
+    public ResponseEntity<ApiResult<ViewInfoResponse>> getDefaultDealView(
+    ){
+
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, null)
+                , HttpStatus.OK);
+    }
+
+    @GetMapping("/workspaces/deals/views")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResult<SimpleViewInfosResponse>> getViewList(
+    ){
+        var views = loadViewUseCase.loadViewList(
+                WorkspaceAuthority.from(SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getAuthorities()).workspaceId().value()
+        );
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new SimpleViewInfosResponse(views))
+                , HttpStatus.OK);
+    }
 }

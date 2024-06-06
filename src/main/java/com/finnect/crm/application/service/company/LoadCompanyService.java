@@ -15,10 +15,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class LoadCompanyService implements LoadCompanyUseCase {
     private final LoadCompanyPort loadCompanyPort;
     private final LoadDataColumnPort loadDataColumnPort;
@@ -45,7 +49,6 @@ public class LoadCompanyService implements LoadCompanyUseCase {
                                 .cellId(new CellId(loadedState.getDataRowId(), null))
                                 .build()
                 );
-
 
         return CompanyDetail.of(
                 loadedState,

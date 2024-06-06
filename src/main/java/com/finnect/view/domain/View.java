@@ -54,12 +54,12 @@ public class View implements ViewState {
 
     @Override
     public List<FilterState> getFilters() {
-        return new ArrayList<>(filters);
+        return filters == null ? new ArrayList<>() : new ArrayList<>(filters);
     }
 
     @Override
     public List<ViewColumnState> getViewColumns() {
-        return new ArrayList<>(viewColumns);
+        return viewColumns == null ? new ArrayList<>() : new ArrayList<>(viewColumns);
     }
 
     @Override
@@ -75,13 +75,13 @@ public class View implements ViewState {
     }
 
     public void appendViewColumn(List<ViewColumn> viewColumns){
-        if (viewColumns.isEmpty()) {
+        if (this.viewColumns.isEmpty()) {
             return;
         }
         this.viewColumns.addAll(viewColumns);
     }
     public void appendViewColumn(ViewColumn viewColumn){
-        if (viewColumn == null) {
+        if (this.viewColumns.isEmpty()) {
             return;
         }
         this.viewColumns.add(viewColumn);

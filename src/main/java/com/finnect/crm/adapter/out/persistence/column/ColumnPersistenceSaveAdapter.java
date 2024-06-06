@@ -22,10 +22,14 @@ class ColumnPersistenceSaveAdapter implements SaveDataColumnPort {
     }
 
     @Override
-    public void saveColumns(List<DataColumnState> columns) {
+    public List<DataColumn> saveColumns(List<DataColumnState> columns) {
         List<DataColumnEntity> dataColumnEntities = columns.stream()
                                                     .map(DataColumnEntity::toEntity)
                                                     .toList();
         dataColumnRepository.saveAll(dataColumnEntities);
+
+        return dataColumnEntities.stream()
+                .map(DataColumnEntity::toDomain)
+        .toList();
     }
 }

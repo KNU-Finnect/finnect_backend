@@ -7,6 +7,7 @@ import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.ViewDetail;
 import com.finnect.view.domain.state.ViewState;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,10 @@ public class LoadViewService implements LoadViewUseCase {
                 .view(view)
                 .dataColumns(columns)
         .build();
+    }
+
+    @Override
+    public List<ViewState> loadViewList(Long workspaceId) {
+        return new ArrayList<>(loadViewPort.loadDealViewsByWorkspaceId(workspaceId));
     }
 }

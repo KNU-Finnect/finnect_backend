@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface LoadViewUseCase {
     ViewDetail loadViewInfo(View view, List<Filter> filters);
+
+    List<ViewState> loadViewList(Long workspaceId);
 }

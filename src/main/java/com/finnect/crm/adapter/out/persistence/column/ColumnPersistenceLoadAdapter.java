@@ -15,12 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCountPort {
+class ColumnPersistenceLoadAdapter implements LoadDataColumnPort {
     private final DataColumnRepository dataColumnRepository;
+
     @Override
-    public List<DataColumn> loadDataColumnsByWorkspaceId(DataColumnState dataColumnState) {
+    public List<DataColumn> loadDataColumnsOfDeal(Long workspaceId) {
         List<DataColumnEntity> dataColumns = dataColumnRepository
-                .findDataColumnEntitiesByWorkspaceId(dataColumnState.getWorkspaceId());
+                .findAllByDType(workspaceId, DataType.DEAL);
         return dataColumns
                 .stream()
                 .map(DataColumnEntity::toDomain)
@@ -34,10 +35,6 @@ class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCoun
                 .toDomain();
     }
 
-    @Override
-    public int loadDealColumnCount(Long workspaceId) {
-        return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.DEAL);
-    }
 
     @Override
     public List<DataColumnState> loadDataColumnsOfCompany(Long workspaceId) {

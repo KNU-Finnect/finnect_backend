@@ -7,6 +7,7 @@ import com.finnect.crm.domain.column.ColumnType;
 import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.DataType;
 import com.finnect.crm.domain.column.state.DataColumnState;
+가import com.finnect.view.application.port.in.ModifyViewUseCase;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class CreateNewColumnService implements CreateNewColumnUseCase {
     private final SaveCellPort saveCellPort;
     private final SaveDataColumnPort saveDataColumnPort;
+    private final ModifyViewUseCase modifyViewUseCase;
     @Override
     public DataColumnState createNewColumn(DataColumn dataColumn) {
         log.info(dataColumn.toString());
@@ -31,6 +33,8 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
     public void createDefaultColumn(Long workspaceId) {
         List<DataColumn> defaultDealColumns = getDefaultColumns(workspaceId);
         saveDataColumnPort.saveColumns(new ArrayList<>(defaultDealColumns));
+        modifyViewUseCase.addViewColumns(new ArrayList<>(defaultDealColumns));
+
     }
     private List<DataColumn> getDefaultColumns(Long workspaceId){
         List<DataColumn> defaultColumns = generateDefaultDealColumns(workspaceId);

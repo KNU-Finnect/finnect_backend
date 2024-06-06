@@ -67,7 +67,7 @@ public class DealController {
 
     @GetMapping("/workspaces/deal/{dealId}/details")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> loadDealDetail
+    public ResponseEntity<ApiResult<DealDetailResponse>> loadDealDetail
             (@PathVariable Long dealId){
         DealState dealState = loadDealUseCase.loadDeal
                 (Deal.builder()

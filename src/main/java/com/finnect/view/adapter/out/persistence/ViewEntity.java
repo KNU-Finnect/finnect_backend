@@ -1,5 +1,6 @@
 package com.finnect.view.adapter.out.persistence;
 
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.ViewColumn;
@@ -7,7 +8,10 @@ import com.finnect.view.domain.state.FilterState;
 import com.finnect.view.domain.state.ViewColumnState;
 import com.finnect.view.domain.state.ViewState;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +43,9 @@ public class ViewEntity implements ViewState {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "view_id")
     private List<ViewColumnEntity> viewColumns;
+
+    @Enumerated(EnumType.STRING)
+    private DataType viewType;
 
     protected ViewEntity() {
     }
@@ -73,8 +80,14 @@ public class ViewEntity implements ViewState {
         return null;
     }
 
+    @Override
+    public DataType getType() {
+        return this.viewType;
+    }
+
     @Builder
-    public ViewEntity(Long viewId, Long workspaceId, String viewName, Boolean isMain, List<FilterState> filters, List<ViewColumnState> viewColumns) {
+    public ViewEntity(Long viewId, Long workspaceId, String viewName, Boolean isMain, List<FilterState> filters,
+                      List<ViewColumnState> viewColumns, DataType viewType) {
         this.viewId = viewId;
         this.workspaceId = workspaceId;
         this.viewName = viewName;
@@ -95,6 +108,7 @@ public class ViewEntity implements ViewState {
                         .view(this)
                         .build()
                 ).toList();
+        this.viewType = viewType;
     }
 
     public static ViewEntity toEntity(ViewState viewState){
@@ -105,7 +119,8 @@ public class ViewEntity implements ViewState {
                 .isMain(false)
                 .filters(viewState.getFilters())
                 .viewColumns(viewState.getViewColumns())
-                .build();
+                .viewType(viewState.getType())
+            .build();
     }
 
     public View toDomain(){
@@ -113,6 +128,7 @@ public class ViewEntity implements ViewState {
                 .viewId(this.viewId)
                 .viewName(this.viewName)
                 .workspaceId(this.getWorkspaceId())
+                .dType(this.viewType)
                 .viewColumns(this.viewColumns.stream()
                         .map(viewColumn -> ViewColumn.builder()
                                 .viewId(this.getViewId())

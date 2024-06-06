@@ -1,5 +1,7 @@
 package com.finnect.view.domain;
 
+import com.finnect.crm.domain.column.DataColumn;
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.view.domain.state.FilterState;
 import com.finnect.view.domain.state.ViewColumnState;
 import com.finnect.view.domain.state.ViewState;
@@ -17,16 +19,17 @@ public class View implements ViewState {
     private Boolean isMain;
     private List<Filter> filters;
     private List<ViewColumn> viewColumns;
-
+    private DataType dType;
     @Builder
     public View(Long viewId, Long workspaceId, String viewName, Boolean isMain, List<Filter> filters,
-                List<ViewColumn> viewColumns) {
+                List<ViewColumn> viewColumns, DataType dType) {
         this.viewId = viewId;
         this.workspaceId = workspaceId;
         this.viewName = viewName;
         this.isMain = isMain;
         this.filters = filters;
         this.viewColumns = viewColumns;
+        this.dType = dType;
     }
 
     @Override
@@ -59,10 +62,36 @@ public class View implements ViewState {
         return new ArrayList<>(viewColumns);
     }
 
+    @Override
+    public DataType getType() {
+        return this.dType;
+    }
+
     public void appendFilter(List<Filter> filters){
         if (filters.isEmpty()) {
             return;
         }
         this.filters.addAll(filters);
+    }
+
+    public void appendViewColumn(List<ViewColumn> viewColumns){
+        if (viewColumns.isEmpty()) {
+            return;
+        }
+        this.viewColumns.addAll(viewColumns);
+    }
+    public void appendViewColumn(ViewColumn viewColumn){
+        if (viewColumn == null) {
+            return;
+        }
+        this.viewColumns.add(viewColumn);
+    }
+
+    public Double getColumnLastIndex(){
+        if(this.viewColumns.isEmpty()){
+            return 1.0;
+        }
+
+        return viewColumns.get(viewColumns.size() - 1).getIndex() + 10;
     }
 }

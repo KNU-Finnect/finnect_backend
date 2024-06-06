@@ -118,7 +118,7 @@ public class ViewEntity implements ViewState {
                 .viewId(viewState.getViewId())
                 .workspaceId(viewState.getWorkspaceId())
                 .viewName(viewState.getViewName())
-                .isMain(false)
+                .isMain(viewState.isMain())
                 .filters(viewState.getFilters() == null ? new ArrayList<>() : viewState.getFilters())
                 .viewColumns(viewState.getViewColumns() == null ? new ArrayList<>() : viewState.getViewColumns())
                 .viewType(viewState.getType())
@@ -131,7 +131,10 @@ public class ViewEntity implements ViewState {
                 .viewName(this.viewName)
                 .workspaceId(this.getWorkspaceId())
                 .dType(this.viewType)
-                .viewColumns(this.viewColumns.stream()
+                .isMain(this.isMain)
+                .viewColumns(
+                        this.viewColumns == null ? new ArrayList<>() :
+                        this.viewColumns.stream()
                         .map(viewColumn -> ViewColumn.builder()
                                 .viewId(this.getViewId())
                                 .columnId(viewColumn.getColumnId())
@@ -141,7 +144,8 @@ public class ViewEntity implements ViewState {
                                 .build())
                         .toList()
                 )
-                .filters(this.filters.stream()
+                .filters(this.filters == null ? new ArrayList<>() :
+                        this.filters.stream()
                         .map(filter -> Filter.builder()
                                 .viewId(this.getViewId())
                                 .value(filter.getValue())
@@ -152,4 +156,5 @@ public class ViewEntity implements ViewState {
                         .toList()
                 ).build();
     }
+
 }

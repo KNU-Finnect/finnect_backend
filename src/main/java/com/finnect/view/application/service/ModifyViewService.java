@@ -10,9 +10,11 @@ import com.finnect.view.domain.constant.SortCondition;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class ModifyViewService implements ModifyViewUseCase {
 
@@ -22,9 +24,12 @@ public class ModifyViewService implements ModifyViewUseCase {
     @Override
     public void addViewColumns(List<DataColumnState> columns) {
         List<View> views = loadViewPort.loadViewsByColumn(columns);
+        log.info(views.toString());
+        log.info(columns.toString());
         for(int viewIndex = 0; viewIndex < views.size(); viewIndex++){
             DataColumnState column = columns.get(viewIndex);
             View view = views.get(viewIndex);
+
             view.appendViewColumn(
                     ViewColumn.builder()
                             .columnId(column.getColumnId())

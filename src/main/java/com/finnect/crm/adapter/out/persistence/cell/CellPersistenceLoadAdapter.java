@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CellPersistenceLoadAdapter implements LoadDataCellPort {
+class CellPersistenceLoadAdapter implements LoadDataCellPort {
     private final DataCellRepository dataCellRepository;
 
     @Override
@@ -22,6 +22,26 @@ public class CellPersistenceLoadAdapter implements LoadDataCellPort {
                 .stream()
                 .map(DataCellEntity::toDomain)
                 .toList();
+    }
+
+    @Override
+    public List<DataCell> loadDataCellsByColumnId(DataCellState dataCellState) {
+        List<DataCellEntity> dataCellEntities = dataCellRepository
+                .findDataCellEntitiesByCellIdColumnId(dataCellState.getColumnId());
+        return dataCellEntities
+                .stream()
+                .map(DataCellEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    public DataCell loadDataCell(DataCellState dataCellState) {
+        return dataCellRepository
+                .findById(
+                        new CellId(dataCellState.getRowId(), dataCellState.getColumnId())
+                )
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 Cell 정보가 없습니다."))
+                .toDomain();
     }
 
 }

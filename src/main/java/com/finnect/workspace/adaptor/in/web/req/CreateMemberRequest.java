@@ -4,7 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class CreateMemberRequest {
-    String nickname;
-    String role;
-    String phone;
+    Long workspaceId;
 }

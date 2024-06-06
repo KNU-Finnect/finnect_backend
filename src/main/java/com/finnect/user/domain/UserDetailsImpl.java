@@ -1,18 +1,20 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.vo.UserId;
 import com.finnect.user.state.UserState;
+import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.user.vo.WorkspaceId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
-@Builder
+@Builder @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
     @Getter
@@ -62,6 +64,15 @@ public class UserDetailsImpl implements UserDetails {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .workspaceAuthority(new WorkspaceAuthority(user.getDefaultWorkspaceId()))
+                .build();
+    }
+
+    public static UserDetailsImpl of(UserState user, WorkspaceId workspaceId) {
+        return UserDetailsImpl.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .workspaceAuthority(new WorkspaceAuthority(workspaceId))
                 .build();
     }
 }

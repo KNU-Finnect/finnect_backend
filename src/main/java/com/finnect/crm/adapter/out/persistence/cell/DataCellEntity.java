@@ -72,7 +72,18 @@ public class DataCellEntity implements DataCellState {
                 .companyId(this.companyId)
                 .peopleId(this.peopleId)
                 .userId(this.userId)
-                .build();
+            .build();
+    }
+
+    public static DataCellEntity toEntity(DataCellState dataCellState){
+        return DataCellEntity.builder()
+                .columnId(dataCellState.getColumnId())
+                .row(new DataRowEntity(dataCellState.getRowId()))
+                .value(dataCellState.getValue())
+                .userId(dataCellState.getUserId())
+                .peopleId(dataCellState.getPeopleId())
+                .companyId(dataCellState.getCompanyId())
+            .build();
     }
 
     @Override

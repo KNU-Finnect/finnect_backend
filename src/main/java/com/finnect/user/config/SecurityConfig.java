@@ -1,14 +1,17 @@
 package com.finnect.user.config;
 
-import com.finnect.user.application.jwt.JwtProvider;
 import com.finnect.user.adapter.in.security.AuthenticationFilter;
 import com.finnect.user.adapter.in.security.AuthorizationFilter;
+import com.finnect.user.application.port.in.AuthorizeUseCase;
+import com.finnect.user.application.port.in.IssueUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,26 +28,38 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
-    private final JwtProvider tokenProvider;
+
+    private final IssueUseCase issueUseCase;
+    private final AuthorizeUseCase authorizeUseCase;
+
+    private final Long refreshExpirationSecond;
 
     @Autowired
     public SecurityConfig(
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler,
-            JwtProvider tokenProvider
+            IssueUseCase issueUseCase,
+            AuthorizeUseCase authorizeUseCase,
+            @Value("${backend.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
-        this.tokenProvider = tokenProvider;
+
+        this.issueUseCase = issueUseCase;
+        this.authorizeUseCase = authorizeUseCase;
+
+        this.refreshExpirationSecond = refreshExpirationSecond;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -64,6 +79,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOriginPattern("*");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.addExposedHeader(HttpHeaders.AUTHORIZATION);
@@ -85,13 +101,13 @@ public class SecurityConfig {
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(tokenProvider);
+        AuthenticationFilter filter = new AuthenticationFilter(issueUseCase, refreshExpirationSecond);
         filter.setAuthenticationManager(authenticationManager(null));
         filter.setFilterProcessesUrl("/users/signin");
         return filter;
     }
 
     public AuthorizationFilter authorizationFilter() {
-        return new AuthorizationFilter(tokenProvider);
+        return new AuthorizationFilter(authorizeUseCase);
     }
 }

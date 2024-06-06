@@ -1,6 +1,9 @@
 package com.finnect.user.adapter.in.security;
 
-import com.finnect.user.application.jwt.JwtProvider;
+import com.finnect.user.adapter.in.security.util.AuthenticationUtils;
+import com.finnect.user.application.port.in.AuthorizeUseCase;
+import com.finnect.user.application.port.in.command.AuthorizeCommand;
+import com.finnect.user.state.UserAuthenticationState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthorizeUseCase authorizeUseCase;
 
     @Override
     protected void doFilterInternal(
@@ -25,23 +28,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        AuthorizeCommand command = AuthorizeCommand.builder()
+                .bearerToken(request.getHeader(HttpHeaders.AUTHORIZATION))
+                .build();
 
-        if (header != null && header.startsWith("Bearer")) {
-            // Resolve token
-            String accessToken = header.substring(7);
-            logger.info("Validating access token: %s".formatted(accessToken));
+        try {
+            UserAuthenticationState userAuthentication = authorizeUseCase.authorize(command);
 
-            if (jwtProvider.validateToken(accessToken)) {
-                // Allow authentication object to be viewed from anywhere
-                Authentication authentication = jwtProvider.obtainAuthentication(accessToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("Authenticated access token: %s".formatted(accessToken));
-            } else {
-                logger.info("Invalid access token: %s".formatted(accessToken));
-            }
-        } else {
-            logger.info("No access tokens");
+            Authentication authentication = AuthenticationUtils.from(userAuthentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);

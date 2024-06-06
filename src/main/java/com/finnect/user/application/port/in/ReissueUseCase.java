@@ -1,8 +1,12 @@
 package com.finnect.user.application.port.in;
 
 import com.finnect.user.application.port.in.command.ReissueCommand;
+import com.finnect.user.application.port.in.command.ReissueWorkspaceCommand;
+import com.finnect.user.state.AccessTokenState;
 
 public interface ReissueUseCase {
 
-    String reissue(ReissueCommand command);
+    AccessTokenState reissue(ReissueCommand command);
+
+    AccessTokenState reissueWorkspace(ReissueWorkspaceCommand command);
 }

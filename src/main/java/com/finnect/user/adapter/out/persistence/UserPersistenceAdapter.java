@@ -1,5 +1,6 @@
 package com.finnect.user.adapter.out.persistence;
 
+import com.finnect.user.application.port.out.ExistsUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.state.UserState;
@@ -7,12 +8,12 @@ import com.finnect.user.adapter.out.persistence.entity.UserEntity;
 import com.finnect.user.adapter.out.persistence.entity.UserRepository;
 import com.finnect.user.application.port.out.CreateUserPort;
 import com.finnect.user.application.port.out.LoadUserPort;
-import com.finnect.user.exception.UserNotFoundException;
+import com.finnect.user.application.port.out.error.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, UpdateUserPort {
+public class UserPersistenceAdapter implements CreateUserPort, ExistsUserPort, LoadUserPort, UpdateUserPort {
 
     private final UserRepository userRepository;
 
@@ -20,6 +21,7 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
     public UserPersistenceAdapter(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     @Override
     public void createUser(UserState userState) {
@@ -34,6 +36,13 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
         userRepository.save(userEntity);
     }
 
+
+    @Override
+    public boolean existsUserByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+
     @Override
     public UserState loadUser(UserId userId) throws UserNotFoundException {
         return userRepository.findById(userId.value())
@@ -41,10 +50,17 @@ public class UserPersistenceAdapter implements CreateUserPort, LoadUserPort, Upd
     }
 
     @Override
-    public UserState loadUser(String username) throws UserNotFoundException {
+    public UserState loadUserByUsername(String username) throws UserNotFoundException {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
+                .orElseThrow(() -> new UserNotFoundException("username", username));
     }
+
+    @Override
+    public UserState loadUserByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("email", email));
+    }
+
 
     @Override
     public void updateUser(UserState userState) {

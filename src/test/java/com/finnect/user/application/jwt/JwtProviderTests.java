@@ -1,52 +1,47 @@
 package com.finnect.user.application.jwt;
 
-import com.finnect.user.vo.AccessToken;
+import com.finnect.user.adapter.out.jwt.JwtProvider;
+import com.finnect.user.adapter.out.jwt.entity.JwtAuthentication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 
 class JwtProviderTests {
 
     private final String SECRET = "or69fQhmqn3DAmmb7oQPAIAgb3v0GN9aGjxrdlxu6FIB288g5oWzscuf33ONtnpo";
 
-    private final String GIVEN_USERNAME = "user-1";
-    private final String GIVEN_PASSWORD = "";
     private final String GIVEN_USER_ID = "1";
+    private final String GIVEN_USERNAME = "user@gmail.com";
 
-    private UsernamePasswordAuthenticationToken givenAuthenticationToken() {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                GIVEN_USERNAME,
-                GIVEN_PASSWORD
-        );
-        authenticationToken.setDetails(GIVEN_USER_ID);
-        return authenticationToken;
+    private JwtAuthentication givenAuthentication() {
+        return JwtAuthentication.builder()
+                .userId(GIVEN_USER_ID)
+                .username(GIVEN_USERNAME)
+                .build();
     }
 
     @Test
     void authentication_used_to_generate_token_should_equals_authentication_obtained_from_token() {
         // given
-        JwtProvider jwtProvider = new JwtProvider(SECRET, 180000L, 0L);
-        Authentication authenticationToken = givenAuthenticationToken();
+        JwtProvider tokenProvider = new JwtProvider(SECRET, 180L);
+        JwtAuthentication givenAuthentication = givenAuthentication();
 
         // when
-        AccessToken accessToken = jwtProvider.generateAccessToken(authenticationToken);
-        Authentication authentication = jwtProvider.obtainAuthentication(accessToken.value());
+        String accessToken = tokenProvider.generateAccessToken(givenAuthentication);
+        JwtAuthentication obtainedAuthentication = JwtAuthentication.from(tokenProvider.obtainAuthentication(accessToken));
 
         // then
-        Assertions.assertEquals(authentication.getPrincipal(), GIVEN_USERNAME);
-        Assertions.assertEquals(authentication.getCredentials(), GIVEN_PASSWORD);
-        Assertions.assertEquals(authentication.getDetails(), GIVEN_USER_ID);
+        Assertions.assertEquals(obtainedAuthentication.getUserId(), GIVEN_USER_ID);
+        Assertions.assertEquals(obtainedAuthentication.getUsername(), GIVEN_USERNAME);
     }
 
     @Test
     void expired_token_should_be_invalid() {
         // given
-        JwtProvider jwtProvider = new JwtProvider(SECRET, 0L, 0L);
-        AccessToken accessToken = jwtProvider.generateAccessToken(givenAuthenticationToken());
+        JwtProvider tokenProvider = new JwtProvider(SECRET, 0L);
+        String accessToken = tokenProvider.generateAccessToken(givenAuthentication());
 
         // when
-        boolean valid = jwtProvider.validateToken(accessToken.value());
+        boolean valid = tokenProvider.validateToken(accessToken);
 
         // then
         Assertions.assertFalse(valid);

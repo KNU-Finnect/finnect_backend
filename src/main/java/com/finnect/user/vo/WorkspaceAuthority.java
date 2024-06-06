@@ -9,7 +9,7 @@ public record WorkspaceAuthority(WorkspaceId workspaceId) implements GrantedAuth
 
     @Override
     public String getAuthority() {
-        return "workspace=%s".formatted(workspaceId);
+        return "wid=%s".formatted(workspaceId);
     }
 
     public static WorkspaceAuthority from(Collection<? extends GrantedAuthority> authorities) {
@@ -17,9 +17,17 @@ public record WorkspaceAuthority(WorkspaceId workspaceId) implements GrantedAuth
     }
 
     public static WorkspaceAuthority from(GrantedAuthority authority) {
-        String[] s = authority.getAuthority().split("=");
+        return WorkspaceAuthority.of(authority.getAuthority());
+    }
 
-        if (Arrays.stream(s).count() == 2 && s[0].equals("workspace")) {
+    public static WorkspaceAuthority of(Collection<String> authorities) {
+        return authorities.stream().findFirst().map(WorkspaceAuthority::of).orElse(null);
+    }
+
+    public static WorkspaceAuthority of(String authority) {
+        String[] s = authority.split("=");
+
+        if (Arrays.stream(s).count() == 2 && s[0].equals("wid")) {
             return new WorkspaceAuthority(WorkspaceId.parseOrNull(s[1]));
         } else {
             return null;

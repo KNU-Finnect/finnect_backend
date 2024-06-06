@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
 
 jobs:
   build:
@@ -30,8 +30,19 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
+    - name: Create .properties
+      run: |
+          cd ./src/main
+          mkdir resources
+          cd ./resources
+          touch ./application.properties
+          echo "${{ secrets.ENV }}" >> ./application.properties
+
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew clean
+
+    - name: Build with Gradle Wrapper
+      run: ./gradlew build -x test
     - name: check file
       run: ls ./build/libs/
     - name: Upload artifact

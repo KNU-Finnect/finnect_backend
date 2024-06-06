@@ -17,21 +17,13 @@ public class CreateMemberCommand extends SelfValidating<CreateMemberCommand> {
     private final Long workspaceId;
     @NotEmpty(message = "닉네임은 빈 문자열이거나 공백일 수 없습니다.")
     private final String nickname;
-    @NotEmpty(message = "직책은 빈 문자열이거나 공백일 수 없습니다.")
-    private final String role;
-    @NotEmpty(message = "연락처은 빈 문자열이거나 공백일 수 없습니다.")
-    private final String phone;
 
     @Builder
-    public CreateMemberCommand(Long userId, Long workspaceId, String nickname, String role, String phone) {
+    public CreateMemberCommand(Long userId, Long workspaceId, String nickname) {
         this.userId = userId;
         this.workspaceId = workspaceId;
         this.nickname = nickname;
         isSmallerThan("nickname", this.nickname, 50);
-        this.role = role;
-        isSmallerThan("role", this.role, 50);
-        this.phone = phone;
-        isSmallerThan("phone", this.phone, 50);
         this.validateSelf();
     }
 

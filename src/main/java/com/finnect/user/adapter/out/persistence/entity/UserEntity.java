@@ -58,6 +58,8 @@ public class UserEntity implements UserState {
     }
 
     public static UserEntity from(UserState user) {
+        WorkspaceId workspaceId = user.getDefaultWorkspaceId();
+
         return UserEntity.builder()
                 .id(user.getId().value())
                 .username(user.getUsername())
@@ -65,7 +67,7 @@ public class UserEntity implements UserState {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .defaultWorkspaceId(user.getDefaultWorkspaceId().value())
+                .defaultWorkspaceId(workspaceId != null ? workspaceId.value() : null)
                 .build();
     }
 }

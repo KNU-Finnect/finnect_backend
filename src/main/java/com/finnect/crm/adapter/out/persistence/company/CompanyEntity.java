@@ -1,25 +1,37 @@
 package com.finnect.crm.adapter.out.persistence.company;
 
-import com.finnect.crm.adapter.out.persistence.cell.DataRowEntity;
+import com.finnect.crm.domain.company.CompanyState;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import lombok.Getter;
+import lombok.*;
 
 @Entity(name = "company")
-public class CompanyEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE) @Builder
+@Getter
+class CompanyEntity implements CompanyState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long companyId;
 
+    private Long workspaceId;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @Getter
-    private DataRowEntity dataRowEntity;
+    private Long dataRowId;
 
+    private String domain;
+
+    private String companyName;
+
+    public static CompanyEntity from(CompanyState state) {
+        return CompanyEntity.builder()
+                .companyId(state.getCompanyId())
+                .workspaceId(state.getWorkspaceId())
+                .dataRowId(state.getDataRowId())
+                .domain(state.getDomain())
+                .companyName(state.getCompanyName())
+                .build();
+    }
 }

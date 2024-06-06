@@ -7,20 +7,23 @@ import com.finnect.crm.adapter.in.web.res.deal.CreateDealResponse;
 import com.finnect.crm.adapter.in.web.res.deal.DealDetailResponse;
 import com.finnect.crm.adapter.out.persistence.cell.CellId;
 import com.finnect.crm.application.port.in.cell.LoadDataCellUseCase;
-import com.finnect.crm.application.port.in.cell.LoadDataColumnUseCase;
+import com.finnect.crm.application.port.in.column.LoadDataColumnUseCase;
 import com.finnect.crm.application.port.in.deal.CreateDealUseCase;
 import com.finnect.crm.application.port.in.deal.LoadDealUseCase;
 import com.finnect.crm.domain.cell.DataCell;
-import com.finnect.crm.domain.cell.DataColumn;
+import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.cell.state.DataCellState;
-import com.finnect.crm.domain.cell.state.DataColumnState;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.deal.Deal;
 import com.finnect.crm.domain.deal.state.DealState;
+import com.finnect.user.vo.WorkspaceAuthority;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,18 +41,23 @@ public class DealController {
     private final LoadDataColumnUseCase loadDataColumnUseCase;
 
     @PostMapping("/workspaces/deals")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<CreateDealResponse>> createDeal(
             @RequestBody CreateDealRequest createDealRequest){
 
         log.info(createDealRequest.toString());
-        DealState dealState = createDealUseCase
-                .createDeal(
-                    Deal.builder()
-                            .workspaceId(createDealRequest.getWorkspaceId())
-                            .companyId(createDealRequest.getCompanyId())
-                            .dealName(createDealRequest.getDealName())
-                            .userId(createDealRequest.getUserId())
-                            .build()
+        DealState dealState = createDealUseCase.createDeal(
+                   createDealRequest.toDomain(
+                           WorkspaceAuthority.from(SecurityContextHolder
+                                   .getContext()
+                                   .getAuthentication()
+                                   .getAuthorities()).workspaceId().value(),
+                           Long.valueOf((String) SecurityContextHolder
+                                   .getContext()
+                                   .getAuthentication()
+                                   .getDetails()
+                           )
+                   )
         );
 
         return new ResponseEntity<>
@@ -58,7 +66,8 @@ public class DealController {
     }
 
     @GetMapping("/workspaces/deal/{dealId}/details")
-    public ResponseEntity<?> loadDealDetail
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResult<DealDetailResponse>> loadDealDetail
             (@PathVariable Long dealId){
         DealState dealState = loadDealUseCase.loadDeal
                 (Deal.builder()

@@ -12,6 +12,7 @@ import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.application.port.in.LoadViewUseCase;
 import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
+import com.finnect.view.domain.ViewDetail;
 import com.finnect.view.domain.state.ViewState;
 import java.util.Collections;
 import java.util.List;
@@ -56,15 +57,15 @@ public class ViewController {
                         .filterCondition(filter.getFilterCondition())
                         .build())
                 .toList();
-        ViewState viewState = loadViewUseCase.loadViewInfo(View.builder()
+        ViewDetail viewDetail = loadViewUseCase.loadViewInfo(View.builder()
                         .viewId(viewId)
                         .build(),
                 filterList);
 
-        log.info(viewState.toString());
-        List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(1L, viewState.getFilters(), page);
+        log.info(viewDetail.toString());
+        List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(1L, viewDetail.getFilters(), page);
 
-        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new ViewInfoResponse(viewState, dealCells))
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new ViewInfoResponse(viewDetail, dealCells))
                 , HttpStatus.OK);
     }
 

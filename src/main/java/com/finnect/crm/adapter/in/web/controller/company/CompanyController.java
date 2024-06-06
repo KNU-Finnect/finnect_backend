@@ -17,20 +17,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/workspaces/companies")
 public class CompanyController {
 
     private final CreateCompanyUsecase createCompanyUsecase;
     private final LoadCompanyUseCase loadCompanyUseCase;
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/workspaces/companies")
+    @PostMapping
     public ResponseEntity<ApiUtils.ApiResult<CreateCompanyResponse>> createCompany(@RequestBody CreateCompanyRequest request) {
         Long workspaceId;
         try {
@@ -51,7 +49,7 @@ public class CompanyController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/workspaces/companies")
+    @GetMapping
     public ResponseEntity<ApiResult<LoadCompaniesResponse>> getCompanies() {
         Long workspaceId;
         try {

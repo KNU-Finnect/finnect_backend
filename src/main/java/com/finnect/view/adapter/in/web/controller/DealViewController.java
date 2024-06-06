@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ViewController {
+public class DealViewController {
     private final CreateViewUseCase createViewUseCase;
     private final LoadViewUseCase loadViewUseCase;
     private final LoadDealWithCellUseCase loadDealWithCellUseCase;

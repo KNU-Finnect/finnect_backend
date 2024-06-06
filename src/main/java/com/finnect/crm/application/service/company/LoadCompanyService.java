@@ -34,7 +34,7 @@ public class LoadCompanyService implements LoadCompanyUseCase {
     public CompanyDetail loadCompanyDetail(Long companyId) {
         CompanyState loadedState = loadCompanyPort.loadById(companyId);
 
-        List<DataColumnState> columnStates = loadDataColumnPort.loadDataColumnsOfCompany();
+        List<DataColumnState> columnStates = loadDataColumnPort.loadDataColumnsOfCompany(loadedState.getWorkspaceId());
         Map<Long, String> columnNameMap = columnStates.stream()
                 .collect(Collectors.toMap(DataColumnState::getColumnId, DataColumnState::getColumnName));
         Map<Long, ColumnType> columnTypeMap = columnStates.stream()

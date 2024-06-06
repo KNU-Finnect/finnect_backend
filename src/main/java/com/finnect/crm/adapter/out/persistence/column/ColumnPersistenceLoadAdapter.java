@@ -5,6 +5,8 @@ import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
 import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.column.DataType;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,5 +37,10 @@ class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCoun
     @Override
     public int loadDealColumnCount(Long workspaceId) {
         return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.DEAL);
+    }
+
+    @Override
+    public List<DataColumnState> loadDataColumnsOfCompany() {
+        return new ArrayList<>(dataColumnRepository.findAllByDTypeCompany());
     }
 }

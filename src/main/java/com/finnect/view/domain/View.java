@@ -1,5 +1,6 @@
 package com.finnect.view.domain;
 
+import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.DataType;
 import com.finnect.view.domain.state.FilterState;
 import com.finnect.view.domain.state.ViewColumnState;
@@ -71,5 +72,26 @@ public class View implements ViewState {
             return;
         }
         this.filters.addAll(filters);
+    }
+
+    public void appendViewColumn(List<ViewColumn> viewColumns){
+        if (viewColumns.isEmpty()) {
+            return;
+        }
+        this.viewColumns.addAll(viewColumns);
+    }
+    public void appendViewColumn(ViewColumn viewColumn){
+        if (viewColumn == null) {
+            return;
+        }
+        this.viewColumns.add(viewColumn);
+    }
+
+    public Double getColumnLastIndex(){
+        if(this.viewColumns.isEmpty()){
+            return 1.0;
+        }
+
+        return viewColumns.get(viewColumns.size() - 1).getIndex() + 10;
     }
 }

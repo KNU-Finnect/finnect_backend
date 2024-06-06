@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-class ColumnPersistenceLoadAdapter implements LoadDataColumnPort {
+class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCountPort {
     private final DataColumnRepository dataColumnRepository;
 
     @Override
@@ -39,5 +39,10 @@ class ColumnPersistenceLoadAdapter implements LoadDataColumnPort {
     @Override
     public List<DataColumnState> loadDataColumnsOfCompany(Long workspaceId) {
         return new ArrayList<>(dataColumnRepository.findAllByDType(workspaceId, DataType.COMPANY));
+    }
+
+    @Override
+    public int loadDealColumnCount(Long workspaceId) {
+        return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.DEAL);
     }
 }

@@ -1,5 +1,7 @@
 package com.finnect.view.adapter.out;
 
+import com.finnect.crm.domain.column.DataType;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.view.adapter.out.persistence.ViewEntity;
 import com.finnect.view.application.port.out.LoadViewPort;
 import com.finnect.view.application.port.out.SaveViewPort;
@@ -25,6 +27,15 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
     }
 
     @Override
+    public ViewState saveViews(List<ViewState> viewStates) {
+        List<ViewEntity> views = viewStates.stream()
+                .map(ViewEntity::toEntity)
+                .toList();
+        viewRepository.saveAll(views);
+        return null;
+    }
+
+    @Override
     public List<ViewState> saveDefaultViews(List<ViewState> views) {
         List<ViewEntity> defaultViews = views.stream()
                 .map(ViewEntity::toEntity)
@@ -38,5 +49,18 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
         ViewEntity view = viewRepository.findById(viewState.getViewId())
                 .orElseThrow(() ->new IllegalArgumentException("View가 존재하지 않습니다."));
         return view.toDomain();
+    }
+
+    @Override
+    public List<View> loadViewsByColumn(List<DataColumnState> columns) {
+        //최대 2개라..
+        List<ViewEntity> views = columns.stream()
+                .map(column -> viewRepository.findViewEntityByWorkspaceIdAndViewType(column.getWorkspaceId(),
+                        column.getDType()))
+                .toList();
+
+        return views.stream()
+                .map(ViewEntity::toDomain)
+        .toList();
     }
 }

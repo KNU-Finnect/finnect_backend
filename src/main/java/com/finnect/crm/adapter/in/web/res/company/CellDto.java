@@ -1,7 +1,5 @@
 package com.finnect.crm.adapter.in.web.res.company;
 
-import com.finnect.crm.domain.cell.state.DataCellState;
-import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.company.CompanyDetail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

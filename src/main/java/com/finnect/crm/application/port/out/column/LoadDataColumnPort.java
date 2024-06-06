@@ -10,5 +10,5 @@ public interface LoadDataColumnPort {
 
     DataColumn loadDataColumnByColumnId(DataColumnState dataColumnState);
 
-    List<DataColumnState> loadDataColumnsOfCompany();
+    List<DataColumnState> loadDataColumnsOfCompany(Long workspaceId);
 }

@@ -1,13 +1,13 @@
 package com.finnect.view.application.port.in;
 
-import com.finnect.crm.domain.column.DataColumn;
+import com.finnect.crm.domain.column.state.DataColumnState;
 import java.util.List;
 
 public interface ModifyViewUseCase {
 
-    void addViewColumns(List<DataColumn> columns);
+    void addViewColumns(List<DataColumnState> columns);
 
-    void addViewColumn(DataColumn column);
+    void addViewColumn(DataColumnState column);
 
-    void deleteViewColumn(DataColumn column);
+    void deleteViewColumn(DataColumnState column);
 }

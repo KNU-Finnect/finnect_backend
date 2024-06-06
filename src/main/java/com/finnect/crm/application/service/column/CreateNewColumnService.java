@@ -7,7 +7,7 @@ import com.finnect.crm.domain.column.ColumnType;
 import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.DataType;
 import com.finnect.crm.domain.column.state.DataColumnState;
-가import com.finnect.view.application.port.in.ModifyViewUseCase;
+import com.finnect.view.application.port.in.ModifyViewUseCase;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

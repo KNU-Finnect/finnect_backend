@@ -65,4 +65,12 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
                 .map(ViewEntity::toDomain)
         .toList();
     }
+
+    @Override
+    public List<View> loadDealViewsByWorkspaceId(Long workspaceId) {
+        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(workspaceId, DataType.DEAL);
+        return views.stream()
+                .map(ViewEntity::toDomain)
+                .toList();
+    }
 }

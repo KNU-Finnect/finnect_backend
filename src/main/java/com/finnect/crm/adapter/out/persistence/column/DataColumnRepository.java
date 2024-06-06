@@ -19,4 +19,7 @@ public interface DataColumnRepository extends JpaRepository<DataColumnEntity, Lo
     """)
     int countDataColumnEntitiesByWorkspaceIdAndDType(@Param("workspaceId")Long workspaceId,
                                                      @Param("dataType") DataType dataType);
+
+    @Query("select dc from data_column dc where dc.workspaceId = :workspaceId AND dc.dType = :dataType")
+    List<DataColumnEntity> findAllByDType(@Param("workspaceId") Long workspaceId, @Param("dataType") DataType dataType);
 }

@@ -52,7 +52,7 @@ public class CompanyController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/companies")
-    public ResponseEntity<ApiResult<LoadCompaniesResponse>> loadCompany() {
+    public ResponseEntity<ApiResult<LoadCompaniesResponse>> getCompanies() {
         Long workspaceId;
         try {
             workspaceId = WorkspaceAuthority.from(

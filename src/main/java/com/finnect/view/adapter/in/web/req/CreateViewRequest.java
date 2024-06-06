@@ -1,5 +1,6 @@
 package com.finnect.view.adapter.in.web.req;
 
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.ViewColumn;
@@ -18,6 +19,7 @@ public class CreateViewRequest implements ViewState {
     private String viewName;
     private List<FilterRequest> filters;
     private List<ViewColumnRequest> viewColumns;
+    private DataType dataType;
     @Override
     public Long getViewId() {
         return null;
@@ -49,6 +51,11 @@ public class CreateViewRequest implements ViewState {
         return new ArrayList<>(viewColumns);
     }
 
+    @Override
+    public DataType getType() {
+        return this.dataType;
+    }
+
     public View toDomain(){
         return View.builder()
                 .workspaceId(workspaceId)
@@ -70,6 +77,9 @@ public class CreateViewRequest implements ViewState {
                                 .value(filter.getValue())
                                 .columnId(filter.getColumnId())
                                 .build()).toList()
-                ).build();
+                )
+                .isMain(false)
+                .dType(this.getType())
+                .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.finnect.view.adapter.out.persistence;
 
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.ViewColumn;
@@ -8,6 +9,8 @@ import com.finnect.view.domain.state.ViewColumnState;
 import com.finnect.view.domain.state.ViewState;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,6 +43,9 @@ public class ViewEntity implements ViewState {
     @JoinColumn(name = "view_id")
     private List<ViewColumnEntity> viewColumns;
 
+    @Enumerated(EnumType.STRING)
+    private DataType dType;
+
     protected ViewEntity() {
     }
 
@@ -70,6 +76,11 @@ public class ViewEntity implements ViewState {
 
     @Override
     public List<ViewColumnState> getViewColumns() {
+        return null;
+    }
+
+    @Override
+    public DataType getType() {
         return null;
     }
 

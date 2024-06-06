@@ -8,6 +8,7 @@ import com.finnect.view.domain.state.FilterState;
 import com.finnect.view.domain.state.ViewColumnState;
 import com.finnect.view.domain.state.ViewState;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -44,7 +45,7 @@ public class ViewEntity implements ViewState {
     private List<ViewColumnEntity> viewColumns;
 
     @Enumerated(EnumType.STRING)
-    private DataType dType;
+    private DataType viewType;
 
     protected ViewEntity() {
     }
@@ -81,12 +82,12 @@ public class ViewEntity implements ViewState {
 
     @Override
     public DataType getType() {
-        return this.dType;
+        return this.viewType;
     }
 
     @Builder
     public ViewEntity(Long viewId, Long workspaceId, String viewName, Boolean isMain, List<FilterState> filters,
-                      List<ViewColumnState> viewColumns, DataType dType) {
+                      List<ViewColumnState> viewColumns, DataType viewType) {
         this.viewId = viewId;
         this.workspaceId = workspaceId;
         this.viewName = viewName;
@@ -107,7 +108,7 @@ public class ViewEntity implements ViewState {
                         .view(this)
                         .build()
                 ).toList();
-        this.dType = dType;
+        this.viewType = viewType;
     }
 
     public static ViewEntity toEntity(ViewState viewState){
@@ -118,7 +119,7 @@ public class ViewEntity implements ViewState {
                 .isMain(false)
                 .filters(viewState.getFilters())
                 .viewColumns(viewState.getViewColumns())
-                .dType(viewState.getType())
+                .viewType(viewState.getType())
             .build();
     }
 
@@ -127,7 +128,7 @@ public class ViewEntity implements ViewState {
                 .viewId(this.viewId)
                 .viewName(this.viewName)
                 .workspaceId(this.getWorkspaceId())
-                .dType(this.dType)
+                .dType(this.viewType)
                 .viewColumns(this.viewColumns.stream()
                         .map(viewColumn -> ViewColumn.builder()
                                 .viewId(this.getViewId())

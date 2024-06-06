@@ -35,8 +35,9 @@ public class CompanyDetail {
     }
 
     @Getter
-    @AllArgsConstructor(access = AccessLevel.PRIVATE) @Builder(access = AccessLevel.PRIVATE)
-    public class Cell {
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @Builder(access = AccessLevel.PRIVATE)
+    public static class Cell {
         private Long columnId;
 
         private String value;

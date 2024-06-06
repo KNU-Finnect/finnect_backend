@@ -18,7 +18,7 @@ public class LoadDataColumnService implements LoadDataColumnUseCase {
 
     @Override
     public List<DataColumnState> loadDataColumns(DataColumn dataColumn) {
-        List<DataColumn> dataColumns = dataColumnPort.loadDataColumnsByWorkspaceId(dataColumn);
+        List<DataColumn> dataColumns = dataColumnPort.loadDataColumnsOfDeal(dataColumn.getWorkspaceId());
         log.info(dataColumns.toString());
         return new ArrayList<>(dataColumns);
     }

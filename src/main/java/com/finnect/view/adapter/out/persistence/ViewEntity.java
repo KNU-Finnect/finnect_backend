@@ -81,11 +81,12 @@ public class ViewEntity implements ViewState {
 
     @Override
     public DataType getType() {
-        return null;
+        return this.dType;
     }
 
     @Builder
-    public ViewEntity(Long viewId, Long workspaceId, String viewName, Boolean isMain, List<FilterState> filters, List<ViewColumnState> viewColumns) {
+    public ViewEntity(Long viewId, Long workspaceId, String viewName, Boolean isMain, List<FilterState> filters,
+                      List<ViewColumnState> viewColumns, DataType dType) {
         this.viewId = viewId;
         this.workspaceId = workspaceId;
         this.viewName = viewName;
@@ -106,6 +107,7 @@ public class ViewEntity implements ViewState {
                         .view(this)
                         .build()
                 ).toList();
+        this.dType = dType;
     }
 
     public static ViewEntity toEntity(ViewState viewState){
@@ -116,7 +118,8 @@ public class ViewEntity implements ViewState {
                 .isMain(false)
                 .filters(viewState.getFilters())
                 .viewColumns(viewState.getViewColumns())
-                .build();
+                .dType(viewState.getType())
+            .build();
     }
 
     public View toDomain(){
@@ -124,6 +127,7 @@ public class ViewEntity implements ViewState {
                 .viewId(this.viewId)
                 .viewName(this.viewName)
                 .workspaceId(this.getWorkspaceId())
+                .dType(this.dType)
                 .viewColumns(this.viewColumns.stream()
                         .map(viewColumn -> ViewColumn.builder()
                                 .viewId(this.getViewId())

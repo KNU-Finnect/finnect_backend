@@ -5,6 +5,8 @@ import com.finnect.view.application.port.out.LoadViewPort;
 import com.finnect.view.application.port.out.SaveViewPort;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.state.ViewState;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,15 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
         viewRepository.save(newView);
         log.info(newView.toString());
         return newView.toDomain();
+    }
+
+    @Override
+    public List<ViewState> saveDefaultViews(List<ViewState> views) {
+        List<ViewEntity> defaultViews = views.stream()
+                .map(ViewEntity::toEntity)
+            .toList();
+        viewRepository.saveAll(defaultViews);
+        return new ArrayList<>(defaultViews);
     }
 
     @Override

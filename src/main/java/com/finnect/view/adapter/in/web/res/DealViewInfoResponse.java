@@ -2,18 +2,17 @@ package com.finnect.view.adapter.in.web.res;
 
 import com.finnect.crm.domain.deal.DealCell;
 import com.finnect.view.domain.ViewDetail;
-import com.finnect.view.domain.state.ViewState;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class ViewInfoResponse {
+public class DealViewInfoResponse {
     private Long viewId;
     private String viewName;
     List<FilterResponse> filters;
     List<ViewColumnResponse> viewColumns;
     List<DealInfoResponse> viewDeals;
-    public ViewInfoResponse(ViewDetail viewState, List<DealCell> dealCells) {
+    public DealViewInfoResponse(ViewDetail viewState, List<DealCell> dealCells) {
         this.viewId = viewState.getViewId();
         this.viewName = viewState.getViewName();
         this.filters = viewState.getFilters().stream()

@@ -9,7 +9,7 @@ import com.finnect.view.adapter.in.web.req.CreateViewRequest;
 import com.finnect.view.adapter.in.web.req.FilterRequest;
 import com.finnect.view.adapter.in.web.res.CreateViewResponse;
 import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;
-import com.finnect.view.adapter.in.web.res.ViewInfoResponse;
+import com.finnect.view.adapter.in.web.res.DealViewInfoResponse;
 import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.application.port.in.LoadViewUseCase;
 import com.finnect.view.domain.Filter;
@@ -49,7 +49,7 @@ public class DealViewController {
     }
 
     @GetMapping("/workspaces/deals/views/{viewId}")
-    public ResponseEntity<ApiResult<ViewInfoResponse>> getView(
+    public ResponseEntity<ApiResult<DealViewInfoResponse>> getView(
             @PathVariable Long viewId,
             @RequestParam(required = false) List<FilterRequest> filters,
             @RequestParam(required = true) int page
@@ -69,12 +69,12 @@ public class DealViewController {
         log.info(viewDetail.toString());
         List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(1L, viewDetail.getFilters(), page);
 
-        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new ViewInfoResponse(viewDetail, dealCells))
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new DealViewInfoResponse(viewDetail, dealCells))
                 , HttpStatus.OK);
     }
 
     @GetMapping("/workspaces/deals/views/origin")
-    public ResponseEntity<ApiResult<ViewInfoResponse>> getDefaultDealView(
+    public ResponseEntity<ApiResult<DealViewInfoResponse>> getDefaultDealView(
     ){
 
         return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, null)

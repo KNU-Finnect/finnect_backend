@@ -49,25 +49,24 @@ jobs:
           path: build/libs/*.jar
 
   deploy:
-    if: needs.build.result == 'success'
-    needs: build
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: cicdsample
-
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add SSH server to known hosts
-        run: |
-          ssh-keygen -R ${{ secrets.SERVER_IP }}
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: SCP transfer and remote script execution
-        run: | 
-          scp *.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/cicd
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "sh serverScript.sh"
+      needs: build
+      runs-on: ubuntu-22.04
+      steps:
+        - name: Download artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: cicdsample
+        - name: Setup SSH
+          uses: webfactory/ssh-agent@v0.5.4
+          with:
+            ssh-private-key: ${{ secrets.SECRET_KEY }}
+        - name: keySet
+          run : ssh-keygen -R ${{ secrets.SERVER_IP }}
+        - name: keySet
+          run: ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+        - name: checkKEy
+          run: ssh-add -l
+        - name: SCP transfer
+          run: | 
+            scp *.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/cicd
+            ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "sh serverScript.sh"

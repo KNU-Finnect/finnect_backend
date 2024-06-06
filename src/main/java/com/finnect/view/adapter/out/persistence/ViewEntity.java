@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
 import lombok.ToString;
@@ -92,14 +93,14 @@ public class ViewEntity implements ViewState {
         this.workspaceId = workspaceId;
         this.viewName = viewName;
         this.isMain = isMain;
-        this.filters = filters.stream()
+        this.filters = (filters == null ? new ArrayList<>() : filters.stream()
                 .map(filter -> FilterEntity.builder()
                         .value(filter.getValue())
                         .filterCondition(filter.getFilterCondition())
                         .columnId(filter.getColumnId()).build())
-                .toList();
+                .toList());
 
-        this.viewColumns = viewColumns.stream()
+        this.viewColumns = (viewColumns == null ? new ArrayList<>() : viewColumns.stream()
                 .map(viewColumn -> ViewColumnEntity.builder()
                         .columnId(viewColumn.getColumnId())
                         .showIndex(viewColumn.getIndex())
@@ -107,7 +108,8 @@ public class ViewEntity implements ViewState {
                         .sorting(viewColumn.getSort())
                         .view(this)
                         .build()
-                ).toList();
+                ).toList());
+
         this.viewType = viewType;
     }
 
@@ -117,8 +119,8 @@ public class ViewEntity implements ViewState {
                 .workspaceId(viewState.getWorkspaceId())
                 .viewName(viewState.getViewName())
                 .isMain(false)
-                .filters(viewState.getFilters())
-                .viewColumns(viewState.getViewColumns())
+                .filters(viewState.getFilters() == null ? new ArrayList<>() : viewState.getFilters())
+                .viewColumns(viewState.getViewColumns() == null ? new ArrayList<>() : viewState.getViewColumns())
                 .viewType(viewState.getType())
             .build();
     }

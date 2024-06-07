@@ -80,8 +80,8 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<View> loadDealViewsByWorkspaceId(Long workspaceId) {
-        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(workspaceId, DataType.DEAL);
+    public List<View> loadDealViewsByWorkspaceId(Long workspaceId, DataType dataType) {
+        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(workspaceId, dataType);
         return views.stream()
                 .map(ViewEntity::toDomain)
                 .toList();

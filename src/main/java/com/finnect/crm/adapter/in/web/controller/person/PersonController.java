@@ -11,6 +11,7 @@ import com.finnect.user.vo.WorkspaceAuthority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class PersonController {
     private final FindPeopleUsecase findPeopleUsecase;
     private final DeletePersonUsecase deletePersonUsecase;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<CreatePersonResponse>> createPerson(@RequestBody CreatePersonRequest request) {
         PersonState state = createPersonUsecase.createPerson(
@@ -42,6 +44,7 @@ public class PersonController {
         );
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<UpdatePersonResponse>> updatePerson(@RequestBody UpdatePersonRequest request) {
         PersonState state = updatePersonUsecase.update(
@@ -59,6 +62,7 @@ public class PersonController {
         );
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findPeople(@RequestParam("companyId") Long companyId) {
         List<PersonState> people = findPeopleUsecase.findPeopleByCompany(companyId);
@@ -69,6 +73,7 @@ public class PersonController {
                 ));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/people/all")
     public ResponseEntity<ApiUtils.ApiResult<FindAllPeopleResponse>> findAllPeople() {
         Long workspaceId;
@@ -88,6 +93,7 @@ public class PersonController {
                 ));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/workspaces/people/{personId}")
     public ResponseEntity<ApiUtils.ApiResult<?>> deletePerson(@PathVariable("personId") Long personId) {
         // TODO: PersonID 검사

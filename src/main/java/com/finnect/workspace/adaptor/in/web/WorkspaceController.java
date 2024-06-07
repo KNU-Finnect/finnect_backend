@@ -37,7 +37,6 @@ public class WorkspaceController {
     private final RenameWorkspaceUsecase renameWorkspaceUsecase;
     private final InviteMembersUsecase inviteMembersUsecase;
     private final GetWorkspaceQuery getWorkspaceQuery;
-    private final FindUsernameUseCase findUsernameUseCase;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces")
@@ -124,9 +123,7 @@ public class WorkspaceController {
 
         List<InviteMembersCommand> cmds = request.getEmails()
                 .stream()
-                .map((email) -> new InviteMembersCommand(email,
-                        "임의의 이름",
-                        getWorkspaceQuery.getWorkspace(workspaceId).getWorkspaceName()))
+                .map((email) -> new InviteMembersCommand(email, userId, workspaceId))
                 .collect(Collectors.toList());
 
         List<InvitationDto> invitations = inviteMembersUsecase.inviteMembers(cmds)

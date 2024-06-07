@@ -1,5 +1,6 @@
 package com.finnect.workspace.application;
 
+import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
 import com.finnect.workspace.domain.state.InvitationState;
 import com.finnect.workspace.application.port.in.InviteMembersCommand;
 import com.finnect.workspace.application.port.in.InviteMembersUsecase;
@@ -21,6 +22,7 @@ import java.util.List;
 public class InviteMembersService implements InviteMembersUsecase {
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
+    private final GetWorkspaceQuery getWorkspaceQuery;
     @Override
     public List<InvitationState> inviteMembers(List<InviteMembersCommand> cmds) {
 
@@ -30,8 +32,8 @@ public class InviteMembersService implements InviteMembersUsecase {
         for (InviteMembersCommand cmd : cmds) {
             Invitation invitation = Invitation.of(
                     cmd.getEmail(),
-                    cmd.getSenderName(),
-                    cmd.getWorkspaceName()
+                    "임의의 이름",
+                    getWorkspaceQuery.getWorkspace(cmd.getWorkspaceId()).getWorkspaceName()
             );
 
             invitation.sendEmail(javaMailSender, templateEngine);

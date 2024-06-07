@@ -1,6 +1,6 @@
 package com.finnect.workspace.adaptor.out.persistence;
 
-import com.finnect.workspace.application.port.out.CheckQuery;
+import com.finnect.workspace.application.port.out.CheckWorkspaceQuery;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 class WorkspacePersistenceAdapter implements
-        CreateWorkspacePort, UpdateWorkspacePort, GetWorkspacesPort, CheckQuery {
+        CreateWorkspacePort, UpdateWorkspacePort, GetWorkspacesPort, CheckWorkspaceQuery {
     private final WorkspaceRepository workspaceRepository;
 
     @Autowired

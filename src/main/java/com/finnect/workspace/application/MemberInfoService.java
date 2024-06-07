@@ -25,6 +25,8 @@ public class MemberInfoService implements CreateMemberUsecase, UpdateMemberUseca
     @Override
     public MemberState createMember(CreateMemberCommand cmd) {
 
+        
+
         return saveMemberPort.saveMember(Member.toDamin(cmd));
     }
 

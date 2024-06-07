@@ -5,6 +5,7 @@ import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.view.adapter.in.web.req.CreateViewRequest;
 import com.finnect.view.adapter.in.web.req.PatchFilterRequest;
 import com.finnect.view.adapter.in.web.req.PatchViewColumnRequest;
+import com.finnect.view.adapter.in.web.req.PatchViewRequest;
 import com.finnect.view.adapter.in.web.res.CreateViewResponse;
 import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.application.port.in.ModifyViewUseCase;
@@ -36,6 +37,17 @@ public class ViewController {
         ViewState newView = createViewUseCase.createNewView(request.toDomain());
         return new ResponseEntity<>(
                 ApiUtils.success(HttpStatus.CREATED, new CreateViewResponse(newView)),
+                HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/workspaces/views")
+    public ResponseEntity<ApiResult<String>> patchView(
+            @RequestBody PatchViewRequest request){
+
+        log.info(request.toString());
+        modifyViewUseCase.patchViewName(request.getViewId(), request.getViewName());
+        return new ResponseEntity<>(
+                ApiUtils.success(HttpStatus.CREATED, "Modified View Name"),
                 HttpStatus.CREATED);
     }
 

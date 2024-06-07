@@ -30,7 +30,7 @@ class CreateCompanyService implements CreateCompanyUsecase {
     public CompanyState createCompany(CreateCompanyCommand cmd) {
         if (searchCompanyPort.searchByDomain(cmd.getDomain()))
             throw new RuntimeException(cmd.getDomain() + " 도메인이 이미 존재합니다.");
-        if (checkQuery.checkExistWorkspace(cmd.getWorkspaceId()))
+        if (checkQuery.checkWorkspaceExists(cmd.getWorkspaceId()))
             throw new CustomException(HttpStatus.BAD_REQUEST, cmd.getWorkspaceId() + " 워크스페이스가 존재하지 않습니다.");
 
         DataRowState dataRow = createNewRowUseCase.createNewDataRow(

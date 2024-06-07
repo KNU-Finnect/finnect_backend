@@ -26,11 +26,13 @@ class DealCellPersistenceAdapter implements LoadDealWithCellPort {
     private final int BATCH_SIZE = 10;
     @Override
     public List<DealCell> loadDealsWithCellsByFilter(List<FilterState> filters, final int startPage, final int columnCount) {
-
+        log.info("QUERYH");
         String queryString = generateQuery(filters);
         log.info(queryString);
         TypedQuery<Object[]> query = em.createQuery(generateQuery(filters), Object[].class);
-        setParam(filters, query);
+        if(filters != null){
+            setParam(filters, query);
+        }
         query.setFirstResult(BATCH_SIZE * (startPage - 1));
         query.setMaxResults(BATCH_SIZE * columnCount);
         List<Object[]> objects = query.getResultList();
@@ -48,7 +50,7 @@ class DealCellPersistenceAdapter implements LoadDealWithCellPort {
                 .append("JOIN FETCH data_cell c ON d.dataRowId = c.cellId.dataRowId ");
 
         int valueIndex = 0;
-        if (!filters.isEmpty()) {
+        if (filters != null && !filters.isEmpty()) {
             queryBuilder.append("WHERE c.cellId.dataRowId IN ( ")
                     .append("SELECT c2.cellId.dataRowId ")
                     .append("FROM data_cell c2 ")

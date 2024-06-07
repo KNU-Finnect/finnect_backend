@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface GetWorkspacesPort {
 
+    WorkspaceState getWorkspaceById(Long workspaceId);
+
     List<WorkspaceState> getWorkspacesByUserId(Long userId);
 }

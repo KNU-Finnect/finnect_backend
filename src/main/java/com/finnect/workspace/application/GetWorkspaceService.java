@@ -17,6 +17,11 @@ public class GetWorkspaceService implements GetWorkspaceQuery {
     private final GetWorkspacesPort getWorkspacesPort;
 
     @Override
+    public WorkspaceState getWorkspace(Long workspaceId) {
+        return getWorkspacesPort.getWorkspaceById(workspaceId);
+    }
+
+    @Override
     public List<WorkspaceState> getWorkspaces(Long userId) {
         return getWorkspacesPort.getWorkspacesByUserId(userId);
     }

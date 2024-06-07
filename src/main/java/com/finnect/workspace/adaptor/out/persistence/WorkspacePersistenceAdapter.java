@@ -44,6 +44,13 @@ class WorkspacePersistenceAdapter implements
     }
 
     @Override
+    public WorkspaceState getWorkspaceById(Long workspaceId) {
+
+        return workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 워크스페이스입니다."));
+    }
+
+    @Override
     public List<WorkspaceState> getWorkspacesByUserId(Long userId) {
         List<WorkspaceState> workspaceStates = workspaceRepository.getAllByUserId(userId);
 

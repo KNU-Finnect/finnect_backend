@@ -1,6 +1,6 @@
 package com.finnect.crm.application.service.deal;
 
-import com.finnect.crm.application.port.in.cell.LoadDealWithCellUseCase;
+import com.finnect.crm.application.port.in.deal.LoadDealWithCellUseCase;
 import com.finnect.crm.application.port.out.column.LoadColumnCountPort;
 import com.finnect.crm.application.port.out.deal.LoadDealWithCellPort;
 import com.finnect.crm.domain.deal.DealCell;

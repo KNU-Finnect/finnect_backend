@@ -37,12 +37,20 @@ class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCoun
 
 
     @Override
-    public List<DataColumnState> loadDataColumnsOfCompany(Long workspaceId) {
-        return new ArrayList<>(dataColumnRepository.findAllByDType(workspaceId, DataType.COMPANY));
+    public List<DataColumn> loadDataColumnsOfCompany(Long workspaceId) {
+        return dataColumnRepository.findAllByDType(workspaceId, DataType.COMPANY)
+                .stream()
+                .map(DataColumnEntity::toDomain)
+                .toList();
     }
 
     @Override
     public int loadDealColumnCount(Long workspaceId) {
         return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.DEAL);
+    }
+
+    @Override
+    public int loadCompanyColumnCount(Long workspaceId) {
+        return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.COMPANY);
     }
 }

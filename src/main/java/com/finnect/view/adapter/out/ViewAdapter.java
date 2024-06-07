@@ -80,8 +80,8 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<View> loadDealViewsByWorkspaceId(Long workspaceId) {
-        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(workspaceId, DataType.DEAL);
+    public List<View> loadDealViewsByWorkspaceId(Long workspaceId, DataType dataType) {
+        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(workspaceId, dataType);
         return views.stream()
                 .map(ViewEntity::toDomain)
                 .toList();
@@ -90,6 +90,14 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
     @Override
     public View loaDefaultDealViewByWorkspaceId(Long workspaceId) {
         ViewEntity view = viewRepository.findByWorkspaceIdAndViewTypeAndIsMain(workspaceId, DataType.DEAL,
+                Boolean.TRUE).orElseThrow(() -> new IllegalArgumentException("Default View가 존재하지 않습니다."));
+        return view.toDomain();
+    }
+
+    @Override
+    public View loaDefaultCompanyViewByWorkspaceId(Long workspaceId) {
+
+        ViewEntity view = viewRepository.findByWorkspaceIdAndViewTypeAndIsMain(workspaceId, DataType.COMPANY,
                 Boolean.TRUE).orElseThrow(() -> new IllegalArgumentException("Default View가 존재하지 않습니다."));
         return view.toDomain();
     }

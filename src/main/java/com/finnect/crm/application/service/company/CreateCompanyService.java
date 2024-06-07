@@ -8,6 +8,7 @@ import com.finnect.crm.application.port.out.company.CheckCompanyQuery;
 import com.finnect.crm.application.port.out.company.SaveCompanyPort;
 import com.finnect.crm.domain.cell.state.DataRowState;
 import com.finnect.crm.domain.column.DataColumn;
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.crm.domain.company.CompanyState;
 import com.finnect.crm.domain.company.CompanyWithoutId;
 import com.finnect.workspace.application.port.out.CheckWorkspaceQuery;
@@ -36,6 +37,7 @@ class CreateCompanyService implements CreateCompanyUsecase {
         DataRowState dataRow = createNewRowUseCase.createNewDataRow(
                 DataColumn.builder()
                         .workspaceId(cmd.getWorkspaceId())
+                        .dType(DataType.COMPANY)
                         .build()
         );
 

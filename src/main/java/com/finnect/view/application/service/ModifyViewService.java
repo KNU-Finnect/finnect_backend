@@ -4,6 +4,7 @@ import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.view.application.port.in.ModifyViewUseCase;
 import com.finnect.view.application.port.out.LoadViewPort;
 import com.finnect.view.application.port.out.SaveViewPort;
+import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.ViewColumn;
 import com.finnect.view.domain.constant.SortCondition;
@@ -62,5 +63,26 @@ public class ModifyViewService implements ModifyViewUseCase {
     @Override
     public void deleteViewColumn(DataColumnState column) {
 
+    }
+
+    @Override
+    public void patchViewFilters(Long viewId, List<Filter> filters) {
+        var view = loadViewPort.loadView(View.builder().viewId(viewId).build());
+
+        view.setFilter(filters);
+        saveViewPort.saveViews(new ArrayList<>(List.of(view)));
+    }
+
+    @Override
+    public void patchViewColumn(Long viewId, ViewColumn viewColumn) {
+        var view = loadViewPort.loadView(View.builder().viewId(viewId).build());
+
+        var column = (ViewColumn) view.getViewColumns()
+                .stream()
+                .filter(vc -> vc.getColumnId().equals(viewColumn.getColumnId()))
+        .findFirst().orElseThrow(() -> new IllegalArgumentException("Column Id가 일치하지 않습니다."));
+        column.updateColumnInfo(viewColumn);
+        log.info(view.toString());
+        saveViewPort.saveViews(new ArrayList<>(List.of(view)));
     }
 }

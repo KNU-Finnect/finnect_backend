@@ -63,7 +63,7 @@ class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
 
     @Override
     public void saveNewCellByNewRow(DataColumnState column, DataRowState dataRow) {
-        List<DataColumnEntity> columnEntities = dataColumnRepository.findDataColumnEntitiesByWorkspaceId(column.getWorkspaceId());
+        List<DataColumnEntity> columnEntities = dataColumnRepository.findAllByDType(column.getWorkspaceId(), column.getDType());
         log.info(columnEntities.toString());
         List<DataCellEntity> cellEntities = columnEntities.stream()
                 .map(dataColumnEntity -> DataCellEntity.builder()

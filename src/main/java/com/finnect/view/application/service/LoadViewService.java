@@ -1,6 +1,7 @@
 package com.finnect.view.application.service;
 
 import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.view.application.port.in.LoadViewUseCase;
 import com.finnect.view.application.port.out.LoadViewPort;
 import com.finnect.view.domain.Filter;
@@ -20,11 +21,9 @@ public class LoadViewService implements LoadViewUseCase {
     private final LoadViewPort loadViewPort;
     private final LoadDataColumnPort loadDataColumnPort;
     @Override
-    public ViewDetail loadViewInfo(View view, List<Filter> filters) {
+    public ViewDetail loadViewInfo(View view) {
         view = loadViewPort.loadView(view);
-        view.appendFilter(filters);
-        var columns = loadDataColumnPort.loadDataColumnsOfDeal(view.getWorkspaceId());
-
+        var columns = loadDataColumnPort.loadDataColumnsOfCompany(view.getWorkspaceId());
         return ViewDetail
                 .builder()
                 .view(view)
@@ -33,8 +32,14 @@ public class LoadViewService implements LoadViewUseCase {
     }
 
     @Override
-    public List<ViewState> loadViewList(Long workspaceId) {
-        return new ArrayList<>(loadViewPort.loadDealViewsByWorkspaceId(workspaceId));
+    public List<ViewState> loadDealViewList(Long workspaceId) {
+        return new ArrayList<>(loadViewPort.loadDealViewsByWorkspaceId(workspaceId, DataType.DEAL));
+    }
+
+    @Override
+    public List<ViewState> loadCompanyViewList(Long workspaceId) {
+
+        return new ArrayList<>(loadViewPort.loadDealViewsByWorkspaceId(workspaceId, DataType.COMPANY));
     }
 
     @Override
@@ -47,5 +52,17 @@ public class LoadViewService implements LoadViewUseCase {
                 .view(view)
                 .dataColumns(columns)
             .build();
+    }
+
+    @Override
+    public ViewDetail loadCompanyDefaultView(Long workspaceId) {
+        var view = loadViewPort.loaDefaultCompanyViewByWorkspaceId(workspaceId);
+        log.info(String.valueOf(view));
+        var columns = loadDataColumnPort.loadDataColumnsOfCompany(view.getWorkspaceId());
+        log.info(String.valueOf(columns));
+        return ViewDetail.builder()
+                .view(view)
+                .dataColumns(columns)
+                .build();
     }
 }

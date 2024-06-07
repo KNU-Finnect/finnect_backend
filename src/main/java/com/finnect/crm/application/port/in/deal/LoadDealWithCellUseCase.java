@@ -1,4 +1,4 @@
-package com.finnect.crm.application.port.in.cell;
+package com.finnect.crm.application.port.in.deal;
 
 import com.finnect.crm.domain.deal.DealCell;
 import com.finnect.view.domain.state.FilterState;

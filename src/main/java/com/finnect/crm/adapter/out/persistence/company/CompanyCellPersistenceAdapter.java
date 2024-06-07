@@ -1,8 +1,8 @@
-package com.finnect.crm.adapter.out.persistence.deal;
+package com.finnect.crm.adapter.out.persistence.company;
 
 import com.finnect.crm.adapter.out.persistence.cell.DataCellEntity;
-import com.finnect.crm.application.port.out.deal.LoadDealWithCellPort;
-import com.finnect.crm.domain.deal.DealCell;
+import com.finnect.crm.application.port.out.company.LoadCompanyWithCellPort;
+import com.finnect.crm.domain.company.CompanyCell;
 import com.finnect.view.domain.state.FilterState;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -19,14 +19,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-class DealCellPersistenceAdapter implements LoadDealWithCellPort {
+public class CompanyCellPersistenceAdapter implements LoadCompanyWithCellPort {
+
     @PersistenceContext
     private final EntityManager em;
-
     private final int BATCH_SIZE = 10;
+
     @Override
-    public List<DealCell> loadDealsWithCellsByFilter(List<FilterState> filters, final int startPage, final int columnCount) {
-        log.info("QUERYH");
+    public List<CompanyCell> loadCompaniesWithCellsByFilter(List<FilterState> filters, int startPage,
+                                                            int columnCount) {
         String queryString = generateQuery(filters);
         log.info(queryString);
         TypedQuery<Object[]> query = em.createQuery(generateQuery(filters), Object[].class);
@@ -43,11 +44,11 @@ class DealCellPersistenceAdapter implements LoadDealWithCellPort {
     }
 
     private String generateQuery(List<FilterState> filters){
-
+        log.info("filter : " + filters);
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("SELECT d, c ")
-                .append("FROM deal d ")
-                .append("JOIN FETCH data_cell c ON d.dataRowId = c.cellId.dataRowId ");
+        queryBuilder.append("SELECT co, c ")
+                .append("FROM company co ")
+                .append("JOIN FETCH data_cell c ON co.dataRowId = c.cellId.dataRowId ");
 
         int valueIndex = 0;
         if (filters != null && !filters.isEmpty()) {
@@ -87,17 +88,16 @@ class DealCellPersistenceAdapter implements LoadDealWithCellPort {
 
     }
 
-    private List<DealCell> toDomain(List<Object[]> objects){
-        Map<Long, DealCell> dealMap = new HashMap<>();
+    private List<CompanyCell> toDomain(List<Object[]> objects){
+        Map<Long, CompanyCell> companyMap = new HashMap<>();
         for(Object[] object : objects){
-            DealEntity deal = (DealEntity) object[0];
+            CompanyEntity company = (CompanyEntity) object[0];
             DataCellEntity cell = (DataCellEntity) object[1];
-            if(!dealMap.containsKey(deal.getDataRowId())){
-                dealMap.put(deal.getDataRowId(), new DealCell(deal.getDealId(), deal.getCompanyId(), deal.getDealName()));
-            }
-            DealCell dealCell = dealMap.get(deal.getDataRowId());
-            dealCell.addCell(cell);
+            companyMap.putIfAbsent(company.getDataRowId(), new CompanyCell(company.getCompanyId(), company.getCompanyName(), company.getDomain()));
+
+            CompanyCell companyCell = companyMap.get(company.getDataRowId());
+            companyCell.addCell(cell);
         }
-        return dealMap.values().stream().toList();
+        return companyMap.values().stream().toList();
     }
 }

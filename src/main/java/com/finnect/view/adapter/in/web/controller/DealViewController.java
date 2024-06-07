@@ -102,7 +102,7 @@ public class DealViewController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<SimpleViewInfosResponse>> getViewList(
     ){
-        var views = loadViewUseCase.loadViewList(
+        var views = loadViewUseCase.loadDealViewList(
                 WorkspaceAuthority.from(SecurityContextHolder
                         .getContext()
                         .getAuthentication()

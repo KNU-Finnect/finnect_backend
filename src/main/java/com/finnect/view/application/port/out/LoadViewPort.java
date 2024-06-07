@@ -1,5 +1,6 @@
 package com.finnect.view.application.port.out;
 
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.state.ViewState;
@@ -14,7 +15,7 @@ public interface LoadViewPort {
 
     List<View> loadViewsByColumn(DataColumnState columns);
 
-    List<View> loadDealViewsByWorkspaceId(Long workspaceId);
+    List<View> loadDealViewsByWorkspaceId(Long workspaceId, DataType dataType);
 
     View loaDefaultDealViewByWorkspaceId(Long workspaceId);
 }

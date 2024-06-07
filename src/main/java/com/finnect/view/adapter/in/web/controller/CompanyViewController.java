@@ -6,6 +6,7 @@ import com.finnect.crm.application.port.in.company.LoadCompanyWithCellUseCase;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.FilterRequest;
 import com.finnect.view.adapter.in.web.res.CompanyViewInfoResponse;
+import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;
 import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.application.port.in.LoadViewUseCase;
 import com.finnect.view.domain.View;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +31,19 @@ public class CompanyViewController {
     private final LoadViewUseCase loadViewUseCase;
     private final LoadCompanyWithCellUseCase loadCompanyWithCellUseCase;
 
-
+    @GetMapping("/workspaces/companies/views")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResult<SimpleViewInfosResponse>> getViewList(
+    ){
+        var views = loadViewUseCase.loadCompanyViewList(
+                WorkspaceAuthority.from(SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getAuthorities()).workspaceId().value()
+        );
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new SimpleViewInfosResponse(views))
+                , HttpStatus.OK);
+    }
     @GetMapping("/workspaces/companies/views/{viewId}")
     public ResponseEntity<ApiResult<CompanyViewInfoResponse>> getView(
             @PathVariable Long viewId,

@@ -7,7 +7,7 @@ import com.finnect.view.domain.state.ViewState;
 import java.util.List;
 
 public interface LoadViewUseCase {
-    ViewDetail loadViewInfo(View view, List<Filter> filters);
+    ViewDetail loadViewInfo(View view);
 
     List<ViewState> loadViewList(Long workspaceId);
 

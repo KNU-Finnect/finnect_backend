@@ -82,9 +82,23 @@ public class DealViewController {
     @GetMapping("/workspaces/deals/views/origin")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<DealViewInfoResponse>> getDefaultDealView(
+            @RequestParam(required = true) int page
     ){
-
-        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, null)
+        log.info(String.valueOf(WorkspaceAuthority.from(SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()).workspaceId().value()));
+        ViewDetail viewDetail = loadViewUseCase.loadDealDefaultView(
+                        WorkspaceAuthority.from(SecurityContextHolder
+                            .getContext()
+                            .getAuthentication()
+                            .getAuthorities()).workspaceId().value());
+        List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(
+                WorkspaceAuthority.from(SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getAuthorities()).workspaceId().value(), null, page);
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new DealViewInfoResponse(viewDetail, dealCells))
                 , HttpStatus.OK);
     }
 

@@ -25,6 +25,8 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
     public DataColumnState createNewColumn(DataColumn dataColumn) {
         log.info(dataColumn.toString());
         dataColumn = saveDataColumnPort.saveColumn(dataColumn);
+
+        modifyViewUseCase.addViewColumn(dataColumn);
         saveCellPort.saveNewCellByNewColumn(dataColumn);
         return dataColumn;
     }

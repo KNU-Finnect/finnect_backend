@@ -12,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,11 @@ import java.util.List;
 public class InviteMembersService implements InviteMembersUsecase {
 
     private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine templateEngine;
+
+    private static String username = "김아무개";
+    private static String workspaceName = "네이버의 워크스페이스";
+    private static String invitaionUrl = "https://localhost:8080";
 
     @Override
     public List<InvitationState> inviteMembers(List<InviteMembersCommand> cmds) {
@@ -45,9 +52,16 @@ public class InviteMembersService implements InviteMembersUsecase {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
+                Context context = new Context();
+                context.setVariable("username", username);
+                context.setVariable("workspace_name", workspaceName);
+                context.setVariable("invite_url", invitaionUrl);
+
                 helper.setTo(receiver);
                 helper.setSubject("[Finnect] 귀하를 워크스페이스에 초대합니다.");
-                helper.setText("test body");
+
+                String htmlContent = templateEngine.process("email", context);
+                helper.setText(htmlContent, true);
             }
         };
 

@@ -32,9 +32,8 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
     @Override
     public void createDefaultColumn(Long workspaceId) {
         List<DataColumn> defaultDealColumns = getDefaultColumns(workspaceId);
-        saveDataColumnPort.saveColumns(new ArrayList<>(defaultDealColumns));
+        defaultDealColumns = saveDataColumnPort.saveColumns(new ArrayList<>(defaultDealColumns));
         modifyViewUseCase.addViewColumns(new ArrayList<>(defaultDealColumns));
-
     }
     private List<DataColumn> getDefaultColumns(Long workspaceId){
         List<DataColumn> defaultColumns = generateDefaultDealColumns(workspaceId);

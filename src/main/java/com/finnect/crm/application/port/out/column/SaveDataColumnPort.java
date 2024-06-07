@@ -7,5 +7,5 @@ import java.util.List;
 public interface SaveDataColumnPort {
     DataColumn saveColumn(DataColumnState column);
 
-    void saveColumns(List<DataColumnState> columns);
+    List<DataColumn> saveColumns(List<DataColumnState> columns);
 }

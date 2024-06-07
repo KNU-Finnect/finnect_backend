@@ -1,5 +1,6 @@
 package com.finnect.crm.adapter.out.persistence.company;
 
+import com.finnect.common.error.NotFoundException;
 import com.finnect.crm.application.port.out.company.LoadCompanyPort;
 import com.finnect.crm.application.port.out.company.SaveCompanyPort;
 import com.finnect.crm.application.port.out.company.SearchCompanyPort;
@@ -29,7 +30,9 @@ class CompanyPersistenceAdapter
 
     @Override
     public CompanyState loadById(Long companyId) {
-        return null;
+        return companyRepository.findById(companyId).orElseThrow(
+                () -> new NotFoundException("존재하지 않는 company입니다.")
+        );
     }
 
     @Override

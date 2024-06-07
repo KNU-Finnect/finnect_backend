@@ -17,7 +17,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResult<String>> runtimeExceptionHandler(RuntimeException e) {
         log.error(e.toString());
-
+        log.error(String.valueOf(e.getCause()));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiUtils.fail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 
@@ -25,6 +25,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<ApiResult<String>> illegalStateExceptionHandler(IllegalStateException e) {
         log.error(e.toString());
 
+        log.error(String.valueOf(e.getCause()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiUtils.fail(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
@@ -32,6 +33,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<ApiResult<String>> notFoundExceptionHandler(NotFoundException e) {
         log.error(e.toString());
 
+        log.error(String.valueOf(e.getCause()));
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiUtils.fail(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 

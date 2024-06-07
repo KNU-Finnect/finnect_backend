@@ -52,7 +52,7 @@ public class WorkspaceController {
                 .build();
 
         WorkspaceState state = createWorkspaceUsecase.createWorkspace(workspaceCommand);
-
+        System.out.println("state.getWorkspaceName()");
         WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
 
         CreateWorkspaceResponse createWorkspaceResponse = new CreateWorkspaceResponse(workspaceWithoutIdDto);

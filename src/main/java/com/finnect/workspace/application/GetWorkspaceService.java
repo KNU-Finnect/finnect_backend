@@ -1,7 +1,7 @@
 package com.finnect.workspace.application;
 
 import com.finnect.workspace.domain.state.WorkspaceState;
-import com.finnect.workspace.application.port.in.GetWorkspacesQuery;
+import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class GetWorkspacesService implements GetWorkspacesQuery {
+public class GetWorkspaceService implements GetWorkspaceQuery {
 
     private final GetWorkspacesPort getWorkspacesPort;
 

@@ -20,9 +20,8 @@ public class LoadViewService implements LoadViewUseCase {
     private final LoadViewPort loadViewPort;
     private final LoadDataColumnPort loadDataColumnPort;
     @Override
-    public ViewDetail loadViewInfo(View view, List<Filter> filters) {
+    public ViewDetail loadViewInfo(View view) {
         view = loadViewPort.loadView(view);
-        view.appendFilter(filters);
         var columns = loadDataColumnPort.loadDataColumnsOfDeal(view.getWorkspaceId());
 
         return ViewDetail

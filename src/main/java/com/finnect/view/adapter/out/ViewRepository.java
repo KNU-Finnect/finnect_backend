@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ViewRepository extends JpaRepository<ViewEntity, Long> {
 
-    ViewEntity findViewEntityByWorkspaceIdAndViewType(Long workspaceId, DataType dType);
-
     List<ViewEntity> findViewEntitiesByWorkspaceIdAndViewType(Long workspaceId, DataType dType);
+    ViewEntity findByWorkspaceIdAndViewType(Long workspaceId, DataType dType);
 }

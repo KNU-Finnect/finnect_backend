@@ -2,7 +2,7 @@ package com.finnect.view.adapter.in.web.controller;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.crm.application.port.in.cell.LoadDealWithCellUseCase;
+import com.finnect.crm.application.port.in.deal.LoadDealWithCellUseCase;
 import com.finnect.crm.domain.deal.DealCell;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.CreateViewRequest;

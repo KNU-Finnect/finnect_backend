@@ -15,4 +15,6 @@ public interface LoadViewPort {
     List<View> loadViewsByColumn(DataColumnState columns);
 
     List<View> loadDealViewsByWorkspaceId(Long workspaceId);
+
+    View loaDefaultDealViewByWorkspaceId(Long workspaceId);
 }

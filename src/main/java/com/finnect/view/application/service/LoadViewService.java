@@ -53,4 +53,16 @@ public class LoadViewService implements LoadViewUseCase {
                 .dataColumns(columns)
             .build();
     }
+
+    @Override
+    public ViewDetail loadCompanyDefaultView(Long workspaceId) {
+        var view = loadViewPort.loaDefaultCompanyViewByWorkspaceId(workspaceId);
+        log.info(String.valueOf(view));
+        var columns = loadDataColumnPort.loadDataColumnsOfCompany(view.getWorkspaceId());
+        log.info(String.valueOf(columns));
+        return ViewDetail.builder()
+                .view(view)
+                .dataColumns(columns)
+                .build();
+    }
 }

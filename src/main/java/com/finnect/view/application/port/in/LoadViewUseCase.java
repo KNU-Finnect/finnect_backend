@@ -12,6 +12,7 @@ public interface LoadViewUseCase {
 
     List<ViewState> loadCompanyViewList(Long workspaceId);
 
-
     ViewDetail loadDealDefaultView(Long workspaceId);
+
+    ViewDetail loadCompanyDefaultView(Long workspaceId);
 }

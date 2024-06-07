@@ -86,4 +86,12 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
                 .map(ViewEntity::toDomain)
                 .toList();
     }
+
+    @Override
+    public View loaDefaultDealViewByWorkspaceId(Long workspaceId) {
+        ViewEntity view = viewRepository.findByWorkspaceIdAndViewTypeAndIsMain(workspaceId, DataType.DEAL,
+                Boolean.TRUE).orElseThrow(() -> new IllegalArgumentException("Default View가 존재하지 않습니다."));
+        return view.toDomain();
+    }
+
 }

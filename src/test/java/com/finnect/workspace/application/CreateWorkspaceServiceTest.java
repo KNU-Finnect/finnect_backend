@@ -1,7 +1,7 @@
 package com.finnect.workspace.application;
 
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
-import com.finnect.user.application.port.in.CheckDefaultWorkspaceUseCase;
+import com.finnect.user.application.port.in.CheckDefaultWorkspaceQuery;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.application.port.in.CreateWorkspaceCommand;
 import com.finnect.workspace.application.port.out.CreateWorkspacePort;
@@ -19,7 +19,8 @@ import static org.mockito.Mockito.*;
 public class CreateWorkspaceServiceTest {
     @Mock CreateWorkspacePort createWorkspacePort;
     @Mock ChangeDefaultWorkspaceUseCase changeDefaultWorkspaceUseCase;
-    @Mock CheckDefaultWorkspaceUseCase checkDefaultWorkspaceUseCase;
+    @Mock
+    CheckDefaultWorkspaceQuery checkDefaultWorkspaceQuery;
 
     @InjectMocks
     CreateWorkspaceService service;

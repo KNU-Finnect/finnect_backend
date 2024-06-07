@@ -8,9 +8,11 @@ import com.finnect.workspace.domain.Workspace;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 @Getter
 public class RenameWorkspaceService implements RenameWorkspaceUsecase {
 

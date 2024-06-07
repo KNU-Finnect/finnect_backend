@@ -38,8 +38,18 @@ public class UserPersistenceAdapter implements CreateUserPort, ExistsUserPort, L
 
 
     @Override
+    public boolean existsUserById(UserId userId) {
+        return userRepository.existsById(userId.value());
+    }
+
+    @Override
     public boolean existsUserByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
 

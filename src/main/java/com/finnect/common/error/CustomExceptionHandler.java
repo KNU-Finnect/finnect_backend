@@ -57,4 +57,12 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiUtils.fail(HttpStatus.UNAUTHORIZED, e.getMessage()));
     }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResult<String>> customExceptionHandler(CustomException e) {
+        log.error(e.toString());
+
+        return ResponseEntity.status(e.getStatus())
+                .body(ApiUtils.fail(e.getStatus(), e.getMessage()));
+    }
 }

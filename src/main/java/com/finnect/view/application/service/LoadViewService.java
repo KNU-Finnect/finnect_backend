@@ -22,8 +22,7 @@ public class LoadViewService implements LoadViewUseCase {
     @Override
     public ViewDetail loadViewInfo(View view) {
         view = loadViewPort.loadView(view);
-        var columns = loadDataColumnPort.loadDataColumnsOfDeal(view.getWorkspaceId());
-
+        var columns = loadDataColumnPort.loadDataColumnsOfCompany(view.getWorkspaceId());
         return ViewDetail
                 .builder()
                 .view(view)

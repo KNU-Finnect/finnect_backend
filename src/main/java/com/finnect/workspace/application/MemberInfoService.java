@@ -11,9 +11,11 @@ import com.finnect.workspace.domain.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 @Getter
 public class MemberInfoService implements CreateMemberUsecase, UpdateMemberUsecase {
 

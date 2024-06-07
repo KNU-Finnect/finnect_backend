@@ -5,11 +5,13 @@ import com.finnect.workspace.application.port.in.GetWorkspacesQuery;
 import com.finnect.workspace.application.port.out.GetWorkspacesPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class GetWorkspacesService implements GetWorkspacesQuery {
 
     private final GetWorkspacesPort getWorkspacesPort;

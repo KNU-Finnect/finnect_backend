@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Getter
+@Transactional
 @Slf4j
 public class CreateWorkspaceService implements CreateWorkspaceUsecase {
 

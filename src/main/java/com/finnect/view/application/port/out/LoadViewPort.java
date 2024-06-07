@@ -18,4 +18,6 @@ public interface LoadViewPort {
     List<View> loadDealViewsByWorkspaceId(Long workspaceId, DataType dataType);
 
     View loaDefaultDealViewByWorkspaceId(Long workspaceId);
+
+    View loaDefaultCompanyViewByWorkspaceId(Long workspaceId);
 }

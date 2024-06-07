@@ -49,6 +49,7 @@ public class DealViewController {
     }
 
     @GetMapping("/workspaces/deals/views/{viewId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<DealViewInfoResponse>> getView(
             @PathVariable Long viewId,
             @RequestParam(required = false) List<FilterRequest> filters,
@@ -67,13 +68,19 @@ public class DealViewController {
                 filterList);
 
         log.info(viewDetail.toString());
-        List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(1L, viewDetail.getFilters(), page);
+        List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(
+                WorkspaceAuthority.from(SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getAuthorities()).workspaceId().value()
+                , viewDetail.getFilters(), page);
 
         return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new DealViewInfoResponse(viewDetail, dealCells))
                 , HttpStatus.OK);
     }
 
     @GetMapping("/workspaces/deals/views/origin")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<DealViewInfoResponse>> getDefaultDealView(
     ){
 

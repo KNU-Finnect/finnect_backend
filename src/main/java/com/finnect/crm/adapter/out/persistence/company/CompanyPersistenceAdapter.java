@@ -1,6 +1,7 @@
 package com.finnect.crm.adapter.out.persistence.company;
 
 import com.finnect.common.error.NotFoundException;
+import com.finnect.crm.application.port.out.company.CheckQuery;
 import com.finnect.crm.application.port.out.company.LoadCompanyPort;
 import com.finnect.crm.application.port.out.company.SaveCompanyPort;
 import com.finnect.crm.application.port.out.company.SearchCompanyPort;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 class CompanyPersistenceAdapter
-        implements SaveCompanyPort, SearchCompanyPort ,
-        LoadCompanyPort {
+        implements SaveCompanyPort, SearchCompanyPort, LoadCompanyPort, CheckQuery {
 
     private final CompanyRepository companyRepository;
 
@@ -39,5 +39,11 @@ class CompanyPersistenceAdapter
     public List<CompanyState> loadCompaniesByWorkspaceId(Long workspaceId) {
         List<CompanyEntity> companies = companyRepository.findCompanyEntitiesByWorkspaceId(workspaceId);
         return new ArrayList<>(companies);
+    }
+
+
+    @Override
+    public boolean checkCompanyExists(Long companyId) {
+        return companyRepository.existsById(companyId);
     }
 }

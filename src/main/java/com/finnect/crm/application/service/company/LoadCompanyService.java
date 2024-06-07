@@ -7,6 +7,7 @@ import com.finnect.crm.application.port.out.column.LoadDataColumnPort;
 import com.finnect.crm.application.port.out.company.LoadCompanyPort;
 import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.column.ColumnType;
+import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.company.CompanyDetail;
 import com.finnect.crm.domain.company.CompanyState;
@@ -37,8 +38,7 @@ public class LoadCompanyService implements LoadCompanyUseCase {
     @Override
     public CompanyDetail loadCompanyDetail(Long companyId) {
         CompanyState loadedState = loadCompanyPort.loadById(companyId);
-
-        List<DataColumnState> columnStates = loadDataColumnPort.loadDataColumnsOfCompany(loadedState.getWorkspaceId());
+        List<DataColumn> columnStates = loadDataColumnPort.loadDataColumnsOfCompany(loadedState.getWorkspaceId());
         Map<Long, String> columnNameMap = columnStates.stream()
                 .collect(Collectors.toMap(DataColumnState::getColumnId, DataColumnState::getColumnName));
         Map<Long, ColumnType> columnTypeMap = columnStates.stream()

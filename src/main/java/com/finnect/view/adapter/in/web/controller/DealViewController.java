@@ -32,18 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 public class DealViewController {
-    private final CreateViewUseCase createViewUseCase;
     private final LoadViewUseCase loadViewUseCase;
     private final LoadDealWithCellUseCase loadDealWithCellUseCase;
-    @PostMapping("/workspaces/views")
-    public ResponseEntity<ApiResult<CreateViewResponse>> createView(@RequestBody CreateViewRequest request){
 
-        log.info(request.toString());
-        ViewState newView = createViewUseCase.createNewView(request.toDomain());
-        return new ResponseEntity<>(
-                ApiUtils.success(HttpStatus.CREATED, new CreateViewResponse(newView)),
-                HttpStatus.CREATED);
-    }
 
     @GetMapping("/workspaces/deals/views/{viewId}")
     @PreAuthorize("isAuthenticated()")

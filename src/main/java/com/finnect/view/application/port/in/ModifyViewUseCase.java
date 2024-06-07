@@ -2,6 +2,7 @@ package com.finnect.view.application.port.in;
 
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.view.domain.Filter;
+import com.finnect.view.domain.ViewColumn;
 import java.util.List;
 
 public interface ModifyViewUseCase {
@@ -13,4 +14,5 @@ public interface ModifyViewUseCase {
     void deleteViewColumn(DataColumnState column);
 
     void patchViewFilters(Long viewId, List<Filter> filters);
+    void patchViewColumn(Long viewId, ViewColumn viewColumn);
 }

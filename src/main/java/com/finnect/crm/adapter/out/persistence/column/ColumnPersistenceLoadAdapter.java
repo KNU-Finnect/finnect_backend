@@ -48,4 +48,9 @@ class ColumnPersistenceLoadAdapter implements LoadDataColumnPort, LoadColumnCoun
     public int loadDealColumnCount(Long workspaceId) {
         return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.DEAL);
     }
+
+    @Override
+    public int loadCompanyColumnCount(Long workspaceId) {
+        return dataColumnRepository.countDataColumnEntitiesByWorkspaceIdAndDType(workspaceId, DataType.COMPANY);
+    }
 }

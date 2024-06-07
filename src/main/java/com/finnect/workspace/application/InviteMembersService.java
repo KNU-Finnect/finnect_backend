@@ -28,12 +28,14 @@ public class InviteMembersService implements InviteMembersUsecase {
 
         List<InvitationState> invitations = new ArrayList<>();
 
+        String workspaceName = getWorkspaceQuery.getWorkspace(cmds.get(0).getWorkspaceId()).getWorkspaceName();
+
         // SMTP로 이메일 전송
         for (InviteMembersCommand cmd : cmds) {
             Invitation invitation = Invitation.of(
                     cmd.getEmail(),
                     "임의의 이름",
-                    getWorkspaceQuery.getWorkspace(cmd.getWorkspaceId()).getWorkspaceName()
+                    workspaceName
             );
 
             invitation.sendEmail(javaMailSender, templateEngine);

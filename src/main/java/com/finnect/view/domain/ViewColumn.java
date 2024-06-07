@@ -40,4 +40,10 @@ public class ViewColumn implements ViewColumnState {
     public Boolean isHided() {
         return this.hided;
     }
+
+    public void updateColumnInfo(ViewColumn viewColumn){
+        this.index = viewColumn.getIndex();
+        this.hided = viewColumn.isHided();
+        this.sorting = viewColumn.getSort();
+    }
 }

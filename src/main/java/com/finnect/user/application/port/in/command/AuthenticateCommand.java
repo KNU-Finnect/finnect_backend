@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticateCommand extends SelfValidating<AuthenticateCommand> {
 
     @NonNull
-    private String username;
+    private final String username;
 
     @NonNull
-    private String password;
+    private final String password;
 }

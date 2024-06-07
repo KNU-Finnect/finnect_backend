@@ -12,7 +12,6 @@ import com.finnect.crm.domain.company.CompanyState;
 import com.finnect.crm.domain.company.CompanyWithoutId;
 import com.finnect.workspace.application.port.out.CheckQuery;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

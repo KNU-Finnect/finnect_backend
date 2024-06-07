@@ -67,11 +67,8 @@ public class View implements ViewState {
         return this.dType;
     }
 
-    public void appendFilter(List<Filter> filters){
-        if (filters.isEmpty()) {
-            this.viewColumns = new ArrayList<>();
-        }
-        this.filters.addAll(filters);
+    public void setFilter(List<Filter> filters){
+        this.filters = filters;
     }
 
     public void appendViewColumn(List<ViewColumn> viewColumns){

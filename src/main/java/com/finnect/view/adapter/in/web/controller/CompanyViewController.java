@@ -3,6 +3,7 @@ package com.finnect.view.adapter.in.web.controller;
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.crm.application.port.in.company.LoadCompanyWithCellUseCase;
+import com.finnect.crm.domain.company.CompanyCell;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.FilterRequest;
 import com.finnect.view.adapter.in.web.res.CompanyViewInfoResponse;
@@ -44,6 +45,31 @@ public class CompanyViewController {
         return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new SimpleViewInfosResponse(views))
                 , HttpStatus.OK);
     }
+
+    @GetMapping("/workspaces/companies/views/origin")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResult<CompanyViewInfoResponse>> getDefaultDealView(
+            @RequestParam(required = true) int page
+    ){
+        log.info(String.valueOf(WorkspaceAuthority.from(SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()).workspaceId().value()));
+        ViewDetail viewDetail = loadViewUseCase.loadCompanyDefaultView(
+                WorkspaceAuthority.from(SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getAuthorities()).workspaceId().value());
+        List<CompanyCell> companyCells = loadCompanyWithCellUseCase.loadCompanyWithCell(
+                WorkspaceAuthority.from(SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getAuthorities()).workspaceId().value(),
+                viewDetail.getFilters(), page);
+        return new ResponseEntity<>(ApiUtils.success(HttpStatus.OK, new CompanyViewInfoResponse(viewDetail, companyCells))
+                , HttpStatus.OK);
+    }
+
     @GetMapping("/workspaces/companies/views/{viewId}")
     public ResponseEntity<ApiResult<CompanyViewInfoResponse>> getView(
             @PathVariable Long viewId,

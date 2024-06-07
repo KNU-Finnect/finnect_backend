@@ -34,7 +34,7 @@ public class WorkspaceController {
     private final CreateWorkspaceUsecase createWorkspaceUsecase;
     private final RenameWorkspaceUsecase renameWorkspaceUsecase;
     private final InviteMembersUsecase inviteMembersUsecase;
-    private final GetWorkspacesQuery getWorkspacesQuery;
+    private final GetWorkspaceQuery getWorkspaceQuery;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces")
@@ -93,7 +93,7 @@ public class WorkspaceController {
             throw new RuntimeException("토큰에 사용자 ID가 누락되었습니다.");
         }
 
-        List<WorkspaceDto> workspaceStates = getWorkspacesQuery.getWorkspaces(userId)
+        List<WorkspaceDto> workspaceStates = getWorkspaceQuery.getWorkspaces(userId)
                 .stream()
                 .map(WorkspaceDto::new)
                 .collect(Collectors.toList());

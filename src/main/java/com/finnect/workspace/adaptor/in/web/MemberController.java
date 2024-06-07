@@ -79,6 +79,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, findMembersResponse));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping
     ResponseEntity<ApiResult<UpdateMemberResponse>> updateMember(@RequestBody UpdateMemberRequest request) {
         Long userId;

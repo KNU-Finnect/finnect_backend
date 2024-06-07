@@ -4,7 +4,9 @@ import com.finnect.workspace.domain.state.WorkspaceState;
 
 import java.util.List;
 
-public interface GetWorkspacesQuery {
+public interface GetWorkspaceQuery {
+
+    WorkspaceState getWorkspace(Long workspaceId);
 
     List<WorkspaceState> getWorkspaces(Long userId);
 }

@@ -6,17 +6,14 @@ import com.finnect.crm.application.port.in.deal.LoadDealWithCellUseCase;
 import com.finnect.crm.domain.deal.DealCell;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.CreateViewRequest;
-import com.finnect.view.adapter.in.web.req.FilterRequest;
 import com.finnect.view.adapter.in.web.res.CreateViewResponse;
-import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;
 import com.finnect.view.adapter.in.web.res.DealViewInfoResponse;
+import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;
 import com.finnect.view.application.port.in.CreateViewUseCase;
 import com.finnect.view.application.port.in.LoadViewUseCase;
-import com.finnect.view.domain.Filter;
 import com.finnect.view.domain.View;
 import com.finnect.view.domain.ViewDetail;
 import com.finnect.view.domain.state.ViewState;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,20 +49,19 @@ public class DealViewController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<DealViewInfoResponse>> getView(
             @PathVariable Long viewId,
-            @RequestParam(required = false) List<FilterRequest> filters,
             @RequestParam(required = true) int page
     ){
-        List<Filter> filterList = (filters == null) ? Collections.emptyList() : filters.stream()
-                .map((filter) -> Filter.builder()
-                        .columnId(filter.getColumnId())
-                        .value(filter.getValue())
-                        .filterCondition(filter.getFilterCondition())
-                        .build())
-                .toList();
+//        List<Filter> filterList = (filters == null) ? Collections.emptyList() : filters.stream()
+//                .map((filter) -> Filter.builder()
+//                        .columnId(filter.getColumnId())
+//                        .value(filter.getValue())
+//                        .filterCondition(filter.getFilterCondition())
+//                        .build())
+//                .toList();
         ViewDetail viewDetail = loadViewUseCase.loadViewInfo(View.builder()
                         .viewId(viewId)
-                        .build(),
-                filterList);
+                        .build()
+        );
 
         log.info(viewDetail.toString());
         List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(

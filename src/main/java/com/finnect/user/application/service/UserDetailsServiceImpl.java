@@ -1,6 +1,6 @@
 package com.finnect.user.application.service;
 
-import com.finnect.user.application.port.in.GetNameUseCase;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.in.UserDetailsQuery;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.error.UserNotFoundException;
@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsQuery, GetNameUseCase {
+public class UserDetailsServiceImpl implements UserDetailsQuery, GetPersonalNameQuery {
 
     private final LoadUserPort loadUserPort;
 
@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsQuery, GetNameUseCase 
     }
 
     @Override
-    public String getNameById(UserId userId) {
+    public String getPersonalName(UserId userId) {
         User user = User.from(loadUserPort.loadUser(userId));
 
         return user.getLastName() + user.getFirstName();

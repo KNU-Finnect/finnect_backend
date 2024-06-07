@@ -3,6 +3,7 @@ package com.finnect.workspace.domain;
 import com.finnect.workspace.domain.state.InvitationState;
 import jakarta.mail.internet.MimeMessage;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE) @Builder(access = PRIVATE)
 @Getter
+@Slf4j
 public class Invitation implements InvitationState {
     private String receiver;
     private Boolean succeed;
@@ -25,6 +27,7 @@ public class Invitation implements InvitationState {
     public static Invitation of(String receiverEmail, String senderName, String workspaceName) {
         return Invitation.builder()
                 .receiver(receiverEmail)
+                .succeed(Boolean.FALSE)
                 .sender(senderName)
                 .workspaceName(workspaceName)
                 .build();
@@ -54,7 +57,7 @@ public class Invitation implements InvitationState {
         try {
             javaMailSender.send(perparator);
         } catch (MailException e) {
-            updateResult(Boolean.FALSE);
+            log.info(receiver + "에 대한 초대를 실패했습니다.");
             return;
         }
         updateResult(Boolean.TRUE);

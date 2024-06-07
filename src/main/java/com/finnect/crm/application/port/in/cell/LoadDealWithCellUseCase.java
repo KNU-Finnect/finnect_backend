@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LoadDealWithCellUseCase {
 
-    List<DealCell> loadDealWithCell(Long workspaceId, List<FilterState> filters, int page);
+    List<DealCell> loadDealWithCell(Long workspaceId, List<FilterState> filters, Integer page);
 }

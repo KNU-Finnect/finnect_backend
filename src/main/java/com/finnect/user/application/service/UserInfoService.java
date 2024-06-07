@@ -3,6 +3,7 @@ package com.finnect.user.application.service;
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.ChangePasswordUseCase;
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceQuery;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.in.command.ChangeDefaultWorkspaceCommand;
 import com.finnect.user.application.port.in.command.ChangePasswordCommand;
 import com.finnect.user.application.port.out.LoadUserPort;
@@ -14,8 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserInfoService implements ChangePasswordUseCase, CheckDefaultWorkspaceQuery, ChangeDefaultWorkspaceUseCase {
-
+public class UserInfoService implements
+        GetPersonalNameQuery, ChangePasswordUseCase, CheckDefaultWorkspaceQuery, ChangeDefaultWorkspaceUseCase
+{
     private final LoadUserPort loadUserPort;
     private final UpdateUserPort updateUserPort;
 
@@ -31,6 +33,13 @@ public class UserInfoService implements ChangePasswordUseCase, CheckDefaultWorks
         this.updateUserPort = updateUserPort;
 
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public String getPersonalName(UserId userId) {
+        User user = User.from(loadUserPort.loadUser(userId));
+
+        return user.getLastName() + user.getFirstName();
     }
 
     @Override

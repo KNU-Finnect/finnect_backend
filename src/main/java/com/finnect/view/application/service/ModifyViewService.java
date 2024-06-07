@@ -85,4 +85,16 @@ public class ModifyViewService implements ModifyViewUseCase {
         log.info(view.toString());
         saveViewPort.saveViews(new ArrayList<>(List.of(view)));
     }
+
+    @Override
+    public void patchViewName(Long viewId, String name) {
+
+        var view = loadViewPort.loadView(View.builder().viewId(viewId).build());
+        if(view.isMain()){
+            throw new IllegalArgumentException("Main View의 이름을 변경할 수 없습니다.");
+        }
+        view.setViewName(name);
+
+        saveViewPort.saveViews(new ArrayList<>(List.of(view)));
+    }
 }

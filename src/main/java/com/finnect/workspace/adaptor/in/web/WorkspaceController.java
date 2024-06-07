@@ -2,6 +2,8 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
+import com.finnect.user.application.port.in.FindUsernameUseCase;
+import com.finnect.user.application.port.in.command.FindUsernameCommand;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;
@@ -35,6 +37,7 @@ public class WorkspaceController {
     private final RenameWorkspaceUsecase renameWorkspaceUsecase;
     private final InviteMembersUsecase inviteMembersUsecase;
     private final GetWorkspaceQuery getWorkspaceQuery;
+    private final FindUsernameUseCase findUsernameUseCase;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces")
@@ -104,9 +107,26 @@ public class WorkspaceController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/invitation")
     public ResponseEntity<ApiResult<InviteMembersResponse>> inviteMembers(@RequestBody InviteMembersRequest request) {
+        Long userId;
+        try {
+            userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getDetails().toString());
+        } catch (Exception e) {
+            throw new RuntimeException("토큰에 사용자 ID가 누락되었습니다.");
+        }
+        Long workspaceId;
+        try {
+            workspaceId = WorkspaceAuthority.from(
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            ).workspaceId().value();
+        } catch (Exception e) {
+            throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
+        }
+
         List<InviteMembersCommand> cmds = request.getEmails()
                 .stream()
-                .map(InviteMembersCommand::new)
+                .map((email) -> new InviteMembersCommand(email,
+                        "임의의 이름",
+                        getWorkspaceQuery.getWorkspace(workspaceId).getWorkspaceName()))
                 .collect(Collectors.toList());
 
         List<InvitationDto> invitations = inviteMembersUsecase.inviteMembers(cmds)

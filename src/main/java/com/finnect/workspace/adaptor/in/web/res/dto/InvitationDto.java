@@ -13,7 +13,13 @@ public class InvitationDto implements InvitationState {
     Boolean succeed;
 
     public InvitationDto(InvitationState state) {
-        this.email = state.getEmail();
+        this.email = state.getReceiver();
         this.succeed = state.getSucceed();
+    }
+
+
+    @Override
+    public String getReceiver() {
+        return this.email;
     }
 }

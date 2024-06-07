@@ -10,4 +10,7 @@ public interface LoadViewUseCase {
     ViewDetail loadViewInfo(View view, List<Filter> filters);
 
     List<ViewState> loadViewList(Long workspaceId);
+
+
+    ViewDetail loadDealDefaultView(Long workspaceId);
 }

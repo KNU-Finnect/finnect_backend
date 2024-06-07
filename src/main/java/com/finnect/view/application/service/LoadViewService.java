@@ -10,9 +10,11 @@ import com.finnect.view.domain.state.ViewState;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class LoadViewService implements LoadViewUseCase {
     private final LoadViewPort loadViewPort;
@@ -33,5 +35,17 @@ public class LoadViewService implements LoadViewUseCase {
     @Override
     public List<ViewState> loadViewList(Long workspaceId) {
         return new ArrayList<>(loadViewPort.loadDealViewsByWorkspaceId(workspaceId));
+    }
+
+    @Override
+    public ViewDetail loadDealDefaultView(Long workspaceId) {
+        var view = loadViewPort.loaDefaultDealViewByWorkspaceId(workspaceId);
+        log.info(String.valueOf(view));
+        var columns = loadDataColumnPort.loadDataColumnsOfDeal(view.getWorkspaceId());
+        log.info(String.valueOf(columns));
+        return ViewDetail.builder()
+                .view(view)
+                .dataColumns(columns)
+            .build();
     }
 }

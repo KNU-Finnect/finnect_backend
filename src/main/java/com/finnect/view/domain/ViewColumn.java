@@ -1,13 +1,14 @@
 package com.finnect.view.domain;
 
-import com.finnect.view.adapter.out.persistence.ViewColumnId;
 import com.finnect.view.domain.constant.SortCondition;
 import com.finnect.view.domain.state.ViewColumnState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.ToString;
 
 @AllArgsConstructor
 @Builder
+@ToString
 public class ViewColumn implements ViewColumnState {
     private Long columnId;
     private Long viewId;

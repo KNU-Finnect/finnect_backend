@@ -8,7 +8,6 @@ import com.finnect.view.domain.state.FilterState;
 import com.finnect.view.domain.state.ViewColumnState;
 import com.finnect.view.domain.state.ViewState;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,13 +18,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
 import lombok.ToString;
 
 @Entity(name = "view")
-@ToString
 public class ViewEntity implements ViewState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,7 +75,7 @@ public class ViewEntity implements ViewState {
 
     @Override
     public List<ViewColumnState> getViewColumns() {
-        return null;
+        return new ArrayList<>(this.viewColumns);
     }
 
     @Override
@@ -93,14 +90,14 @@ public class ViewEntity implements ViewState {
         this.workspaceId = workspaceId;
         this.viewName = viewName;
         this.isMain = isMain;
-        this.filters = (filters == null ? new ArrayList<>() : filters.stream()
+        this.filters = (filters == null ? new ArrayList<>() : new ArrayList<>(filters.stream()
                 .map(filter -> FilterEntity.builder()
                         .value(filter.getValue())
                         .filterCondition(filter.getFilterCondition())
                         .columnId(filter.getColumnId()).build())
-                .toList());
+                .toList()));
 
-        this.viewColumns = (viewColumns == null ? new ArrayList<>() : viewColumns.stream()
+        this.viewColumns = (viewColumns == null ? new ArrayList<>() : new ArrayList<>(viewColumns.stream()
                 .map(viewColumn -> ViewColumnEntity.builder()
                         .columnId(viewColumn.getColumnId())
                         .showIndex(viewColumn.getIndex())
@@ -108,7 +105,7 @@ public class ViewEntity implements ViewState {
                         .sorting(viewColumn.getSort())
                         .view(this)
                         .build()
-                ).toList());
+                ).toList()));
 
         this.viewType = viewType;
     }
@@ -134,7 +131,7 @@ public class ViewEntity implements ViewState {
                 .isMain(this.isMain)
                 .viewColumns(
                         this.viewColumns == null ? new ArrayList<>() :
-                        this.viewColumns.stream()
+                        new ArrayList<>(this.viewColumns.stream()
                         .map(viewColumn -> ViewColumn.builder()
                                 .viewId(this.getViewId())
                                 .columnId(viewColumn.getColumnId())
@@ -142,10 +139,10 @@ public class ViewEntity implements ViewState {
                                 .hided(viewColumn.isHided())
                                 .sorting(viewColumn.getSort())
                                 .build())
-                        .toList()
+                        .toList())
                 )
                 .filters(this.filters == null ? new ArrayList<>() :
-                        this.filters.stream()
+                        new ArrayList<>(this.filters.stream()
                         .map(filter -> Filter.builder()
                                 .viewId(this.getViewId())
                                 .value(filter.getValue())
@@ -153,8 +150,20 @@ public class ViewEntity implements ViewState {
                                 .columnId(filter.getColumnId())
                                 .id(filter.getFilterId())
                                 .build())
-                        .toList()
+                        .toList())
                 ).build();
     }
 
+    @Override
+    public String toString() {
+        return "ViewEntity{" +
+                "viewId=" + viewId +
+                ", workspaceId=" + workspaceId +
+                ", viewName='" + viewName + '\'' +
+                ", isMain=" + isMain +
+                ", filters=" + filters +
+                ", viewColumns=" + viewColumns +
+                ", viewType=" + viewType +
+                '}';
+    }
 }

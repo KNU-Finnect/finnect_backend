@@ -45,7 +45,18 @@ public class ModifyViewService implements ModifyViewUseCase {
 
     @Override
     public void addViewColumn(DataColumnState column) {
-
+        List<View> views = loadViewPort.loadViewsByColumn(column);
+        views.forEach(
+                view -> view.appendViewColumn(
+                    ViewColumn.builder()
+                            .columnId(column.getColumnId())
+                            .viewId(view.getViewId())
+                            .index(view.getColumnLastIndex())
+                            .sorting(SortCondition.NONE)
+                            .hided(!view.isMain())
+                    .build())
+        );
+        saveViewPort.saveViews(new ArrayList<>(views));
     }
 
     @Override

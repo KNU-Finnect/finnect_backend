@@ -17,7 +17,7 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
     private final LoadDealWithCellPort loadDealWithCellPort;
     private final LoadColumnCountPort loadColumnCountPort;
     @Override
-    public List<DealCell> loadDealWithCell(Long workspaceId, List<FilterState> filters, int page) {
+    public List<DealCell> loadDealWithCell(Long workspaceId, List<FilterState> filters, Integer page) {
         int columnCount = loadColumnCountPort.loadDealColumnCount(workspaceId);
         log.info("ColumnCount : " + columnCount);
         List<DealCell> dealCells = loadDealWithCellPort.loadDealsWithCellsByFilter(filters, page, columnCount);

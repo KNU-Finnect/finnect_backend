@@ -45,9 +45,7 @@ public class ColumnController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/deals/columns")
     public ResponseEntity<ApiResult<DealColumnResponse>> createNewColumn(
-            @RequestBody CreateDealColumnRequest createDealColumnRequest,
-            @RequestHeader("Authorization") String authorizationHeader){
-        log.info(authorizationHeader);
+            @RequestBody CreateDealColumnRequest createDealColumnRequest){
 
         log.info(SecurityContextHolder.getContext().getAuthentication().toString());
         DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(

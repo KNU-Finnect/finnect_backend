@@ -30,14 +30,16 @@ public class CompanyCellPersistenceAdapter implements LoadCompanyWithCellPort {
                                                             int columnCount) {
         String queryString = generateQuery(filters);
         log.info(queryString);
+        log.info("filter count : " + filters.size());
         TypedQuery<Object[]> query = em.createQuery(generateQuery(filters), Object[].class);
         query.setParameter("workspaceId", workspaceId);
-        if(filters != null){
+        if(!filters.isEmpty()){
             setParam(filters, query);
         }
         query.setFirstResult(BATCH_SIZE * (startPage - 1));
         query.setMaxResults(BATCH_SIZE * columnCount);
         List<Object[]> objects = query.getResultList();
+
         for(Object[] object : objects){
             log.info("object = " + Arrays.toString(object));
         }
@@ -49,10 +51,11 @@ public class CompanyCellPersistenceAdapter implements LoadCompanyWithCellPort {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT co, c ")
                 .append("FROM company co ")
-                .append("JOIN FETCH data_cell c ON co.dataRowId = c.cellId.dataRowId ")
+                .append("JOIN data_cell c ON co.dataRowId = c.cellId.dataRowId ")
                 .append("WHERE co.workspaceId = :workspaceId ");
 
         int valueIndex = 0;
+
         if (filters != null && !filters.isEmpty()) {
             queryBuilder.append("AND c.cellId.dataRowId IN ( ")
                     .append("SELECT c2.cellId.dataRowId ")
@@ -63,11 +66,11 @@ public class CompanyCellPersistenceAdapter implements LoadCompanyWithCellPort {
 
                 // 쿼리 조건 추가
                 if (i > 0) {
-                    queryBuilder.append(" AND ");
+                    queryBuilder.append(" OR ");
                 }
                 queryBuilder.append("(c2.cellId.columnId = :columnId")
                         .append(valueIndex)
-                        .append(" OR ")
+                        .append(" AND ")
                         .append("c2.value ")
                         .append(filter.getFilterCondition().getOperator())
                         .append(" :value")
@@ -75,21 +78,29 @@ public class CompanyCellPersistenceAdapter implements LoadCompanyWithCellPort {
                         .append(" ) ");
             }
             queryBuilder.append("GROUP BY c2.cellId.dataRowId ")
-                            .append("HAVING COUNT(c2.cellId.dataRowId) = :filterCount");
+                    .append("HAVING COUNT(c2.cellId.dataRowId) = :filterCount");
             queryBuilder.append(")");
         }
         return queryBuilder.toString();
     }
 
     private void setParam(List<FilterState> filters, Query query){
+        if(filters.isEmpty()){
+            return;
+        }
         String columnBase = "columnId";
         String valueBase = "value";
         for(int i = 0; i < filters.size(); i++){
             FilterState filter = filters.get(i);
             query.setParameter(columnBase + i, filter.getColumnId());
             query.setParameter(valueBase + i, filter.getValue());
+
+            log.info("Set parameter: " + columnBase + i + " = " + filter.getColumnId());
+            log.info("Set parameter: " + valueBase + i + " = " + filter.getValue());
         }
         query.setParameter("filterCount", filters.size());
+
+        log.info("Set parameter: filterCount = " + filters.size());
     }
 
     private List<CompanyCell> toDomain(List<Object[]> objects){

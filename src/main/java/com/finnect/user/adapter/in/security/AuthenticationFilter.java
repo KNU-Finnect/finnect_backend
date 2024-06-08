@@ -2,10 +2,13 @@ package com.finnect.user.adapter.in.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finnect.common.ApiUtils;
+import com.finnect.user.adapter.in.security.response.SigninResponse;
+import com.finnect.user.application.port.in.GetNameUseCase;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.state.TokenPairState;
+import com.finnect.user.vo.UserId;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +28,7 @@ import java.io.IOException;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final IssueUseCase issueUseCase;
+    private final GetNameUseCase getNameUseCase;
 
     private final Long refreshExpirationSecond;
 
@@ -50,11 +54,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             Authentication authResult
     ) throws IOException, ServletException {
         logger.info("Successful authentication: %s".formatted(authResult));
+        UserAuthentication authentication = UserAuthentication.from(authResult);
+        UserId userId = UserId.parseOrNull(authentication.getUserId());
 
+        // Access Token 발행
         IssueCommand command = IssueCommand.builder()
-                .authentication(UserAuthentication.from(authResult))
+                .authentication(authentication)
                 .build();
-
         TokenPairState tokenPair = issueUseCase.issue(command);
 
         // Access Token 헤더
@@ -70,12 +76,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .build();
         response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        // Response Body
-        ObjectMapper mapper = new ObjectMapper();
-        String responseBody = mapper.writeValueAsString(
+        String responseBody = new ObjectMapper().writeValueAsString(
                 ApiUtils.success(
                         HttpStatus.OK,
-                        tokenPair.getRefreshToken().toString()
+                        SigninResponse.builder()
+                                .refreshToken(tokenPair.getRefreshToken().toString())
+                                .personalName(getNameUseCase.getNameById(userId))
+                                .build()
                 )
         );
 

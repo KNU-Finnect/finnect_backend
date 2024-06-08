@@ -10,7 +10,9 @@ public class DealInfoResponse {
     private Long dealId;
     private String dealName;
     private Long companyId;
+    private String companyName;
     private Long userId;
+    private String userName;
     private Long rowId;
     private List<CellInfoResponse> cells;
 
@@ -19,7 +21,9 @@ public class DealInfoResponse {
         this.dealId = dealCell.getDealId();
         this.dealName = dealCell.getDealName();
         this.companyId = dealCell.getCompanyId();
-        this.userId = null;
+        this.companyName = dealCell.getCompanyName();
+        this.userId = dealCell.getUserId();
+        this.userName = dealCell.getUserName();
         this.rowId = dealCell.getDataCellStates().get(0).getRowId();
         this.cells = dealCell.getDataCellStates()
                 .stream()

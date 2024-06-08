@@ -42,19 +42,11 @@ public class DealViewController {
             @PathVariable Long viewId,
             @RequestParam(required = true) int page
     ){
-//        List<Filter> filterList = (filters == null) ? Collections.emptyList() : filters.stream()
-//                .map((filter) -> Filter.builder()
-//                        .columnId(filter.getColumnId())
-//                        .value(filter.getValue())
-//                        .filterCondition(filter.getFilterCondition())
-//                        .build())
-//                .toList();
         ViewDetail viewDetail = loadViewUseCase.loadViewInfo(View.builder()
                         .viewId(viewId)
                         .build()
         );
 
-        log.info(viewDetail.toString());
         List<DealCell> dealCells = loadDealWithCellUseCase.loadDealWithCell(
                 WorkspaceAuthority.from(SecurityContextHolder
                         .getContext()

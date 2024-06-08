@@ -111,7 +111,7 @@ public class CompanyCellPersistenceAdapter implements LoadCompanyWithCellPort {
             companyMap.putIfAbsent(company.getDataRowId(), new CompanyCell(company.getCompanyId(), company.getCompanyName(), company.getDomain()));
 
             CompanyCell companyCell = companyMap.get(company.getDataRowId());
-            companyCell.addCell(cell);
+            companyCell.addCell(cell.toDomain());
         }
         return companyMap.values().stream().toList();
     }

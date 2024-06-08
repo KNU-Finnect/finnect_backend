@@ -55,7 +55,7 @@ public class DataCell implements DataCellState {
     }
 
     public void resetValue(){
-        this.setValue("");
+        this.setValue(null);
     }
 
     @Override

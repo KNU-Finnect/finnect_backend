@@ -37,6 +37,7 @@ public class LoadCompanyWithCellUseService implements LoadCompanyWithCellUseCase
                 filters, page, columnCnt);
 
         setPersonInfo(workspaceId, companyCells);
+        setCompanyInfo(workspaceId, companyCells);
 
         return companyCells;
     }
@@ -60,4 +61,23 @@ public class LoadCompanyWithCellUseService implements LoadCompanyWithCellUseCase
                 });
     }
 
+    private void setCompanyInfo(Long workspaceId, List<CompanyCell> companyCells){
+
+        var info = loadCompanyUseCase.loadCompaniesByWorkspaceId(workspaceId);
+        log.info(info.toString());
+        var companyInfos = info
+                .stream()
+                .collect(Collectors.toMap(
+                        CompanyState::getCompanyId,
+                        companyState -> companyState
+                ));
+
+        companyCells.stream()
+                .flatMap(companyCell -> companyCell.getDataCellStates().stream()) // 각 companyCell의 dataCellStates를 평면화
+                .forEach(dataCellState -> {
+                    if(dataCellState.getCompanyId() != null){
+                        ((DataCell) dataCellState).setValue(companyInfos.get(dataCellState.getCompanyId()).getCompanyName());
+                    }
+                });
+    }
 }

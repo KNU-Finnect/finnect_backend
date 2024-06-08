@@ -22,6 +22,7 @@ import java.util.Map;
 
 @Service
 public class UserInfoService implements
+        GetPersonalNameQuery,
         ChangePasswordUseCase,
         CheckSignupQuery,
         CheckDefaultWorkspaceQuery,

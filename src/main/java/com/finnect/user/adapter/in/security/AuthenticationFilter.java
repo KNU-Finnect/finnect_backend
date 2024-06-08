@@ -3,7 +3,7 @@ package com.finnect.user.adapter.in.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finnect.common.ApiUtils;
 import com.finnect.user.adapter.in.security.response.SigninResponse;
-import com.finnect.user.application.port.in.GetNameUseCase;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.domain.UserAuthentication;
@@ -28,7 +28,7 @@ import java.io.IOException;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final IssueUseCase issueUseCase;
-    private final GetNameUseCase getNameUseCase;
+    private final GetPersonalNameQuery getPersonalNameQuery;
 
     private final Long refreshExpirationSecond;
 
@@ -81,7 +81,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                         HttpStatus.OK,
                         SigninResponse.builder()
                                 .refreshToken(tokenPair.getRefreshToken().toString())
-                                .personalName(getNameUseCase.getNameById(userId))
+                                .personalName(getPersonalNameQuery.getPersonalName(userId))
                                 .build()
                 )
         );

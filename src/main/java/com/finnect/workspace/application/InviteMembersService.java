@@ -1,7 +1,7 @@
 package com.finnect.workspace.application;
 
 import com.finnect.user.application.port.in.CheckSignupQuery;
-import com.finnect.user.application.port.in.GetNameUseCase;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.in.command.CheckSignupsCommand;
 import com.finnect.user.vo.UserId;
 import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
@@ -32,7 +32,7 @@ public class InviteMembersService implements InviteMembersUsecase {
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
     private final GetWorkspaceQuery getWorkspaceQuery;
-    private final GetNameUseCase getNameUseCase;
+    private final GetPersonalNameQuery getPersonalNameQuery;
     private final CheckSignupQuery checkSignupQuery;
     private final SearchMemberPort searchMemberPort;
 
@@ -42,7 +42,7 @@ public class InviteMembersService implements InviteMembersUsecase {
         List<InvitationState> invitations = new ArrayList<>();
 
         WorkspaceState workspace = getWorkspaceQuery.getWorkspace(cmds.get(0).getWorkspaceId());
-        String senderName = getNameUseCase.getNameById(UserId.parseOrNull(cmds.get(0).getUserId()));
+        String senderName = getPersonalNameQuery.getPersonalName(UserId.parseOrNull(cmds.get(0).getUserId()));
 
         Map<String, Boolean> signupMap = checkSignupQuery.checkSignups(
                 new CheckSignupsCommand(

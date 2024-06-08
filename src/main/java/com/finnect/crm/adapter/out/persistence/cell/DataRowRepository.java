@@ -16,5 +16,16 @@ public interface DataRowRepository extends JpaRepository<DataRowEntity, Long> {
         """,
         nativeQuery = true
     )
-    List<DataRowEntity> findDataRowEntitiesByWorkspaceId(@Param(value = "workspace_id") Long workspaceId);
+    List<DataRowEntity> findDealDataRowEntitiesByWorkspaceId(@Param(value = "workspace_id") Long workspaceId);
+
+    @Query
+            (value = """
+            SELECT dr.*
+            FROM data_row AS dr JOIN company AS c
+            ON c.data_row_id = dr.data_row_id
+            WHERE c.workspace_id = :workspace_id
+        """,
+                    nativeQuery = true
+            )
+    List<DataRowEntity> findCompanyDataRowEntitiesByWorkspaceId(@Param(value = "workspace_id") Long workspaceId);
 }

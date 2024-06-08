@@ -6,6 +6,7 @@ import com.finnect.user.application.port.in.UserDetailsQuery;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.application.port.in.command.ReissueCommand;
 import com.finnect.user.application.port.in.command.ReissueWorkspaceCommand;
+import com.finnect.user.application.port.in.error.ReissueWorkspaceException;
 import com.finnect.user.application.port.out.GenerateAccessTokenPort;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
@@ -14,6 +15,7 @@ import com.finnect.user.state.AccessTokenState;
 import com.finnect.user.state.TokenPairState;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.workspace.application.port.in.CheckWorkspaceQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import java.util.UUID;
 public class IssueService implements IssueUseCase, ReissueUseCase {
 
     private final UserDetailsQuery userDetailsQuery;
+    private final CheckWorkspaceQuery checkWorkspaceQuery;
 
     private final LoadRefreshTokenPort loadRefreshTokenPort;
     private final SaveRefreshTokenPort saveRefreshTokenPort;
@@ -35,12 +38,14 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
     @Autowired
     public IssueService(
             UserDetailsQuery userDetailsQuery,
+            CheckWorkspaceQuery checkWorkspaceQuery,
             LoadRefreshTokenPort loadRefreshTokenPort,
             SaveRefreshTokenPort saveRefreshTokenPort,
             GenerateAccessTokenPort generateAccessTokenPort,
             @Value("${backend.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
         this.userDetailsQuery = userDetailsQuery;
+        this.checkWorkspaceQuery = checkWorkspaceQuery;
 
         this.loadRefreshTokenPort = loadRefreshTokenPort;
         this.saveRefreshTokenPort = saveRefreshTokenPort;
@@ -90,6 +95,10 @@ public class IssueService implements IssueUseCase, ReissueUseCase {
         refreshToken.moveWorkspace(command.getWorkspaceId());
 
         UserDetailsImpl user = (UserDetailsImpl) userDetailsQuery.loadUserByRefreshToken(refreshToken);
+
+        if (!checkWorkspaceQuery.checkWorkspace(user.getId(), command.getWorkspaceId())) {
+            throw new ReissueWorkspaceException(user.getId(), command.getWorkspaceId());
+        }
 
         UserAuthentication authentication = UserAuthentication.builder()
                 .userId(user.getId())

@@ -4,6 +4,8 @@ import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.ChangePasswordUseCase;
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceQuery;
 import com.finnect.user.application.port.in.CheckSignupQuery;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
+import com.finnect.user.application.port.in.command.ChangeDefaultWorkspaceCommand;
 import com.finnect.user.application.port.in.command.ChangePasswordCommand;
 import com.finnect.user.application.port.in.command.CheckSignupsCommand;
 import com.finnect.user.application.port.out.ExistsUserPort;
@@ -11,7 +13,6 @@ import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.domain.User;
 import com.finnect.user.vo.UserId;
-import com.finnect.user.vo.WorkspaceId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Service
 public class UserInfoService implements
+        GetPersonalNameQuery,
         ChangePasswordUseCase,
         CheckSignupQuery,
         CheckDefaultWorkspaceQuery,
@@ -47,6 +49,13 @@ public class UserInfoService implements
     }
 
     @Override
+    public String getPersonalName(UserId userId) {
+        User user = User.from(loadUserPort.loadUser(userId));
+
+        return user.getLastName() + user.getFirstName();
+    }
+
+    @Override
     public void changePassword(ChangePasswordCommand command) {
         User user = User.from(loadUserPort.loadUser(command.getUserId()));
         user.changePassword(passwordEncoder.encode(command.getPassword()));
@@ -54,6 +63,14 @@ public class UserInfoService implements
         updateUserPort.updateUser(user);
     }
 
+    @Override
+    public void changeDefaultWorkspace(ChangeDefaultWorkspaceCommand command) {
+        User user = User.from(loadUserPort.loadUser(command.getUserId()));
+        user.changeDefaultWorkspace(command.getWorkspaceId());
+        
+        updateUserPort.updateUser(user);
+    }
+    
     @Override
     public Map<String, Boolean> checkSignups(CheckSignupsCommand command) {
         Map<String, Boolean> emailsExists = new HashMap<>();
@@ -63,14 +80,6 @@ public class UserInfoService implements
         }
 
         return emailsExists;
-    }
-
-    @Override
-    public void changeDefaultWorkspace(UserId userId, WorkspaceId workspaceId) {
-        User user = User.from(loadUserPort.loadUser(userId));
-        user.changeDefaultWorkspace(workspaceId);
-
-        updateUserPort.updateUser(user);
     }
 
     @Override

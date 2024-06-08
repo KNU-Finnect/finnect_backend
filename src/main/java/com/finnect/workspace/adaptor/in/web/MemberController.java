@@ -2,7 +2,7 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.user.application.port.in.GetNameUseCase;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.adaptor.in.web.req.UpdateMemberRequest;
@@ -33,7 +33,7 @@ public class MemberController {
 
     private final CreateMemberUsecase createMemberUsecase;
     private final FindMembersUsecase findMembersUsecase;
-    private final GetNameUseCase getNameUseCase;
+    private final GetPersonalNameQuery getPersonalNameQuery;
     private final UpdateMemberUsecase updateMemberUsecase;
 
     @PreAuthorize("isAuthenticated()")
@@ -49,7 +49,7 @@ public class MemberController {
         CreateMemberCommand memberCommand = CreateMemberCommand.builder()
                 .userId(userId)
                 .workspaceId(request.getWorkspaceId())
-                .nickname(getNameUseCase.getNameById(UserId.parseOrNull(userId.toString())))
+                .nickname(getPersonalNameQuery.getPersonalName(UserId.parseOrNull(userId.toString())))
                 .build();
 
         MemberState state = createMemberUsecase.createMember(memberCommand);

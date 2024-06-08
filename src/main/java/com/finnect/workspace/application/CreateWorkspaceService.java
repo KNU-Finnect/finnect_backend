@@ -3,7 +3,8 @@ package com.finnect.workspace.application;
 import com.finnect.crm.application.port.in.column.CreateNewColumnUseCase;
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
 import com.finnect.user.application.port.in.CheckDefaultWorkspaceQuery;
-import com.finnect.user.application.port.in.GetNameUseCase;
+import com.finnect.user.application.port.in.GetPersonalNameQuery;
+import com.finnect.user.application.port.in.command.ChangeDefaultWorkspaceCommand;
 import com.finnect.user.vo.UserId;
 import com.finnect.user.vo.WorkspaceId;
 import com.finnect.view.application.port.in.CreateViewUseCase;
@@ -30,7 +31,7 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
     private final CreateWorkspacePort createWorkspacePort;
     private final ChangeDefaultWorkspaceUseCase changeDefaultWorkspaceUseCase;
     private final CheckDefaultWorkspaceQuery checkDefaultWorkspaceQuery;
-    private final GetNameUseCase getNameUseCase;
+    private final GetPersonalNameQuery getPersonalNameQuery;
     private final CreateMemberUsecase createMemberUsecase;
     private final CreateNewColumnUseCase createNewColumnUseCase;
     private final CreateViewUseCase createViewUseCase;
@@ -42,14 +43,21 @@ public class CreateWorkspaceService implements CreateWorkspaceUsecase {
         WorkspaceState savedState = createWorkspacePort.createWorkspace(workspace);
 
         UserId userId = new UserId(cmd.getUserId());
-        if (!checkDefaultWorkspaceQuery.checkDefaultWorkspace(userId))
+        WorkspaceId workspaceId = new WorkspaceId(savedState.getWorkspaceId());
+
+        if (!checkDefaultWorkspaceQuery.checkDefaultWorkspace(userId)) {
             changeDefaultWorkspaceUseCase.changeDefaultWorkspace(
-                    userId,
-                    new WorkspaceId(savedState.getWorkspaceId()));
+                    ChangeDefaultWorkspaceCommand.builder()
+                            .userId(userId)
+                            .workspaceId(workspaceId)
+                            .build()
+            );
+        }
+
 
         // 멤버 생성
         log.info("Step1");
-        String name = getNameUseCase.getNameById(userId);
+        String name = getPersonalNameQuery.getPersonalName(userId);
         createMemberUsecase.createMember(
                 CreateMemberCommand.builder()
                         .userId(userId.value())

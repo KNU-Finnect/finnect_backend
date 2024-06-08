@@ -3,7 +3,7 @@ package com.finnect.user.application.port.in;
 import com.finnect.user.application.port.out.error.UserNotFoundException;
 import com.finnect.user.vo.UserId;
 
-public interface CheckDefaultWorkspaceQuery {
+public interface GetPersonalNameQuery {
 
-    boolean checkDefaultWorkspace(UserId userId) throws UserNotFoundException;
+    String getPersonalName(UserId userId) throws UserNotFoundException;
 }

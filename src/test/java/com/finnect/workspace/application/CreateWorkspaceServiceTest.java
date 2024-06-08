@@ -19,8 +19,7 @@ import static org.mockito.Mockito.*;
 public class CreateWorkspaceServiceTest {
     @Mock CreateWorkspacePort createWorkspacePort;
     @Mock ChangeDefaultWorkspaceUseCase changeDefaultWorkspaceUseCase;
-    @Mock
-    CheckDefaultWorkspaceQuery checkDefaultWorkspaceQuery;
+    @Mock CheckDefaultWorkspaceQuery checkDefaultWorkspaceQuery;
 
     @InjectMocks
     CreateWorkspaceService service;

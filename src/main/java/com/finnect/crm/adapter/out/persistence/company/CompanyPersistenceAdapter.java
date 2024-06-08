@@ -23,8 +23,8 @@ class CompanyPersistenceAdapter
     }
 
     @Override
-    public boolean checkDomainExists(String domain) {
-        return companyRepository.findByDomain(domain).isPresent();
+    public boolean checkDomainExists(Long workspaceId, String domain) {
+        return companyRepository.findByWorkspaceIdAndDomain(workspaceId, domain).isPresent();
     }
 
     @Override

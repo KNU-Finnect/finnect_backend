@@ -3,6 +3,7 @@ package com.finnect.user.config;
 import com.finnect.user.adapter.in.security.AuthenticationFilter;
 import com.finnect.user.adapter.in.security.AuthorizationFilter;
 import com.finnect.user.application.port.in.AuthorizeUseCase;
+import com.finnect.user.application.port.in.GetNameUseCase;
 import com.finnect.user.application.port.in.IssueUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,7 @@ public class SecurityConfig {
     private final AccessDeniedHandler accessDeniedHandler;
 
     private final IssueUseCase issueUseCase;
+    private final GetNameUseCase getNameUseCase;
     private final AuthorizeUseCase authorizeUseCase;
 
     private final Long refreshExpirationSecond;
@@ -44,6 +46,7 @@ public class SecurityConfig {
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler,
             IssueUseCase issueUseCase,
+            GetNameUseCase getNameUseCase,
             AuthorizeUseCase authorizeUseCase,
             @Value("${backend.refresh-expiration-second}") Long refreshExpirationSecond
     ) {
@@ -51,6 +54,7 @@ public class SecurityConfig {
         this.accessDeniedHandler = accessDeniedHandler;
 
         this.issueUseCase = issueUseCase;
+        this.getNameUseCase = getNameUseCase;
         this.authorizeUseCase = authorizeUseCase;
 
         this.refreshExpirationSecond = refreshExpirationSecond;
@@ -101,7 +105,11 @@ public class SecurityConfig {
     }
 
     public AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(issueUseCase, refreshExpirationSecond);
+        AuthenticationFilter filter = new AuthenticationFilter(
+                issueUseCase,
+                getNameUseCase,
+                refreshExpirationSecond
+        );
         filter.setAuthenticationManager(authenticationManager(null));
         filter.setFilterProcessesUrl("/users/signin");
         return filter;

@@ -47,9 +47,12 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
     }
 
     @Override
-    public List<DealCellDetail> test(Long dealId) {
+    public DealCellDetail loadDealWithCellDetail(Long workspaceId, Long dealId) {
         DealCellDetail dealCellDetail = loadDealWithCellDSLPort.queryDSLTest(dealId);
-        return null;
+        setPersonInfo(workspaceId, dealCellDetail.getDataCells());
+        setCompanyInfo(workspaceId, dealCellDetail.getDataCells());
+        setMemberInfo(workspaceId, dealCellDetail.getDataCells());
+        return dealCellDetail;
     }
 
     private void setPersonInfo(Long workspaceId, List<DataCellState> dataCellStates){

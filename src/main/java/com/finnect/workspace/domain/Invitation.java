@@ -23,7 +23,7 @@ public class Invitation implements InvitationState {
     private final Long workspaceId;
     private final String workspaceName;
 
-    private static String baseUrl = "http://finect.store/signin/";
+    private static String baseUrl = "http://frontfinnect.s3-website.ap-northeast-2.amazonaws.com/signin/";
 
     public static Invitation of(String receiverEmail, String senderName, Long workspaceId, String workspaceName) {
         return Invitation.builder()

@@ -12,7 +12,7 @@ public class FindUsernameCommand extends SelfValidating<FindUsernameCommand> {
 
     @NonNull
     @Email
-    private String email;
+    private final String email;
 
     public FindUsernameCommand(
             @NonNull String email

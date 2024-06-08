@@ -8,13 +8,11 @@ import com.finnect.crm.application.port.out.company.LoadCompanyWithCellPort;
 import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.company.CompanyCell;
 import com.finnect.crm.domain.company.CompanyState;
-import com.finnect.crm.domain.person.PersonState;
 import com.finnect.crm.domain.person.PersonWithCompanyState;
 import com.finnect.view.domain.state.FilterState;
-import com.finnect.workspace.application.port.out.FindMembersPort;
-import java.util.HashMap;
+import com.finnect.workspace.application.port.in.FindMembersUsecase;
+import com.finnect.workspace.domain.state.MemberState;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +26,7 @@ public class LoadCompanyWithCellUseService implements LoadCompanyWithCellUseCase
     private final LoadColumnCountPort loadColumnCountPort;
     private final FindPeopleUsecase findPeopleUsecase;
     private final LoadCompanyUseCase loadCompanyUseCase;
+    private final FindMembersUsecase findMembersUsecase;
     @Override
     public List<CompanyCell> loadCompanyWithCell(Long workspaceId, List<FilterState> filters, Integer page) {
         // Column 개수 반환
@@ -38,6 +37,7 @@ public class LoadCompanyWithCellUseService implements LoadCompanyWithCellUseCase
 
         setPersonInfo(workspaceId, companyCells);
         setCompanyInfo(workspaceId, companyCells);
+        setMemberInfo(workspaceId, companyCells);
 
         return companyCells;
     }
@@ -77,6 +77,26 @@ public class LoadCompanyWithCellUseService implements LoadCompanyWithCellUseCase
                 .forEach(dataCellState -> {
                     if(dataCellState.getCompanyId() != null){
                         ((DataCell) dataCellState).setValue(companyInfos.get(dataCellState.getCompanyId()).getCompanyName());
+                    }
+                });
+    }
+
+    private void setMemberInfo(Long workspaceId, List<CompanyCell> companyCells){
+
+        var info = findMembersUsecase.loadMembersByWorkspace(workspaceId);
+        log.info(info.toString());
+        var memberInfos = info
+                .stream()
+                .collect(Collectors.toMap(
+                        MemberState::getUserId,
+                        memberState -> memberState
+                ));
+        log.info(memberInfos.toString());
+        companyCells.stream()
+                .flatMap(companyCell -> companyCell.getDataCellStates().stream()) // 각 companyCell의 dataCellStates를 평면화
+                .forEach(dataCellState -> {
+                    if(dataCellState.getUserId() != null){
+                        ((DataCell) dataCellState).setValue(memberInfos.get(dataCellState.getUserId()).getNickname());
                     }
                 });
     }

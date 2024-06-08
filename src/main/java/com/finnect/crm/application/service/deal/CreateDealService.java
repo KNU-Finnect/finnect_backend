@@ -6,6 +6,7 @@ import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.cell.state.DataRowState;
 import com.finnect.crm.application.port.in.deal.CreateDealUseCase;
 import com.finnect.crm.application.port.out.deal.SaveDealPort;
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.crm.domain.deal.Deal;
 import com.finnect.crm.domain.deal.state.DealState;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class CreateDealService implements CreateDealUseCase {
         DataRowState dataRow = createNewRowUseCase.createNewDataRow(
                 DataColumn.builder()
                         .workspaceId(deal.getWorkspaceId())
+                        .dType(DataType.DEAL)
                         .build()
         );
 

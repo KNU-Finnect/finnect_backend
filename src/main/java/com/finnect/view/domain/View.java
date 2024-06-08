@@ -67,22 +67,19 @@ public class View implements ViewState {
         return this.dType;
     }
 
-    public void appendFilter(List<Filter> filters){
-        if (filters.isEmpty()) {
-            return;
-        }
-        this.filters.addAll(filters);
+    public void setFilter(List<Filter> filters){
+        this.filters = filters;
     }
 
     public void appendViewColumn(List<ViewColumn> viewColumns){
         if (this.viewColumns.isEmpty()) {
-            return;
+            this.viewColumns = new ArrayList<>();
         }
         this.viewColumns.addAll(viewColumns);
     }
     public void appendViewColumn(ViewColumn viewColumn){
         if (this.viewColumns.isEmpty()) {
-            return;
+            this.viewColumns = new ArrayList<>();
         }
         this.viewColumns.add(viewColumn);
     }
@@ -93,5 +90,9 @@ public class View implements ViewState {
         }
 
         return viewColumns.get(viewColumns.size() - 1).getIndex() + 10;
+    }
+
+    public void setViewName(String viewName) {
+        this.viewName = viewName;
     }
 }

@@ -12,8 +12,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import lombok.Builder;
+import lombok.ToString;
 
 @Entity(name = "view_column")
+@ToString(exclude = "view")
 public class ViewColumnEntity implements ViewColumnState {
 
     @EmbeddedId
@@ -33,7 +35,7 @@ public class ViewColumnEntity implements ViewColumnState {
     @Builder
     public ViewColumnEntity(Long columnId, Long viewId, Double showIndex, Boolean hided, SortCondition sorting, ViewEntity view) {
         this.view = view;
-        this.viewColumnId = new ViewColumnId(null, columnId);
+        this.viewColumnId = new ViewColumnId(view.getViewId(), columnId);
         this.columIndex = showIndex;
         this.hided = hided;
         this.sorting = sorting;

@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Slf4j
@@ -34,7 +35,6 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
         viewRepository.saveAll(views);
         return null;
     }
-
     @Override
     public List<ViewState> saveDefaultViews(List<ViewState> views) {
 
@@ -47,17 +47,19 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public View loadView(ViewState viewState) {
         ViewEntity view = viewRepository.findById(viewState.getViewId())
-                .orElseThrow(() ->new IllegalArgumentException("View가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("View가 존재하지 않습니다."));
         return view.toDomain();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<View> loadViewsByColumn(List<DataColumnState> columns) {
         //최대 2개라..
         List<ViewEntity> views = columns.stream()
-                .map(column -> viewRepository.findViewEntityByWorkspaceIdAndViewType(column.getWorkspaceId(),
+                .map(column -> viewRepository.findByWorkspaceIdAndViewType(column.getWorkspaceId(),
                         column.getDType()))
                 .toList();
 
@@ -65,4 +67,39 @@ public class ViewAdapter implements SaveViewPort, LoadViewPort {
                 .map(ViewEntity::toDomain)
         .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<View> loadViewsByColumn(DataColumnState columns) {
+        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(columns.getWorkspaceId(),
+                columns.getDType());
+        return views.stream()
+                .map(ViewEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<View> loadDealViewsByWorkspaceId(Long workspaceId, DataType dataType) {
+        List<ViewEntity> views = viewRepository.findViewEntitiesByWorkspaceIdAndViewType(workspaceId, dataType);
+        return views.stream()
+                .map(ViewEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    public View loaDefaultDealViewByWorkspaceId(Long workspaceId) {
+        ViewEntity view = viewRepository.findByWorkspaceIdAndViewTypeAndIsMain(workspaceId, DataType.DEAL,
+                Boolean.TRUE).orElseThrow(() -> new IllegalArgumentException("Default View가 존재하지 않습니다."));
+        return view.toDomain();
+    }
+
+    @Override
+    public View loaDefaultCompanyViewByWorkspaceId(Long workspaceId) {
+
+        ViewEntity view = viewRepository.findByWorkspaceIdAndViewTypeAndIsMain(workspaceId, DataType.COMPANY,
+                Boolean.TRUE).orElseThrow(() -> new IllegalArgumentException("Default View가 존재하지 않습니다."));
+        return view.toDomain();
+    }
+
 }

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface LoadDataColumnPort {
 
-    List<DataColumn> loadDataColumnsByWorkspaceId (DataColumnState dataColumnState);
+    List<DataColumn> loadDataColumnsOfDeal (Long WorkspaceId);
 
     DataColumn loadDataColumnByColumnId(DataColumnState dataColumnState);
 
-    List<DataColumnState> loadDataColumnsOfCompany(Long workspaceId);
+    List<DataColumn> loadDataColumnsOfCompany(Long workspaceId);
 }

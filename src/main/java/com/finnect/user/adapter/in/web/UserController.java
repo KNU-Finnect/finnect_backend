@@ -82,6 +82,20 @@ public class UserController {
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, null));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/signout2")
+    public ResponseEntity<ApiResult<Object>> signout2(@RequestBody Signout2Request request) {
+        log.info("/users/signout2");
+
+        SignoutCommand command = SignoutCommand.builder()
+                .refreshToken(request.refreshToken())
+                .build();
+
+        signoutUseCase.signout(command);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, null));
+    }
+
     @PreAuthorize("permitAll()")
     @PostMapping("/reissue")
     public ResponseEntity<ApiResult<Object>> reissue(@CookieValue("Refresh") String refreshToken) {

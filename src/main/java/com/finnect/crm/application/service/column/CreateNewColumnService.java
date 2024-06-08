@@ -25,6 +25,8 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
     public DataColumnState createNewColumn(DataColumn dataColumn) {
         log.info(dataColumn.toString());
         dataColumn = saveDataColumnPort.saveColumn(dataColumn);
+
+        modifyViewUseCase.addViewColumn(dataColumn);
         saveCellPort.saveNewCellByNewColumn(dataColumn);
         return dataColumn;
     }
@@ -33,6 +35,9 @@ public class CreateNewColumnService implements CreateNewColumnUseCase {
     public void createDefaultColumn(Long workspaceId) {
         List<DataColumn> defaultDealColumns = getDefaultColumns(workspaceId);
         defaultDealColumns = saveDataColumnPort.saveColumns(new ArrayList<>(defaultDealColumns));
+        for(DataColumn dataColumn: defaultDealColumns){
+            saveCellPort.saveNewCellByNewColumn(dataColumn);
+        }
         modifyViewUseCase.addViewColumns(new ArrayList<>(defaultDealColumns));
     }
     private List<DataColumn> getDefaultColumns(Long workspaceId){

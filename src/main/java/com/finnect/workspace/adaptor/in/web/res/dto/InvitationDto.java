@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvitationDto implements InvitationState {
+public class InvitationDto {
     String email;
-    Boolean succeed;
+    String result;
 
     public InvitationDto(InvitationState state) {
-        this.email = state.getEmail();
-        this.succeed = state.getSucceed();
+        this.email = state.getReceiver();
+        this.result = state.getResult();
     }
 }

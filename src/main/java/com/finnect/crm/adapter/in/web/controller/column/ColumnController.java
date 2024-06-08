@@ -45,9 +45,7 @@ public class ColumnController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/deals/columns")
     public ResponseEntity<ApiResult<DealColumnResponse>> createNewColumn(
-            @RequestBody CreateDealColumnRequest createDealColumnRequest,
-            @RequestHeader("Authorization") String authorizationHeader){
-        log.info(authorizationHeader);
+            @RequestBody CreateDealColumnRequest createDealColumnRequest){
 
         log.info(SecurityContextHolder.getContext().getAuthentication().toString());
         DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(
@@ -68,7 +66,11 @@ public class ColumnController {
     public ResponseEntity<ApiResult<CreateCompanyColumnResponse>> createCompanyColumn(
             @RequestBody CreateCompanyColumnRequest request){
 
-        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(request.toDomain());
+        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(
+                request.toDomain(WorkspaceAuthority.from(SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()).workspaceId().value()));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

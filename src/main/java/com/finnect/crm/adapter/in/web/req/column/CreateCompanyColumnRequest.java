@@ -10,20 +10,19 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class CreateCompanyColumnRequest {
     private final Long columnId;
-    private final Long workspaceId;
     private final String columnName;
     private final String dType;
     private final String columnType;
     private final Double columnIndex;
     private final Boolean isHided;
 
-    public DataColumn toDomain(){
+    public DataColumn toDomain(Long workspaceId){
         DataType dataType = checkDataTypeValue();
         ColumnType columnType = this.checkColumnTypeValue();
 
         return DataColumn.builder()
                 .columnId(this.columnId)
-                .workspaceId(this.workspaceId)
+                .workspaceId(workspaceId)
                 .columnName(this.columnName)
                 .dType(dataType)
                 .columnType(columnType)

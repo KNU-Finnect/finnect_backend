@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class CreateCompanyColumnResponse {
     private final Long columnId;
-    private final Long workspaceId;
     private final String columnName;
     private final String dType;
     private final String columnType;
@@ -21,7 +20,6 @@ public class CreateCompanyColumnResponse {
     public static CreateCompanyColumnResponse from(DataColumnState state){
         return CreateCompanyColumnResponse.builder()
                 .columnId(state.getColumnId())
-                .workspaceId(state.getColumnId())
                 .columnName(state.getColumnName())
                 .dType(state.getDType().getType())
                 .columnType(state.getColumnType().getType())

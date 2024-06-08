@@ -5,6 +5,8 @@ import com.finnect.user.application.port.in.GetNameUseCase;
 import com.finnect.user.application.port.in.command.CheckSignupsCommand;
 import com.finnect.user.vo.UserId;
 import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
+import com.finnect.workspace.application.port.out.SearchMemberPort;
+import com.finnect.workspace.domain.InvitationResult;
 import com.finnect.workspace.domain.state.InvitationState;
 import com.finnect.workspace.application.port.in.InviteMembersCommand;
 import com.finnect.workspace.application.port.in.InviteMembersUsecase;
@@ -32,6 +34,7 @@ public class InviteMembersService implements InviteMembersUsecase {
     private final GetWorkspaceQuery getWorkspaceQuery;
     private final GetNameUseCase getNameUseCase;
     private final CheckSignupQuery checkSignupQuery;
+    private final SearchMemberPort searchMemberPort;
 
     @Override
     public List<InvitationState> inviteMembers(List<InviteMembersCommand> cmds) {
@@ -57,10 +60,18 @@ public class InviteMembersService implements InviteMembersUsecase {
                     workspace.getWorkspaceName()
             );
 
-            if (signupMap.get(cmd.getEmail()))
-                invitation.sendEmail(javaMailSender, templateEngine);
-            else
-                log.info(invitation.getReceiver() + "는 가입되지 않은 이메일입니다.");
+            if (!signupMap.get(cmd.getEmail())) {
+                invitation.updateResult(InvitationResult.YET_SIGNUP);
+                invitations.add(invitation);
+                continue;
+            }
+            if (searchMemberPort.searchMember(cmd.getUserId(), cmd.getWorkspaceId())) {
+                invitation.updateResult(InvitationResult.ALREADY_MEMBER);
+                invitations.add(invitation);
+                continue;
+            }
+
+            invitation.sendEmail(javaMailSender, templateEngine);
             invitations.add(invitation);
         }
 

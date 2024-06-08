@@ -4,5 +4,5 @@ public interface InvitationState {
 
     String getReceiver();
 
-    Boolean getSucceed();
+    String getResult();
 }

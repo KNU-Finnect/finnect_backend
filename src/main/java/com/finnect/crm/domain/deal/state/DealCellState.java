@@ -7,6 +7,9 @@ public interface DealCellState {
 
     Long getDealId();
     Long getCompanyId();
+    String getCompanyName();
+    Long getUserId();
+    String getUserName();
     String getDealName();
     List<DataCellState> getDataCellStates();
 }

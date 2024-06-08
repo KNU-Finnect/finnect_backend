@@ -97,5 +97,11 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
                         ((DataCell) dataCellState).setValue(memberInfos.get(dataCellState.getUserId()).getNickname());
                     }
                 });
+        dealCells
+                .forEach(dealCell -> {
+                    dealCell.setUserName(
+                            memberInfos.get(dealCell.getUserId()).getNickname()
+                    );
+                });
     }
 }

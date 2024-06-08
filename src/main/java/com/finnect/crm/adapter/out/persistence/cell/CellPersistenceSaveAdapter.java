@@ -6,6 +6,7 @@ import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.application.port.out.cell.SaveDataRowPort;
 import com.finnect.crm.domain.cell.DataRow;
 import com.finnect.crm.domain.cell.state.DataCellState;
+import com.finnect.crm.domain.column.DataType;
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.cell.state.DataRowState;
 import java.util.List;
@@ -34,9 +35,13 @@ class CellPersistenceSaveAdapter implements SaveDataRowPort, SaveCellPort{
 
     @Override
     public void saveNewCellByNewColumn(DataColumnState column) {
-        log.info(column.getWorkspaceId().toString());
-
-        List<DataRowEntity> dataRows = dataRowRepository.findDataRowEntitiesByWorkspaceId(column.getWorkspaceId());
+        log.info(String.valueOf(column));
+        List<DataRowEntity> dataRows;
+        if(column.getDType().equals(DataType.DEAL)){
+            dataRows = dataRowRepository.findDealDataRowEntitiesByWorkspaceId(column.getWorkspaceId());
+        }else{
+            dataRows = dataRowRepository.findCompanyDataRowEntitiesByWorkspaceId(column.getWorkspaceId());
+        }
         log.info(dataRows.toString());
         List<DataCellEntity> cellEntities = dataRows.stream()
                         .map(dataRowEntity -> DataCellEntity.builder()

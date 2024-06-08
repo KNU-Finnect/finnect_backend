@@ -7,6 +7,7 @@ import com.finnect.workspace.domain.state.InvitationState;
 import com.finnect.workspace.application.port.in.InviteMembersCommand;
 import com.finnect.workspace.application.port.in.InviteMembersUsecase;
 import com.finnect.workspace.domain.Invitation;
+import com.finnect.workspace.domain.state.WorkspaceState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,7 +35,8 @@ public class InviteMembersService implements InviteMembersUsecase {
 
         List<InvitationState> invitations = new ArrayList<>();
 
-        String workspaceName = getWorkspaceQuery.getWorkspace(cmds.get(0).getWorkspaceId()).getWorkspaceName();
+        WorkspaceState workspace = getWorkspaceQuery.getWorkspace(cmds.get(0).getWorkspaceId());
+
         Map<String, Boolean> signupMap = checkSignupQuery.checkSignups(
                 new CheckSignupsCommand(
                         cmds.stream()
@@ -47,11 +49,14 @@ public class InviteMembersService implements InviteMembersUsecase {
             Invitation invitation = Invitation.of(
                     cmd.getEmail(),
                     "임의의 이름",
-                    workspaceName
+                    workspace.getWorkspaceId(),
+                    workspace.getWorkspaceName()
             );
 
             if (signupMap.get(cmd.getEmail()))
                 invitation.sendEmail(javaMailSender, templateEngine);
+            else
+                log.info(invitation.getReceiver() + "는 가입되지 않은 이메일입니다.");
             invitations.add(invitation);
         }
 

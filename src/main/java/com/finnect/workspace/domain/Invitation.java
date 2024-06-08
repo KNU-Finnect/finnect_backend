@@ -20,15 +20,17 @@ public class Invitation implements InvitationState {
     private String receiver;
     private Boolean succeed;
     private final String sender;
+    private final Long workspaceId;
     private final String workspaceName;
 
-    private static String invitaionUrl = "https://localhost:8008";
+    private static String baseUrl = "http://finect.store/signin/";
 
-    public static Invitation of(String receiverEmail, String senderName, String workspaceName) {
+    public static Invitation of(String receiverEmail, String senderName, Long workspaceId, String workspaceName) {
         return Invitation.builder()
                 .receiver(receiverEmail)
                 .succeed(Boolean.FALSE)
                 .sender(senderName)
+                .workspaceId(workspaceId)
                 .workspaceName(workspaceName)
                 .build();
     }
@@ -49,7 +51,7 @@ public class Invitation implements InvitationState {
                 Context context = new Context();
                 context.setVariable("username", sender);
                 context.setVariable("workspace_name", workspaceName);
-                context.setVariable("invite_url", invitaionUrl);
+                context.setVariable("invite_url", baseUrl + workspaceId + "/" + workspaceName);
                 helper.setText(templateEngine.process("email", context), true);
             }
         };

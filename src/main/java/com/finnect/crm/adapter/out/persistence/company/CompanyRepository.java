@@ -7,7 +7,7 @@ import java.util.Optional;
 
 interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
-     Optional<CompanyEntity> findByDomain(String domain);
+     Optional<CompanyEntity> findByWorkspaceIdAndDomain(Long workspaceId, String domain);
 
      List<CompanyEntity> findCompanyEntitiesByWorkspaceId(Long workspaceId);
 }

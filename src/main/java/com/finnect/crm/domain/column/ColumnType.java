@@ -40,10 +40,10 @@ public enum ColumnType {
             FilterCondition.IS,
             FilterCondition.NOT_EQUAL
     )),
-    MULTI_SELECT("MULTI-SELECT", List.of(
-            FilterCondition.IN,
-            FilterCondition.NOT_IN
-    )),
+//    MULTI_SELECT("MULTI-SELECT", List.of(
+//            FilterCondition.IN,
+//            FilterCondition.NOT_IN
+//    )),
     CURRENCY("CURRENCY", List.of(
             FilterCondition.EQUAL,
             FilterCondition.NOT_EQUAL,

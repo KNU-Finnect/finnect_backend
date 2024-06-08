@@ -2,6 +2,7 @@ package com.finnect.view.adapter.in.web.controller;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
+import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.CreateViewRequest;
 import com.finnect.view.adapter.in.web.req.PatchFilterRequest;
 import com.finnect.view.adapter.in.web.req.PatchViewColumnRequest;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,9 +39,17 @@ public class ViewController {
     @PostMapping("/workspaces/views")
     public ResponseEntity<ApiResult<CreateViewResponse>> createView(
             @RequestBody CreateViewRequest request){
+        Long workspaceId;
+        try {
+            workspaceId = WorkspaceAuthority.from(
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            ).workspaceId().value();
+        } catch (Exception e) {
+            throw new RuntimeException("워크스페이스 ID가 누락되었습니다.");
+        }
 
         log.info(request.toString());
-        ViewState newView = createViewUseCase.createNewView(request.toDomain());
+        ViewState newView = createViewUseCase.createNewView(request.toDomain(workspaceId));
         return new ResponseEntity<>(
                 ApiUtils.success(HttpStatus.CREATED, new CreateViewResponse(newView)),
                 HttpStatus.CREATED);

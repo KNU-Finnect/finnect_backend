@@ -21,7 +21,8 @@ public class LoadCompanyWithCellUseService implements LoadCompanyWithCellUseCase
         // Column 개수 반환
         var columnCnt = loadColumnCountPort.loadCompanyColumnCount(workspaceId);
 
-        var companyCells = loadCompanyWithCellPort.loadCompaniesWithCellsByFilter(filters, page, columnCnt);
+        var companyCells = loadCompanyWithCellPort.loadCompaniesWithCellsByFilter(workspaceId,
+                filters, page, columnCnt);
         log.info(companyCells.toString());
         return companyCells;
     }

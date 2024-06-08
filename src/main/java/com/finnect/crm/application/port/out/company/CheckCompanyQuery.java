@@ -4,5 +4,5 @@ public interface CheckCompanyQuery {
 
     boolean checkCompanyExists(Long companyId);
 
-    boolean checkDomainExists(String domain);
+    boolean checkDomainExists(Long workspace, String domain);
 }

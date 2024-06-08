@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Slf4j
 public class Invitation implements InvitationState {
     private String receiver;
-    private Boolean succeed;
+    private InvitationResult result;
     private final String sender;
     private final Long workspaceId;
     private final String workspaceName;
@@ -28,15 +28,18 @@ public class Invitation implements InvitationState {
     public static Invitation of(String receiverEmail, String senderName, Long workspaceId, String workspaceName) {
         return Invitation.builder()
                 .receiver(receiverEmail)
-                .succeed(Boolean.FALSE)
                 .sender(senderName)
                 .workspaceId(workspaceId)
                 .workspaceName(workspaceName)
                 .build();
     }
 
-    private void updateResult(Boolean result) {
-        this.succeed = result;
+    public String getResult() {
+        return this.result.getResult();
+    }
+
+    public void updateResult(InvitationResult result) {
+        this.result = result;
     }
 
     public void sendEmail(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine) {
@@ -59,9 +62,9 @@ public class Invitation implements InvitationState {
         try {
             javaMailSender.send(perparator);
         } catch (MailException e) {
-            log.info(receiver + "에 대한 초대를 실패했습니다.");
+            updateResult(InvitationResult.FAIL);
             return;
         }
-        updateResult(Boolean.TRUE);
+        updateResult(InvitationResult.SUCCEED);
     }
 }

@@ -51,7 +51,7 @@ public class DataCell implements DataCellState {
     }
 
     public void setValue(String value){
-        this.value = null;
+        this.value = value;
     }
 
     public void resetValue(){

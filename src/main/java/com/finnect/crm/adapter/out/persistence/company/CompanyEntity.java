@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE) @Builder
 @Getter
-class CompanyEntity implements CompanyState {
+public class CompanyEntity implements CompanyState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

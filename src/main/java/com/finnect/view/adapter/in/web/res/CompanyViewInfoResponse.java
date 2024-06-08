@@ -31,6 +31,7 @@ public class CompanyViewInfoResponse {
                         .columnId(viewColumn.getColumnId())
                         .sorting(viewColumn.getSorting())
                         .columnType(viewColumn.getColumnType())
+                        .columnName(viewColumn.getColumnName())
                         .build())
                 .toList();
         setViewDeals(companyCell);

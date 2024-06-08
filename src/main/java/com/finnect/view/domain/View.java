@@ -91,4 +91,8 @@ public class View implements ViewState {
 
         return viewColumns.get(viewColumns.size() - 1).getIndex() + 10;
     }
+
+    public void setViewName(String viewName) {
+        this.viewName = viewName;
+    }
 }

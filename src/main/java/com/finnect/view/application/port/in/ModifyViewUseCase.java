@@ -15,4 +15,6 @@ public interface ModifyViewUseCase {
 
     void patchViewFilters(Long viewId, List<Filter> filters);
     void patchViewColumn(Long viewId, ViewColumn viewColumn);
+
+    void patchViewName(Long viewId, String name);
 }

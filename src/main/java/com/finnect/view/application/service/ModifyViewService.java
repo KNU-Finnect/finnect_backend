@@ -68,7 +68,9 @@ public class ModifyViewService implements ModifyViewUseCase {
     @Override
     public void patchViewFilters(Long viewId, List<Filter> filters) {
         var view = loadViewPort.loadView(View.builder().viewId(viewId).build());
-
+        if(view.isMain()){
+            throw new IllegalArgumentException("Main View에 필터를 적용할 수 없습니다.");
+        }
         view.setFilter(filters);
         saveViewPort.saveViews(new ArrayList<>(List.of(view)));
     }
@@ -83,6 +85,18 @@ public class ModifyViewService implements ModifyViewUseCase {
         .findFirst().orElseThrow(() -> new IllegalArgumentException("Column Id가 일치하지 않습니다."));
         column.updateColumnInfo(viewColumn);
         log.info(view.toString());
+        saveViewPort.saveViews(new ArrayList<>(List.of(view)));
+    }
+
+    @Override
+    public void patchViewName(Long viewId, String name) {
+
+        var view = loadViewPort.loadView(View.builder().viewId(viewId).build());
+        if(view.isMain()){
+            throw new IllegalArgumentException("Main View의 이름을 변경할 수 없습니다.");
+        }
+        view.setViewName(name);
+
         saveViewPort.saveViews(new ArrayList<>(List.of(view)));
     }
 }

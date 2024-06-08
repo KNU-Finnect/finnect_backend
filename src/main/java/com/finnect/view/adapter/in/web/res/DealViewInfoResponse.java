@@ -30,8 +30,10 @@ public class DealViewInfoResponse {
                         .columnId(viewColumn.getColumnId())
                         .sorting(viewColumn.getSorting())
                         .columnType(viewColumn.getColumnType())
+                        .columnName(viewColumn.getColumnName())
                         .build())
                 .toList();
+
         setViewDeals(dealCells);
     }
     private void setViewDeals(List<DealCell> dealCells){

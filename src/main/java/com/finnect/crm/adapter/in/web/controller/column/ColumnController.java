@@ -66,7 +66,11 @@ public class ColumnController {
     public ResponseEntity<ApiResult<CreateCompanyColumnResponse>> createCompanyColumn(
             @RequestBody CreateCompanyColumnRequest request){
 
-        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(request.toDomain());
+        DataColumnState dataColumnState = createNewColumnUseCase.createNewColumn(
+                request.toDomain(WorkspaceAuthority.from(SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()).workspaceId().value()));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

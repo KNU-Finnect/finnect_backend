@@ -29,6 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ViewController {
     private final CreateViewUseCase createViewUseCase;
     private final ModifyViewUseCase modifyViewUseCase;
+
+    @Operation(
+            summary = "view 생성 API",
+            description = "View를 생성합니다."
+    )
     @PostMapping("/workspaces/views")
     public ResponseEntity<ApiResult<CreateViewResponse>> createView(
             @RequestBody CreateViewRequest request){
@@ -40,6 +45,10 @@ public class ViewController {
                 HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "view 이름 변경 API",
+            description = "View의 이름을 변경합니다. MainView는 이름을 변경할 수 없습니다."
+    )
     @PatchMapping("/workspaces/views")
     public ResponseEntity<ApiResult<String>> patchView(
             @RequestBody PatchViewRequest request){
@@ -53,7 +62,8 @@ public class ViewController {
 
     @Operation(
             summary = "Filter추가 API",
-            description = "Filter를 추가합니다. 기존에 있던 필터는 모두 초기화됩니다."
+            description = "Filter를 추가합니다. 기존에 있던 필터는 모두 초기화됩니다.\n"
+                    + "MainView에는 필터를 적용할 수 없습니다."
     )
     @PatchMapping("/workspaces/views/filters")
     public ResponseEntity<ApiResult<String>> patchFilters(

@@ -10,11 +10,13 @@ import com.finnect.crm.application.port.in.cell.LoadDataCellUseCase;
 import com.finnect.crm.application.port.in.column.LoadDataColumnUseCase;
 import com.finnect.crm.application.port.in.deal.CreateDealUseCase;
 import com.finnect.crm.application.port.in.deal.LoadDealUseCase;
+import com.finnect.crm.application.port.in.deal.LoadDealWithCellUseCase;
 import com.finnect.crm.domain.cell.DataCell;
 import com.finnect.crm.domain.column.DataColumn;
 import com.finnect.crm.domain.cell.state.DataCellState;
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.deal.Deal;
+import com.finnect.crm.domain.deal.DealCellDetail;
 import com.finnect.crm.domain.deal.state.DealState;
 import com.finnect.user.vo.WorkspaceAuthority;
 import java.util.List;
@@ -36,9 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DealController {
 
     private final CreateDealUseCase createDealUseCase;
-    private final LoadDealUseCase loadDealUseCase;
-    private final LoadDataCellUseCase loadDataCellUseCase;
-    private final LoadDataColumnUseCase loadDataColumnUseCase;
+    private final LoadDealWithCellUseCase loadDealWithCellUseCase;
 
     @PostMapping("/workspaces/deals")
     @PreAuthorize("isAuthenticated()")
@@ -65,32 +65,23 @@ public class DealController {
                         , HttpStatus.CREATED);
     }
 
-    @GetMapping("/workspaces/deal/{dealId}/details")
+    @GetMapping("/workspaces/deal/{dealId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResult<DealDetailResponse>> loadDealDetail
             (@PathVariable Long dealId){
-        DealState dealState = loadDealUseCase.loadDeal
-                (Deal.builder()
-                .dealId(dealId)
-                .build()
-        );
-        List<DataColumnState> columnState = loadDataColumnUseCase
-                .loadDataColumns(
-                DataColumn.builder()
-                        .workspaceId(dealState.getWorkspaceId())
-                        .build()
-        );
-        List<DataCellState> cellStates = loadDataCellUseCase.loadDataCells
-                (DataCell.builder()
-                .cellId(new CellId(dealState.getDataRowId(), null))
-                .build()
-        );
-
+        DealCellDetail dealCellDetail = loadDealWithCellUseCase.loadDealWithCellDetail(
+                WorkspaceAuthority.from(
+                                SecurityContextHolder
+                                        .getContext()
+                                        .getAuthentication()
+                                        .getAuthorities()
+                        )
+                        .workspaceId()
+                        .value(),
+                dealId);
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK,
                 DealDetailResponse.builder()
-                        .dealState(dealState)
-                        .columnState(columnState)
-                        .cellStates(cellStates)
+                        .dealCellDetail(dealCellDetail)
                         .build()
                 ));
     }

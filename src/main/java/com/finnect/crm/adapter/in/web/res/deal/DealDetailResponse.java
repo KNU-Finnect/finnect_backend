@@ -3,6 +3,7 @@ package com.finnect.crm.adapter.in.web.res.deal;
 import com.finnect.crm.domain.cell.state.DataCellState;
 import com.finnect.crm.domain.column.state.DataColumnState;
 import com.finnect.crm.domain.column.ColumnType;
+import com.finnect.crm.domain.deal.DealCellDetail;
 import com.finnect.crm.domain.deal.state.DealState;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,24 +15,31 @@ import lombok.Getter;
 @Getter
 public class DealDetailResponse {
     private Long dealId;
-    private Long workspaceId;
+    private String dealName;
+    private Long companyId;
+    private String companyName;
+    private Long userId;
+    private String userName;
     private List<CellInfo> cells;
-    private Responsability responsability;
 
     @Builder
-    public DealDetailResponse(DealState dealState, List<DataColumnState> columnState, List<DataCellState> cellStates) {
-        this.dealId = dealState.getDealId();
-        this.workspaceId = dealState.getWorkspaceId();
-        this.cells = getCells(columnState, cellStates);
-        this.responsability = null;
+    public DealDetailResponse(DealCellDetail dealCellDetail) {
+        this.dealId = dealCellDetail.getDealId();
+        this.dealName = dealCellDetail.getDealName();
+        this.companyId = dealCellDetail.getCompanyId();
+        this.companyName = dealCellDetail.getCompanyName();
+        this.userId = dealCellDetail.getUserId();
+        this.userName = dealCellDetail.getUserName();
+
+        this.cells = getCells(dealCellDetail);
     }
-    private List<CellInfo> getCells(List<DataColumnState> columnState, List<DataCellState> cellStates){
+    private List<CellInfo> getCells(DealCellDetail dealCellDetail){
         Map<Long, DataCellState> cellStateMap = new HashMap<>();
-        for (DataCellState cellState : cellStates) {
+        for (DataCellState cellState : dealCellDetail.getDataCells()) {
             cellStateMap.put(cellState.getColumnId(), cellState);
         }
         List<CellInfo> cellInfos = new ArrayList<>();
-        for (DataColumnState columnStateItem : columnState) {
+        for (DataColumnState columnStateItem : dealCellDetail.getDataColumns()) {
             DataCellState matchedCellState = cellStateMap.get(columnStateItem.getColumnId());
             if (matchedCellState != null) {
                 cellInfos.add(new CellInfo(columnStateItem, matchedCellState));
@@ -44,11 +52,13 @@ public class DealDetailResponse {
 
     @Getter
     class CellInfo{
+        private ColumnType columnType;
         private Long rowId;
         private Long columnId;
         private String value;
-        private ColumnType columnType;
         private Long userId;
+        private Long companyId;
+        private Long peopleId;
 
         public CellInfo(DataColumnState dataColumn, DataCellState dataCell) {
             this.rowId = dataCell.getRowId();
@@ -56,12 +66,8 @@ public class DealDetailResponse {
             this.value = dataCell.getValue();
             this.columnType = dataColumn.getColumnType();
             this.userId = dataCell.getUserId();
+            this.companyId = dataCell.getCompanyId();
+            this.peopleId = dataCell.getCompanyId();
         }
-    }
-    class Responsability{
-        private Long userId;
-        private String nickName;
-        private String role;
-
     }
 }

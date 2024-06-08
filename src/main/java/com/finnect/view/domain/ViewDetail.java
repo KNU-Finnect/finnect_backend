@@ -32,8 +32,8 @@ public class ViewDetail {
                             viewColumnMap.put(
                                     data.getColumnId(),
                                             ViewColumnDetail.builder()
-                                                .viewId(data.getViewId())
-                                                .columnId(data.getColumnId())
+                                                    .viewId(data.getViewId())
+                                                    .columnId(data.getColumnId())
                                                     .hided(data.isHided())
                                                     .sorting(data.getSort())
                                                     .index(data.getIndex())

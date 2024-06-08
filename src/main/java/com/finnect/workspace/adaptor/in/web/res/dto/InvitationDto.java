@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InvitationDto {
     String email;
-    Boolean succeed;
+    String result;
 
     public InvitationDto(InvitationState state) {
         this.email = state.getReceiver();
-        this.succeed = state.getSucceed();
+        this.result = state.getResult();
     }
 }

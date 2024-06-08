@@ -52,6 +52,8 @@ public class InviteMembersService implements InviteMembersUsecase {
 
             if (signupMap.get(cmd.getEmail()))
                 invitation.sendEmail(javaMailSender, templateEngine);
+            else
+                log.info(invitation.getReceiver() + "는 가입되지 않은 이메일입니다.");
             invitations.add(invitation);
         }
 

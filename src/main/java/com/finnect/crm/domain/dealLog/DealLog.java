@@ -32,7 +32,7 @@ public class DealLog implements DealLogState {
 
         return DealLog.builder()
                 .dealId(dealId)
-                .dealLog("DEAL 속성이 수정되었습니다." + before + " -> " + after)
+                .dealLog("DEAL 속성이 수정되었습니다. " + before + " -> " + after)
                 .savedTime(LocalDateTime.now(timeZone))
                 .build();
     }

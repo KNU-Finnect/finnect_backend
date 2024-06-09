@@ -105,5 +105,19 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
         });
     }
 
+    private void setDealManagerInfo(Long workspaceId, List<DealCell> dealCells){
+
+        var info = findMembersUsecase.loadMembersByWorkspace(workspaceId);
+        var memberInfos = info
+                .stream()
+                .collect(Collectors.toMap(
+                        MemberState::getUserId,
+                        memberState -> memberState
+                ));
+        dealCells.
+        forEach(dealCell -> {
+            dealCell.setUserName(memberInfos.get(dealCell.getUserId()).getNickname());
+        });
+    }
 
 }

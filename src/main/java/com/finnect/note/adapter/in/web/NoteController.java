@@ -73,7 +73,9 @@ public class NoteController {
     }
 
     @GetMapping("/workspaces/deals/{dealId}/notes/{noteId}")
-    public ResponseEntity<?> loadNoteDetail(@PathVariable Long dealId, @PathVariable Long noteId){
+    public ResponseEntity<ApiResult<DetailNoteResponse>> loadNoteDetail(@PathVariable Long dealId,
+                                                                       @PathVariable Long noteId) {
+
         NoteState noteState = loadNoteUseCase.loadNoteInDetail(
                 Note.builder()
                         .dealId(dealId)

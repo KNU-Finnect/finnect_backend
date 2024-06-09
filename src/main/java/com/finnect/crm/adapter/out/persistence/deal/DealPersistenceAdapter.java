@@ -32,4 +32,11 @@ class DealPersistenceAdapter implements SaveDealPort, LoadDealPort {
                 .orElseThrow(IllegalArgumentException::new);
         return dealEntity.toDomain();
     }
+
+    @Override
+    public Deal findDealByRowId(Long rowId) {
+        var deal = dealRepository.findDealEntityByDataRowId(rowId)
+                .orElseThrow(() -> new IllegalArgumentException("RowId와 일치하는 Deal이 없습니다."));
+        return deal.toDomain();
+    }
 }

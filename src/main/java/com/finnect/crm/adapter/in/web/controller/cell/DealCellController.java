@@ -27,4 +27,13 @@ public class DealCellController {
                 ApiUtils.success(HttpStatus.OK, null)
         );
     }
+
+    @PatchMapping("/workspaces/dealcells")
+    public ResponseEntity<ApiResult<Object>> patchDealCell(@RequestBody ModifyCellRequest request){
+        modifyDataCellUseCase.modifyCellInfoWithDeal(request.toDomain());
+
+        return ResponseEntity.ok(
+                ApiUtils.success(HttpStatus.OK, null)
+        );
+    }
 }

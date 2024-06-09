@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CreateViewRequest implements ViewState {
-    private Long workspaceId;
+
     private String viewName;
     private List<FilterRequest> filters;
     private List<ViewColumnRequest> viewColumns;
@@ -27,7 +27,7 @@ public class CreateViewRequest implements ViewState {
 
     @Override
     public Long getWorkspaceId() {
-        return workspaceId;
+        return null;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CreateViewRequest implements ViewState {
         return this.dataType;
     }
 
-    public View toDomain(){
+    public View toDomain(Long workspaceId){
         return View.builder()
                 .workspaceId(workspaceId)
                 .viewName(viewName)

@@ -36,10 +36,13 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
     @Override
     public List<DealCell> loadDealWithCell(Long workspaceId, List<FilterState> filters, Integer page) {
         int columnCount = loadColumnCountPort.loadDealColumnCount(workspaceId);
-        List<DealCell> dealCells = loadDealWithCellPort.loadDealsWithCellsByFilter(filters, page, columnCount);
+        List<DealCell> dealCells = loadDealWithCellPort.loadDealsWithCellsByFilter(workspaceId,filters, page, columnCount);
+
+
         List<DataCellState> dataCellStates = dealCells.stream()
                 .flatMap(dealCell -> dealCell.getDataCellStates().stream())
                 .toList();
+
         setPersonInfo(workspaceId, dataCellStates);
         setCompanyInfo(workspaceId, dataCellStates);
         setMemberInfo(workspaceId, dataCellStates);
@@ -58,7 +61,8 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
 
     private void setPersonInfo(Long workspaceId, List<DataCellState> dataCellStates){
         var info = findPeopleUsecase.findPeopleByWorkspace(workspaceId);
-        log.info(info.toString());
+        log.info("PERSON INFO ");
+        log.info(dataCellStates.toString());
         var personInfos = info
                 .stream()
                 .collect(Collectors.toMap(
@@ -77,6 +81,8 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
     private void setCompanyInfo(Long workspaceId, List<DataCellState> dataCellStates){
 
         var info = loadCompanyUseCase.loadCompaniesByWorkspaceId(workspaceId);
+        log.info("COMPANY INFO ");
+        log.info(dataCellStates.toString());
         log.info(info.toString());
         var companyInfos = info
                 .stream()
@@ -93,6 +99,9 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
 
     private void setMemberInfo(Long workspaceId, List<DataCellState> dataCellStates){
         var info = findMembersUsecase.loadMembersByWorkspace(workspaceId);
+        log.info("Member INFO ");
+        log.info(dataCellStates.toString());
+        log.info(info.toString());
         var memberInfos = info
                 .stream()
                 .collect(Collectors.toMap(
@@ -101,6 +110,8 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
                 ));
         dataCellStates.forEach(dataCellState -> {
             if (dataCellState.getUserId() != null) {
+                log.info("rowId : " + dataCellState.getRowId());
+                log.info("columnId : " + dataCellState.getColumnId());
                 ((DataCell) dataCellState).setValue(memberInfos.get(dataCellState.getUserId()).getNickname());
             }
         });
@@ -115,8 +126,15 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
                         MemberState::getUserId,
                         memberState -> memberState
                 ));
+        log.info("Member INFO ");
+        for(DealCell dealCell : dealCells){
+
+            log.info(dealCell.toString());
+        }
+        log.info(info.toString());
         dealCells.
         forEach(dealCell -> {
+            log.info("userId : " + dealCell.getUserId());
             dealCell.setUserName(memberInfos.get(dealCell.getUserId()).getNickname());
         });
     }

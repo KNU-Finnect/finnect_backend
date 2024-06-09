@@ -26,11 +26,13 @@ class DealCellPersistenceAdapter implements LoadDealWithCellPort {
 
     private final int BATCH_SIZE = 10;
     @Override
-    public List<DealCell> loadDealsWithCellsByFilter(List<FilterState> filters, final int startPage, final int columnCount) {
+    public List<DealCell> loadDealsWithCellsByFilter(Long workspaceId, List<FilterState> filters, final int startPage, final int columnCount) {
         log.info("QUERYH");
         String queryString = generateQuery(filters);
         log.info(queryString);
         TypedQuery<Object[]> query = em.createQuery(generateQuery(filters), Object[].class);
+
+        query.setParameter("workspaceId", workspaceId);
         if(filters != null){
             setParam(filters, query);
         }
@@ -49,11 +51,12 @@ class DealCellPersistenceAdapter implements LoadDealWithCellPort {
         queryBuilder.append("SELECT d, c, com ")
                 .append("FROM deal d ")
                 .append("JOIN FETCH data_cell c ON d.dataRowId = c.cellId.dataRowId ")
-                .append("JOIN FETCH company com ON d.companyId = com.companyId ");
+                .append("JOIN FETCH company com ON d.companyId = com.companyId ")
+                .append("WHERE com.workspaceId = :workspaceId ");
 
         int valueIndex = 0;
         if (filters != null && !filters.isEmpty()) {
-            queryBuilder.append("WHERE c.cellId.dataRowId IN ( ")
+            queryBuilder.append("AND c.cellId.dataRowId IN ( ")
                     .append("SELECT c2.cellId.dataRowId ")
                     .append("FROM data_cell c2 ")
                     .append("WHERE ");

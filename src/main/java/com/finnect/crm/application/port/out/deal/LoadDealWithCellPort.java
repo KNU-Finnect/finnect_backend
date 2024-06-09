@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LoadDealWithCellPort {
 
-    List<DealCell> loadDealsWithCellsByFilter(List<FilterState> filters, final int startPage, final int columnCount);
+    List<DealCell> loadDealsWithCellsByFilter(Long workspaceId, List<FilterState> filters, final int startPage, final int columnCount);
 }

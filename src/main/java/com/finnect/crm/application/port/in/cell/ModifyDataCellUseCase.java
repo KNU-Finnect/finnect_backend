@@ -7,4 +7,6 @@ public interface ModifyDataCellUseCase {
     void resetCellInfoByModifyColumn(DataCell dataCell);
 
     void modifyCellInfo(DataCell dataCell);
+
+    void modifyCellInfoWithDeal(DataCell dataCell);
 }

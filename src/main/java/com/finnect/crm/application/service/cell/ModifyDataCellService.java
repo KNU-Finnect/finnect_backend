@@ -1,6 +1,7 @@
 package com.finnect.crm.application.service.cell;
 
 import com.finnect.crm.application.port.in.cell.ModifyDataCellUseCase;
+import com.finnect.crm.application.port.in.dealLog.CreateDealLogUseCase;
 import com.finnect.crm.application.port.out.cell.LoadDataCellPort;
 import com.finnect.crm.application.port.out.cell.SaveCellPort;
 import com.finnect.crm.domain.cell.DataCell;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class ModifyDataCellService implements ModifyDataCellUseCase {
     private final LoadDataCellPort loadDataCellPort;
     private final SaveCellPort saveCellPort;
+    private final CreateDealLogUseCase createDealLogUseCase;
     @Override
     public void resetCellInfoByModifyColumn(DataCell dataCell) {
         List<DataCell> dataCells = loadDataCellPort.loadDataCellsByColumnId(dataCell);
@@ -25,5 +27,12 @@ public class ModifyDataCellService implements ModifyDataCellUseCase {
     public void modifyCellInfo(DataCell after) {
         DataCell before = loadDataCellPort.loadDataCell(after);
         saveCellPort.saveDataCell(after);
+    }
+
+    @Override
+    public void modifyCellInfoWithDeal(DataCell after) {
+        DataCell before = loadDataCellPort.loadDataCell(after);
+        saveCellPort.saveDataCell(after);
+        createDealLogUseCase.createLogWithAttributeChange(after.getRowId(), before.getValue(), after.getValue());
     }
 }

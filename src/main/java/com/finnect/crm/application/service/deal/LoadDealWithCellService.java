@@ -43,6 +43,7 @@ public class LoadDealWithCellService implements LoadDealWithCellUseCase {
         setPersonInfo(workspaceId, dataCellStates);
         setCompanyInfo(workspaceId, dataCellStates);
         setMemberInfo(workspaceId, dataCellStates);
+        setDealManagerInfo(workspaceId, dealCells);
         return dealCells;
     }
 

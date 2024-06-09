@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Service
 public class SendEmailCodeService implements SendEmailCodeUseCase {
@@ -18,17 +20,20 @@ public class SendEmailCodeService implements SendEmailCodeUseCase {
     private final SaveEmailCodePort saveEmailCodePort;
 
     private final JavaMailSender emailSender;
+    private final SpringTemplateEngine templateEngine;
     private final Long emailExpirationSecond;
 
     @Autowired
     public SendEmailCodeService(
             SaveEmailCodePort saveEmailCodePort,
             JavaMailSender emailSender,
+            SpringTemplateEngine templateEngine,
             @Value("${backend.email-expiration-second}") Long emailExpirationSecond
     ) {
         this.saveEmailCodePort = saveEmailCodePort;
 
         this.emailSender = emailSender;
+        this.templateEngine = templateEngine;
         this.emailExpirationSecond = emailExpirationSecond;
     }
 
@@ -45,7 +50,10 @@ public class SendEmailCodeService implements SendEmailCodeUseCase {
 
             helper.setTo(emailCode.getEmail());
             helper.setSubject("[Finnect] 인증번호를 입력해주세요.");
-            helper.setText(emailCode.getNumber().toString());
+
+            Context context = new Context();
+            context.setVariable("code", emailCode.getNumber());
+            helper.setText(templateEngine.process("emailCode", context), true);
         };
         emailSender.send(perparator);
 

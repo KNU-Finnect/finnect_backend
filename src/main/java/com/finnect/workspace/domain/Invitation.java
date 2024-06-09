@@ -55,7 +55,7 @@ public class Invitation implements InvitationState {
                 context.setVariable("username", sender);
                 context.setVariable("workspace_name", workspaceName);
                 context.setVariable("invite_url", baseUrl + workspaceId + "/" + workspaceName);
-                helper.setText(templateEngine.process("email", context), true);
+                helper.setText(templateEngine.process("invitation", context), true);
             }
         };
 

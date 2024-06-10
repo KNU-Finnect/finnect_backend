@@ -2,7 +2,7 @@ package com.finnect.user.application.port.in;
 
 import com.finnect.common.vo.UserId;
 
-public interface CheckUserExistsUseCase {
+public interface CheckUserQuery {
 
     boolean checkUserExists(UserId userId);
 }

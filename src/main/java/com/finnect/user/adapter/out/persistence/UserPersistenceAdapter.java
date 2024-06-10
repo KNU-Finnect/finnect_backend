@@ -9,18 +9,15 @@ import com.finnect.user.adapter.out.persistence.entity.UserRepository;
 import com.finnect.user.application.port.out.CreateUserPort;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.error.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserPersistenceAdapter implements CreateUserPort, ExistsUserPort, LoadUserPort, UpdateUserPort {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserPersistenceAdapter(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
 
     @Override

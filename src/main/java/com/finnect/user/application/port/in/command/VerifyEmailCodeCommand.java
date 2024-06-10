@@ -14,6 +14,7 @@ public class VerifyEmailCodeCommand extends SelfValidating<VerifyEmailCodeComman
     @Email
     private final String email;
 
+    @NonNull
     private final Integer codeNumber;
 
     public VerifyEmailCodeCommand(

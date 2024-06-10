@@ -9,6 +9,7 @@ import com.finnect.user.domain.state.AccessTokenState;
 import com.finnect.common.vo.UserId;
 import com.finnect.common.vo.WorkspaceId;
 import jakarta.annotation.security.PermitAll;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
@@ -30,25 +32,6 @@ public class UserController {
     private final FindUsernameUseCase findUsernameUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
-
-    @Autowired
-    public UserController(
-            SignupUseCase signupUseCase,
-            SignoutUseCase signoutUseCase,
-            ReissueUseCase reissueUseCase,
-            SendEmailCodeUseCase sendEmailCodeUseCase,
-            FindUsernameUseCase findUsernameUseCase,
-            ResetPasswordUseCase resetPasswordUseCase,
-            ChangePasswordUseCase changePasswordUseCase
-    ) {
-        this.signupUseCase = signupUseCase;
-        this.signoutUseCase = signoutUseCase;
-        this.reissueUseCase = reissueUseCase;
-        this.sendEmailCodeUseCase = sendEmailCodeUseCase;
-        this.findUsernameUseCase = findUsernameUseCase;
-        this.resetPasswordUseCase = resetPasswordUseCase;
-        this.changePasswordUseCase = changePasswordUseCase;
-    }
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/signup")

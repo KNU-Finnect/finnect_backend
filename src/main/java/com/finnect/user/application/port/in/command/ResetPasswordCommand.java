@@ -12,7 +12,7 @@ public class ResetPasswordCommand extends SelfValidating<ResetPasswordCommand> {
 
     @NonNull
     @Email
-    private String email;
+    private final String email;
 
     public ResetPasswordCommand(
             @NonNull String email

@@ -7,18 +7,15 @@ import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.application.port.out.error.RefreshTokenNotFoundException;
 import com.finnect.user.domain.state.RefreshTokenState;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class RefreshTokenCacheAdapter implements LoadRefreshTokenPort, SaveRefreshTokenPort, DeleteRefreshTokenPort {
 
     private final RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    public RefreshTokenCacheAdapter(RefreshTokenRepository refreshTokenRepository) {
-        this.refreshTokenRepository = refreshTokenRepository;
-    }
 
     @Override
     public RefreshTokenState loadToken(String token) {

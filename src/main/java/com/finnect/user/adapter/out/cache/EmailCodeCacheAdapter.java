@@ -6,18 +6,15 @@ import com.finnect.user.application.port.out.LoadEmailCodePort;
 import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.application.port.out.error.EmailCodeNotFoundException;
 import com.finnect.user.domain.state.EmailCodeState;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class EmailCodeCacheAdapter implements LoadEmailCodePort, SaveEmailCodePort {
 
     private final EmailCodeRepository emailCodeRepository;
-
-    @Autowired
-    public EmailCodeCacheAdapter(EmailCodeRepository emailCodeRepository) {
-        this.emailCodeRepository = emailCodeRepository;
-    }
 
     @Override
     public EmailCodeState loadEmailCode(String email) {

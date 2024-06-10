@@ -17,12 +17,12 @@ public final class AuthenticationUtils {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userAuthentication.getUsername(),
                 "",
                 grantedAuthorities
         );
-        authenticationToken.setDetails(userAuthentication.getUserId());
-        return authenticationToken;
+        authentication.setDetails(userAuthentication.getUserId());
+        return authentication;
     }
 }

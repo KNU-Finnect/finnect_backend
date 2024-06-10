@@ -3,7 +3,7 @@ package com.finnect.workspace.application;
 import com.finnect.user.application.port.in.CheckSignupQuery;
 import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.in.command.CheckSignupsCommand;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
 import com.finnect.workspace.application.port.out.SearchMemberPort;
 import com.finnect.workspace.domain.InvitationResult;

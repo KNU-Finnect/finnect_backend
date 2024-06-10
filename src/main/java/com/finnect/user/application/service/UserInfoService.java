@@ -12,7 +12,7 @@ import com.finnect.user.application.port.out.ExistsUserPort;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.domain.User;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

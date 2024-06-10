@@ -13,7 +13,7 @@ import com.finnect.crm.application.port.in.company.LoadCompanyUseCase;
 import com.finnect.crm.domain.company.CompanyDetail;
 import com.finnect.crm.domain.company.CompanyState;
 import java.util.List;
-import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.common.vo.WorkspaceAuthority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

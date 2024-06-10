@@ -1,7 +1,7 @@
 package com.finnect.user.application.port.in.command;
 
 import com.finnect.common.SelfValidating;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;

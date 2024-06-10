@@ -7,7 +7,7 @@ import com.finnect.crm.adapter.in.web.res.person.*;
 import com.finnect.crm.application.port.in.person.*;
 import com.finnect.crm.domain.person.PersonState;
 import com.finnect.crm.domain.person.PersonWithCompanyState;
-import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.common.vo.WorkspaceAuthority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

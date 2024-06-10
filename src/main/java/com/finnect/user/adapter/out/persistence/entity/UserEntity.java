@@ -1,8 +1,8 @@
 package com.finnect.user.adapter.out.persistence.entity;
 
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import com.finnect.user.state.UserState;
-import com.finnect.user.vo.WorkspaceId;
+import com.finnect.common.vo.WorkspaceId;
 import jakarta.persistence.*;
 import lombok.*;
 

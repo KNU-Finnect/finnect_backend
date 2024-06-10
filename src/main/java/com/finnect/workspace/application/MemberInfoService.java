@@ -2,7 +2,7 @@ package com.finnect.workspace.application;
 
 import com.finnect.common.error.CustomException;
 import com.finnect.user.application.port.in.CheckUserExistsUseCase;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import com.finnect.workspace.application.port.in.UpdateMemberCommand;
 import com.finnect.workspace.application.port.in.UpdateMemberUsecase;
 import com.finnect.workspace.application.port.out.CheckWorkspaceQuery;

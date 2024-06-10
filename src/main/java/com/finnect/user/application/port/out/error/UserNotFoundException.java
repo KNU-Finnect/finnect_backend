@@ -1,7 +1,7 @@
 package com.finnect.user.application.port.out.error;
 
 import com.finnect.common.error.NotFoundException;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 
 public class UserNotFoundException extends NotFoundException {
 

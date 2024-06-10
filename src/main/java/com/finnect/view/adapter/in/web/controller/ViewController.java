@@ -2,7 +2,7 @@ package com.finnect.view.adapter.in.web.controller;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.common.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.CreateViewRequest;
 import com.finnect.view.adapter.in.web.req.PatchFilterRequest;
 import com.finnect.view.adapter.in.web.req.PatchViewColumnRequest;

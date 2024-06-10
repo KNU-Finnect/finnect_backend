@@ -4,7 +4,7 @@ import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.crm.application.port.in.deal.LoadDealWithCellUseCase;
 import com.finnect.crm.domain.deal.DealCell;
-import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.common.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.res.DealViewInfoResponse;
 import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;
 import com.finnect.view.application.port.in.LoadViewUseCase;

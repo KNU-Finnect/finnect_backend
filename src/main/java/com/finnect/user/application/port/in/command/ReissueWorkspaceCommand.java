@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.in.command;
 
-import com.finnect.user.vo.WorkspaceId;
+import com.finnect.common.vo.WorkspaceId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

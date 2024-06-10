@@ -1,7 +1,7 @@
 package com.finnect.workspace.application.port.in;
 
-import com.finnect.user.vo.UserId;
-import com.finnect.user.vo.WorkspaceId;
+import com.finnect.common.vo.UserId;
+import com.finnect.common.vo.WorkspaceId;
 
 public interface CheckWorkspaceQuery {
 

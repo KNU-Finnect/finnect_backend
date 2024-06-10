@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.in;
 
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 
 public interface CheckUserExistsUseCase {
 

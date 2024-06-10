@@ -8,7 +8,7 @@ import com.finnect.user.application.port.in.IssueUseCase;
 import com.finnect.user.application.port.in.command.IssueCommand;
 import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.state.TokenPairState;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

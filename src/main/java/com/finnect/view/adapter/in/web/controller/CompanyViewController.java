@@ -4,7 +4,7 @@ import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.crm.application.port.in.company.LoadCompanyWithCellUseCase;
 import com.finnect.crm.domain.company.CompanyCell;
-import com.finnect.user.vo.WorkspaceAuthority;
+import com.finnect.common.vo.WorkspaceAuthority;
 import com.finnect.view.adapter.in.web.req.FilterRequest;
 import com.finnect.view.adapter.in.web.res.CompanyViewInfoResponse;
 import com.finnect.view.adapter.in.web.res.SimpleViewInfosResponse;

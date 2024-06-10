@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.in.command;
 
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

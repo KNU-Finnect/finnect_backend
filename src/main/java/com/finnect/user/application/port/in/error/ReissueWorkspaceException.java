@@ -1,7 +1,7 @@
 package com.finnect.user.application.port.in.error;
 
-import com.finnect.user.vo.UserId;
-import com.finnect.user.vo.WorkspaceId;
+import com.finnect.common.vo.UserId;
+import com.finnect.common.vo.WorkspaceId;
 
 public class ReissueWorkspaceException extends RuntimeException {
 

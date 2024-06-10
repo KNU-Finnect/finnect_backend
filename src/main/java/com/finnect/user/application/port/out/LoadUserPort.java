@@ -2,7 +2,7 @@ package com.finnect.user.application.port.out;
 
 import com.finnect.user.application.port.out.error.UserNotFoundException;
 import com.finnect.user.state.UserState;
-import com.finnect.user.vo.UserId;
+import com.finnect.common.vo.UserId;
 
 public interface LoadUserPort {
 

@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.out;
 
-import com.finnect.user.state.RefreshTokenState;
+import com.finnect.user.domain.state.RefreshTokenState;
 
 public interface SaveRefreshTokenPort {
 

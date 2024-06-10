@@ -6,7 +6,7 @@ import com.finnect.user.application.port.out.DeleteRefreshTokenPort;
 import com.finnect.user.application.port.out.LoadRefreshTokenPort;
 import com.finnect.user.application.port.out.SaveRefreshTokenPort;
 import com.finnect.user.application.port.out.error.RefreshTokenNotFoundException;
-import com.finnect.user.state.RefreshTokenState;
+import com.finnect.user.domain.state.RefreshTokenState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

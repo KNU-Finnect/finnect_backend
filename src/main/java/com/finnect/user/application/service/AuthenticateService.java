@@ -5,7 +5,7 @@ import com.finnect.user.application.port.in.UserDetailsQuery;
 import com.finnect.user.application.port.in.command.AuthenticateCommand;
 import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.domain.UserDetailsImpl;
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import com.finnect.common.vo.WorkspaceAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -1,6 +1,6 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import com.finnect.common.vo.UserId;
 import com.finnect.common.vo.WorkspaceAuthority;
 import lombok.Builder;

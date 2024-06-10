@@ -1,6 +1,6 @@
 package com.finnect.user.adapter.in.security.util;
 
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

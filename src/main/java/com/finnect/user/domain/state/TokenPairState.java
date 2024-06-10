@@ -1,4 +1,4 @@
-package com.finnect.user.state;
+package com.finnect.user.domain.state;
 
 public interface TokenPairState {
 

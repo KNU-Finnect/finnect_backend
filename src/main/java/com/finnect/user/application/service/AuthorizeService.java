@@ -4,7 +4,7 @@ import com.finnect.user.application.port.in.AuthorizeUseCase;
 import com.finnect.user.application.port.in.command.AuthorizeCommand;
 import com.finnect.user.application.port.out.ObtainAuthenticationPort;
 import com.finnect.user.domain.AccessToken;
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

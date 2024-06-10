@@ -3,7 +3,7 @@ package com.finnect.user.adapter.out.persistence;
 import com.finnect.user.application.port.out.ExistsUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.common.vo.UserId;
-import com.finnect.user.state.UserState;
+import com.finnect.user.domain.state.UserState;
 import com.finnect.user.adapter.out.persistence.entity.UserEntity;
 import com.finnect.user.adapter.out.persistence.entity.UserRepository;
 import com.finnect.user.application.port.out.CreateUserPort;

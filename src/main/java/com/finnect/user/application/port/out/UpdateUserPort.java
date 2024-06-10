@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.out;
 
-import com.finnect.user.state.UserState;
+import com.finnect.user.domain.state.UserState;
 
 public interface UpdateUserPort {
 

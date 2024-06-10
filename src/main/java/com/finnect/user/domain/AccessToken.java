@@ -1,6 +1,6 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.state.AccessTokenState;
+import com.finnect.user.domain.state.AccessTokenState;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

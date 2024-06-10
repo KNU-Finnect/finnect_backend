@@ -3,7 +3,7 @@ package com.finnect.user.adapter.in.security;
 import com.finnect.user.adapter.in.security.util.AuthenticationUtils;
 import com.finnect.user.application.port.in.AuthorizeUseCase;
 import com.finnect.user.application.port.in.command.AuthorizeCommand;
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

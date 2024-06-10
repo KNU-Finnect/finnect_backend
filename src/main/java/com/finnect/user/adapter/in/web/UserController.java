@@ -5,7 +5,7 @@ import com.finnect.common.ApiUtils.ApiResult;
 import com.finnect.user.adapter.in.web.request.*;
 import com.finnect.user.application.port.in.*;
 import com.finnect.user.application.port.in.command.*;
-import com.finnect.user.state.AccessTokenState;
+import com.finnect.user.domain.state.AccessTokenState;
 import com.finnect.common.vo.UserId;
 import com.finnect.common.vo.WorkspaceId;
 import jakarta.annotation.security.PermitAll;

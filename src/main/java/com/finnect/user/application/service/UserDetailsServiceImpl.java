@@ -5,7 +5,7 @@ import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.error.UserNotFoundException;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
-import com.finnect.user.state.RefreshTokenState;
+import com.finnect.user.domain.state.RefreshTokenState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;

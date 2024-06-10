@@ -1,6 +1,6 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.state.EmailCodeState;
+import com.finnect.user.domain.state.EmailCodeState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

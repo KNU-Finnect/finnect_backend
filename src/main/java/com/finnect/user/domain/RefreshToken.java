@@ -1,6 +1,6 @@
 package com.finnect.user.domain;
 
-import com.finnect.user.state.RefreshTokenState;
+import com.finnect.user.domain.state.RefreshTokenState;
 import com.finnect.common.vo.UserId;
 import com.finnect.common.vo.WorkspaceId;
 import lombok.AllArgsConstructor;

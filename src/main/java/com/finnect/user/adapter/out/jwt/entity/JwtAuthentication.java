@@ -1,6 +1,6 @@
 package com.finnect.user.adapter.out.jwt.entity;
 
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

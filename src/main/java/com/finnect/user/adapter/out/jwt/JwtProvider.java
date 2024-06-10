@@ -3,7 +3,7 @@ package com.finnect.user.adapter.out.jwt;
 import com.finnect.user.adapter.out.jwt.entity.JwtAuthentication;
 import com.finnect.user.application.port.out.GenerateAccessTokenPort;
 import com.finnect.user.application.port.out.ObtainAuthenticationPort;
-import com.finnect.user.state.UserAuthenticationState;
+import com.finnect.user.domain.state.UserAuthenticationState;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtParser;

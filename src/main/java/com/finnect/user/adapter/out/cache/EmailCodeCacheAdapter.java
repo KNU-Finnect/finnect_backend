@@ -5,7 +5,7 @@ import com.finnect.user.adapter.out.cache.entity.EmailCodeRepository;
 import com.finnect.user.application.port.out.LoadEmailCodePort;
 import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.application.port.out.error.EmailCodeNotFoundException;
-import com.finnect.user.state.EmailCodeState;
+import com.finnect.user.domain.state.EmailCodeState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

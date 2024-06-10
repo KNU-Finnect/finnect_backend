@@ -1,7 +1,7 @@
 package com.finnect.user.application.port.in;
 
 import com.finnect.user.application.port.in.command.IssueCommand;
-import com.finnect.user.state.TokenPairState;
+import com.finnect.user.domain.state.TokenPairState;
 
 public interface IssueUseCase {
 

@@ -1,6 +1,6 @@
 package com.finnect.user.adapter.out.cache.entity;
 
-import com.finnect.user.state.EmailCodeState;
+import com.finnect.user.domain.state.EmailCodeState;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;

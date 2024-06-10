@@ -1,6 +1,6 @@
 package com.finnect.user.application.port.in;
 
-import com.finnect.user.state.RefreshTokenState;
+import com.finnect.user.domain.state.RefreshTokenState;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

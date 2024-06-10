@@ -17,6 +17,8 @@ import com.finnect.workspace.adaptor.in.web.res.dto.InvitationDto;
 import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceDto;
 import com.finnect.workspace.adaptor.in.web.res.dto.WorkspaceWithoutIdDto;
 import com.finnect.workspace.application.port.in.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,14 @@ public class WorkspaceController {
     private final InviteMembersUsecase inviteMembersUsecase;
     private final GetWorkspaceQuery getWorkspaceQuery;
 
+    @Operation(
+            summary = "Workspace 생성 API",
+            description = """
+                    주어진 access token의 user id와 workspace name으로 새로운 워크스페이스를 생성합니다.
+                    워크스페이스가 생성될 때 Company와 Deal에 기본 Column 5종이 생성됩니다.
+                    또한 생성한 사용자가 Member로 가입되고, 사용자에게 Default workspace가 없는 경우 생성된 워크스페이스로 설정됩니다.
+                    """
+    )
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces")
     public ResponseEntity<ApiResult<CreateWorkspaceResponse>> createWorkspace(@RequestBody CreateWorkspaceRequest request) {
@@ -54,13 +64,17 @@ public class WorkspaceController {
                 .build();
 
         WorkspaceState state = createWorkspaceUsecase.createWorkspace(workspaceCommand);
-        System.out.println("state.getWorkspaceName()");
-        WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
 
+        WorkspaceWithoutIdDto workspaceWithoutIdDto = new WorkspaceWithoutIdDto(state.getWorkspaceName());
         CreateWorkspaceResponse createWorkspaceResponse = new CreateWorkspaceResponse(workspaceWithoutIdDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.CREATED, createWorkspaceResponse));
     }
 
+    @Operation(
+            summary = "Workspace 이름 변경 API",
+            description = "주어진 access token의 workspace id와 workspace name으로 워크스페이스의 이름을 변경합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/workspaces")
     public ResponseEntity<ApiResult<RenameWorkspaceResponse>> renameWorkspace(@RequestBody RenameWorkspaceRequest request) {
@@ -85,6 +99,10 @@ public class WorkspaceController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, renameWorkspaceResponse));
     }
 
+    @Operation(
+            summary = "Workspace 목록 조회",
+            description = "주어진 access token의 user id로 사용자가 속한 워크스페이스의 목록을 반환합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces")
     public ResponseEntity<ApiResult<GetWorkspacesResponse>> getWorkspaces() {
@@ -103,6 +121,21 @@ public class WorkspaceController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, getWorkspacesResponse));
     }
 
+    @Operation(
+            summary = "Workspace로 초대",
+            description = """
+                    주어진 access token의 user id와 workspace id, 초대할 사용자의 이메일로 워크스페이스에 다른 사용자들을 초대합니다.
+                    이미 가입한 사용자만 초대할 수 있습니다."""
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = """
+                    result 값의 의미
+                    - SUCCEED: 성공
+                    - FAIL: 실패 (이메일은 정상이나 메일 서버 오류 등의 이유로 실패)
+                    - ALREADY_MEMBER: 이미 해당 워크스페이스에 속한 사용자
+                    - YET_SIGNUP: 회원가입하지 않은 이메일"""
+    )
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/invitation")
     public ResponseEntity<ApiResult<InviteMembersResponse>> inviteMembers(@RequestBody InviteMembersRequest request) {

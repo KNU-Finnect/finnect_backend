@@ -7,6 +7,7 @@ import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.domain.state.UserAuthenticationState;
 import com.finnect.common.vo.WorkspaceAuthority;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthenticateService implements AuthenticateUseCase {
 
     private final UserDetailsQuery userDetailsQuery;

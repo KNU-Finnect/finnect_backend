@@ -16,6 +16,7 @@ import com.finnect.user.domain.state.TokenPairState;
 import com.finnect.common.vo.UserId;
 import com.finnect.common.vo.WorkspaceAuthority;
 import com.finnect.workspace.application.port.in.CheckWorkspaceQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class IssueService implements IssueUseCase, ReissueUseCase {
 
     private final UserDetailsQuery userDetailsQuery;

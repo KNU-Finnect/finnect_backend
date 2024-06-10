@@ -1,19 +1,34 @@
 package com.finnect.user.application;
 
 import com.finnect.user.application.port.in.ChangeDefaultWorkspaceUseCase;
+import com.finnect.user.application.port.in.ChangePasswordUseCase;
 import com.finnect.user.application.port.in.command.ChangeDefaultWorkspaceCommand;
+import com.finnect.user.application.port.in.command.ChangePasswordCommand;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.domain.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChangeDefaultWorkspaceService implements ChangeDefaultWorkspaceUseCase {
+@Transactional
+public class ChangeUserInfoService implements ChangePasswordUseCase, ChangeDefaultWorkspaceUseCase {
 
     private final LoadUserPort loadUserPort;
     private final UpdateUserPort updateUserPort;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public void changePassword(ChangePasswordCommand command) {
+        User user = User.from(loadUserPort.loadUser(command.getUserId()));
+        user.changePassword(passwordEncoder.encode(command.getPassword()));
+
+        updateUserPort.updateUser(user);
+    }
 
     @Override
     public void changeDefaultWorkspace(ChangeDefaultWorkspaceCommand command) {

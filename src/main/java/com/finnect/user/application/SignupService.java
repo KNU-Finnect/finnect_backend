@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SignupService implements SignupUseCase {
 
     private final ExistsUserPort existsUserPort;
@@ -41,7 +42,6 @@ public class SignupService implements SignupUseCase {
         }
     }
 
-    @Transactional
     @Override
     public void signup(SignupCommand command) throws EmailCodeNotVerifiedException {
         EmailCode emailCode = EmailCode.from(loadEmailCodePort.loadEmailCode(command.getEmail()));

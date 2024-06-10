@@ -6,6 +6,7 @@ import com.finnect.user.application.port.out.error.UserNotFoundException;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.domain.state.RefreshTokenState;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsQuery {
 
     private final LoadUserPort loadUserPort;

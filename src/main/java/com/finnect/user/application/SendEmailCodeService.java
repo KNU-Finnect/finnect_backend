@@ -4,6 +4,7 @@ import com.finnect.user.application.port.in.SendEmailCodeUseCase;
 import com.finnect.user.application.port.in.command.SendEmailCodeCommand;
 import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.domain.EmailCode;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class SendEmailCodeService implements SendEmailCodeUseCase {
 
     private final SaveEmailCodePort saveEmailCodePort;

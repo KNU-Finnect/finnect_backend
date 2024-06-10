@@ -5,12 +5,14 @@ import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.domain.User;
 import com.finnect.common.vo.UserId;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserInfoService implements GetPersonalNameQuery, CheckDefaultWorkspaceQuery
+@Transactional
+public class GetUserInfoService implements GetPersonalNameQuery, CheckDefaultWorkspaceQuery
 {
     private final LoadUserPort loadUserPort;
 

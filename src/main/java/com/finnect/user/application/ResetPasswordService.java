@@ -7,6 +7,7 @@ import com.finnect.user.application.port.in.error.EmailCodeNotVerifiedException;
 import com.finnect.user.application.port.out.*;
 import com.finnect.user.domain.EmailCode;
 import com.finnect.user.domain.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ResetPasswordService implements ResetPasswordUseCase {
 
     private final LoadUserPort loadUserPort;

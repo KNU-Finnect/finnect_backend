@@ -6,21 +6,16 @@ import com.finnect.user.application.port.out.error.UserNotFoundException;
 import com.finnect.user.domain.User;
 import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.domain.state.RefreshTokenState;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsQuery {
 
     private final LoadUserPort loadUserPort;
-
-    @Autowired
-    public UserDetailsServiceImpl(
-            LoadUserPort loadUserPort
-    ) {
-        this.loadUserPort = loadUserPort;
-    }
 
     @Override
     public UserDetails loadUserByRefreshToken(RefreshTokenState refreshToken) throws UserNotFoundException {

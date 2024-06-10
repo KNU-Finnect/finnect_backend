@@ -7,27 +7,19 @@ import com.finnect.user.domain.UserAuthentication;
 import com.finnect.user.domain.UserDetailsImpl;
 import com.finnect.user.domain.state.UserAuthenticationState;
 import com.finnect.common.vo.WorkspaceAuthority;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticateService implements AuthenticateUseCase {
 
     private final UserDetailsQuery userDetailsQuery;
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public AuthenticateService(
-            UserDetailsQuery userDetailsQuery,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.userDetailsQuery = userDetailsQuery;
-
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public UserAuthenticationState authenticate(AuthenticateCommand command) {

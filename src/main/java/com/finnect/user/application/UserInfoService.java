@@ -13,6 +13,7 @@ import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.UpdateUserPort;
 import com.finnect.user.domain.User;
 import com.finnect.common.vo.UserId;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class UserInfoService implements
         GetPersonalNameQuery,
         ChangePasswordUseCase,
@@ -33,20 +35,6 @@ public class UserInfoService implements
     private final UpdateUserPort updateUserPort;
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserInfoService(
-            ExistsUserPort existsUserPort,
-            LoadUserPort loadUserPort,
-            UpdateUserPort updateUserPort,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.existsUserPort = existsUserPort;
-        this.loadUserPort = loadUserPort;
-        this.updateUserPort = updateUserPort;
-
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public String getPersonalName(UserId userId) {

@@ -9,28 +9,18 @@ import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.domain.EmailCode;
 import com.finnect.user.domain.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FindUsernameService implements FindUsernameUseCase {
 
     private final LoadUserPort loadUserPort;
 
     private final LoadEmailCodePort loadEmailCodePort;
     private final SaveEmailCodePort saveEmailCodePort;
-
-    @Autowired
-    public FindUsernameService(
-            LoadUserPort loadUserPort,
-            LoadEmailCodePort loadEmailCodePort,
-            SaveEmailCodePort saveEmailCodePort
-    ) {
-        this.loadUserPort = loadUserPort;
-
-        this.loadEmailCodePort = loadEmailCodePort;
-        this.saveEmailCodePort = saveEmailCodePort;
-    }
 
     @Override
     public void verifyEmailCode(VerifyEmailCodeCommand command) {

@@ -7,11 +7,13 @@ import com.finnect.user.application.port.in.error.EmailCodeNotVerifiedException;
 import com.finnect.user.application.port.out.*;
 import com.finnect.user.domain.EmailCode;
 import com.finnect.user.domain.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ResetPasswordService implements ResetPasswordUseCase {
 
     private final LoadUserPort loadUserPort;
@@ -22,25 +24,6 @@ public class ResetPasswordService implements ResetPasswordUseCase {
 
     private final GeneratePasswordPort generatePasswordPort;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public ResetPasswordService(
-            LoadUserPort loadUserPort,
-            UpdateUserPort updateUserPort,
-            LoadEmailCodePort loadEmailCodePort,
-            SaveEmailCodePort saveEmailCodePort,
-            GeneratePasswordPort generatePasswordPort,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.loadUserPort = loadUserPort;
-        this.updateUserPort = updateUserPort;
-
-        this.loadEmailCodePort = loadEmailCodePort;
-        this.saveEmailCodePort = saveEmailCodePort;
-
-        this.generatePasswordPort = generatePasswordPort;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public void verifyEmailCode(VerifyEmailCodeCommand command) {

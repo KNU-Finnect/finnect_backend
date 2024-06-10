@@ -12,11 +12,13 @@ import com.finnect.user.application.port.out.SaveEmailCodePort;
 import com.finnect.user.domain.EmailCode;
 import com.finnect.user.domain.User;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SignupService implements SignupUseCase {
 
     private final ExistsUserPort existsUserPort;
@@ -26,24 +28,6 @@ public class SignupService implements SignupUseCase {
     private final SaveEmailCodePort saveEmailCodePort;
 
     private final PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    public SignupService(
-            ExistsUserPort existsUserPort,
-            CreateUserPort createUserPort,
-            LoadEmailCodePort loadEmailCodePort,
-            SaveEmailCodePort saveEmailCodePort,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.existsUserPort = existsUserPort;
-        this.createUserPort = createUserPort;
-
-        this.loadEmailCodePort = loadEmailCodePort;
-        this.saveEmailCodePort = saveEmailCodePort;
-
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public void verifyEmailCode(VerifyEmailCodeCommand command) {

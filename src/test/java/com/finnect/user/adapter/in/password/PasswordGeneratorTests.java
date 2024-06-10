@@ -1,5 +1,6 @@
-package com.finnect.user.application.password;
+package com.finnect.user.adapter.in.password;
 
+import com.finnect.user.adapter.out.password.PasswordGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

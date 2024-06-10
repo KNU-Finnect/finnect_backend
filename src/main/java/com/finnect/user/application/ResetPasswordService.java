@@ -1,14 +1,10 @@
 package com.finnect.user.application;
 
-import com.finnect.user.application.password.PasswordGenerator;
 import com.finnect.user.application.port.in.ResetPasswordUseCase;
 import com.finnect.user.application.port.in.command.ResetPasswordCommand;
 import com.finnect.user.application.port.in.command.VerifyEmailCodeCommand;
 import com.finnect.user.application.port.in.error.EmailCodeNotVerifiedException;
-import com.finnect.user.application.port.out.LoadEmailCodePort;
-import com.finnect.user.application.port.out.LoadUserPort;
-import com.finnect.user.application.port.out.SaveEmailCodePort;
-import com.finnect.user.application.port.out.UpdateUserPort;
+import com.finnect.user.application.port.out.*;
 import com.finnect.user.domain.EmailCode;
 import com.finnect.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
     private final LoadEmailCodePort loadEmailCodePort;
     private final SaveEmailCodePort saveEmailCodePort;
 
-    private final PasswordGenerator passwordGenerator;
+    private final GeneratePasswordPort generatePasswordPort;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -33,7 +29,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
             UpdateUserPort updateUserPort,
             LoadEmailCodePort loadEmailCodePort,
             SaveEmailCodePort saveEmailCodePort,
-            PasswordGenerator passwordGenerator,
+            GeneratePasswordPort generatePasswordPort,
             PasswordEncoder passwordEncoder
     ) {
         this.loadUserPort = loadUserPort;
@@ -42,7 +38,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
         this.loadEmailCodePort = loadEmailCodePort;
         this.saveEmailCodePort = saveEmailCodePort;
 
-        this.passwordGenerator = passwordGenerator;
+        this.generatePasswordPort = generatePasswordPort;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -67,7 +63,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
         }
 
         User user = User.from(loadUserPort.loadUserByEmail(emailCode.getEmail()));
-        String password = passwordGenerator.generateRandomPassword();
+        String password = generatePasswordPort.generateRandomPassword();
         user.changePassword(passwordEncoder.encode(password));
 
         updateUserPort.updateUser(user);

@@ -1,5 +1,6 @@
-package com.finnect.user.application.password;
+package com.finnect.user.adapter.out.password;
 
+import com.finnect.user.application.port.out.GeneratePasswordPort;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @Component
-public class PasswordGenerator {
+public class PasswordGenerator implements GeneratePasswordPort {
 
     public String generateRandomPassword() {
         StringBuilder builder = new StringBuilder();

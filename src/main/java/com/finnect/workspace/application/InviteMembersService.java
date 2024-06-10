@@ -1,8 +1,7 @@
 package com.finnect.workspace.application;
 
-import com.finnect.user.application.port.in.CheckSignupQuery;
+import com.finnect.user.application.port.in.CheckEmailQuery;
 import com.finnect.user.application.port.in.GetPersonalNameQuery;
-import com.finnect.user.application.port.in.command.CheckSignupsCommand;
 import com.finnect.common.vo.UserId;
 import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
 import com.finnect.workspace.application.port.out.SearchMemberPort;
@@ -33,7 +32,7 @@ public class InviteMembersService implements InviteMembersUsecase {
     private final SpringTemplateEngine templateEngine;
     private final GetWorkspaceQuery getWorkspaceQuery;
     private final GetPersonalNameQuery getPersonalNameQuery;
-    private final CheckSignupQuery checkSignupQuery;
+    private final CheckEmailQuery checkEmailQuery;
     private final SearchMemberPort searchMemberPort;
 
     @Override
@@ -44,12 +43,11 @@ public class InviteMembersService implements InviteMembersUsecase {
         WorkspaceState workspace = getWorkspaceQuery.getWorkspace(cmds.get(0).getWorkspaceId());
         String senderName = getPersonalNameQuery.getPersonalName(UserId.parseOrNull(cmds.get(0).getUserId()));
 
-        Map<String, Boolean> signupMap = checkSignupQuery.checkSignups(
-                new CheckSignupsCommand(
-                        cmds.stream()
+        Map<String, Boolean> signupMap = checkEmailQuery.checkEmailsExist(
+                cmds.stream()
                         .map(InviteMembersCommand::getEmail)
                         .collect(Collectors.toList())
-                ));
+        );
 
         // SMTP로 이메일 전송
         for (InviteMembersCommand cmd : cmds) {

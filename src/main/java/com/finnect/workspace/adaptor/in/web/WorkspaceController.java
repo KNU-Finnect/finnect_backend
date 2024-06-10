@@ -2,8 +2,6 @@ package com.finnect.workspace.adaptor.in.web;
 
 import com.finnect.common.ApiUtils;
 import com.finnect.common.ApiUtils.ApiResult;
-import com.finnect.user.application.port.in.FindUsernameUseCase;
-import com.finnect.user.application.port.in.command.FindUsernameCommand;
 import com.finnect.user.vo.WorkspaceAuthority;
 import com.finnect.workspace.domain.state.WorkspaceState;
 import com.finnect.workspace.adaptor.in.web.req.CreateWorkspaceRequest;

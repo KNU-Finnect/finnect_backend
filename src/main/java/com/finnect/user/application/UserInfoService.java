@@ -25,16 +25,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserInfoService implements
         GetPersonalNameQuery,
-        ChangePasswordUseCase,
         CheckSignupQuery,
-        CheckDefaultWorkspaceQuery,
-        ChangeDefaultWorkspaceUseCase
+        CheckDefaultWorkspaceQuery
 {
     private final ExistsUserPort existsUserPort;
     private final LoadUserPort loadUserPort;
-    private final UpdateUserPort updateUserPort;
-
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String getPersonalName(UserId userId) {
@@ -43,22 +38,6 @@ public class UserInfoService implements
         return user.getLastName() + user.getFirstName();
     }
 
-    @Override
-    public void changePassword(ChangePasswordCommand command) {
-        User user = User.from(loadUserPort.loadUser(command.getUserId()));
-        user.changePassword(passwordEncoder.encode(command.getPassword()));
-
-        updateUserPort.updateUser(user);
-    }
-
-    @Override
-    public void changeDefaultWorkspace(ChangeDefaultWorkspaceCommand command) {
-        User user = User.from(loadUserPort.loadUser(command.getUserId()));
-        user.changeDefaultWorkspace(command.getWorkspaceId());
-        
-        updateUserPort.updateUser(user);
-    }
-    
     @Override
     public Map<String, Boolean> checkSignups(CheckSignupsCommand command) {
         Map<String, Boolean> emailsExists = new HashMap<>();

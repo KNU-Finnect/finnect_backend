@@ -1,4 +1,4 @@
-package com.finnect.user.application.jwt;
+package com.finnect.user.adapter.in.jwt;
 
 import com.finnect.user.adapter.out.jwt.JwtProvider;
 import com.finnect.user.adapter.out.jwt.entity.JwtAuthentication;

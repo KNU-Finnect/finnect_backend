@@ -1,4 +1,4 @@
-package com.finnect.user.application.service;
+package com.finnect.user.application;
 
 import com.finnect.user.application.port.in.AuthorizeUseCase;
 import com.finnect.user.application.port.in.command.AuthorizeCommand;

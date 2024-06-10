@@ -1,4 +1,4 @@
-package com.finnect.user.application.service;
+package com.finnect.user.application;
 
 import com.finnect.user.application.port.in.SignoutUseCase;
 import com.finnect.user.application.port.in.command.SignoutCommand;

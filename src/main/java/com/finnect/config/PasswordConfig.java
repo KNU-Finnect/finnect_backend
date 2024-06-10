@@ -1,4 +1,4 @@
-package com.finnect.user.config;
+package com.finnect.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

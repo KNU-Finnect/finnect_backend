@@ -1,4 +1,4 @@
-package com.finnect.user.config;
+package com.finnect.config;
 
 import com.finnect.user.adapter.in.security.AuthenticationFilter;
 import com.finnect.user.adapter.in.security.AuthorizationFilter;

@@ -8,6 +8,7 @@ import com.finnect.crm.application.port.in.person.*;
 import com.finnect.crm.domain.person.PersonState;
 import com.finnect.crm.domain.person.PersonWithCompanyState;
 import com.finnect.user.vo.WorkspaceAuthority;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,10 @@ public class PersonController {
     private final FindPeopleUsecase findPeopleUsecase;
     private final DeletePersonUsecase deletePersonUsecase;
 
+    @Operation(
+            summary = "Person 생성 API",
+            description = "주어진 Person에 대한 정보로 새로운 Person을 생성합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<CreatePersonResponse>> createPerson(@RequestBody CreatePersonRequest request) {
@@ -44,6 +49,12 @@ public class PersonController {
         );
     }
 
+    @Operation(
+            summary = "Person 정보 변경 API",
+            description = """
+                    주어진 Person에 대한 정보로 Person의 정보를 수정합니다.
+                    personId는 반드시 필요하며, 이 외에는 수정할 정보만 포함해 요청합니다."""
+    )
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<UpdatePersonResponse>> updatePerson(@RequestBody UpdatePersonRequest request) {
@@ -62,6 +73,10 @@ public class PersonController {
         );
     }
 
+    @Operation(
+            summary = "Person 배열 조회 API",
+            description = "주어진 companyId로 Company에 속한 Person의 배열을 반환합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/people")
     public ResponseEntity<ApiUtils.ApiResult<FindPeopleResponse>> findPeople(@RequestParam("companyId") Long companyId) {
@@ -73,6 +88,12 @@ public class PersonController {
                 ));
     }
 
+    @Operation(
+            summary = "Person 전체 조회 API",
+            description = """
+                    주어진 access token의 workspace id로 Person의 배열을 반환합니다.
+                    Company와 상관 없이, 해당 Workspace에 속한 모든 Person을 반환합니다."""
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/workspaces/people/all")
     public ResponseEntity<ApiUtils.ApiResult<FindAllPeopleResponse>> findAllPeople() {
@@ -93,10 +114,13 @@ public class PersonController {
                 ));
     }
 
+    @Operation(
+            summary = "Person 삭제 API",
+            description = "주어진 personId로 Person을 삭제합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/workspaces/people/{personId}")
     public ResponseEntity<ApiUtils.ApiResult<?>> deletePerson(@PathVariable("personId") Long personId) {
-        // TODO: PersonID 검사
 
         deletePersonUsecase.delete(personId);
 

@@ -14,6 +14,7 @@ import com.finnect.workspace.adaptor.in.web.res.CreateMemberResponse;
 import com.finnect.workspace.adaptor.in.web.res.FindMembersResponse;
 import com.finnect.workspace.adaptor.in.web.res.dto.MemberDto;
 import com.finnect.workspace.adaptor.in.web.res.dto.MemberWithoutIdDto;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,12 @@ public class MemberController {
     private final GetPersonalNameQuery getPersonalNameQuery;
     private final UpdateMemberUsecase updateMemberUsecase;
 
+    @Operation(
+            summary = "Member 생성 API",
+            description = """
+                    주어진 workpspace id와 access token의 user id로 Member를 생성합니다.
+                    이는 해당 사용자가 해당 워크스페이스에 속하게 됨을 의미합니다."""
+    )
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<ApiResult<CreateMemberResponse>> createWorkspace(@RequestBody CreateMemberRequest request) {
@@ -59,6 +66,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success(HttpStatus.OK, createMemberResponse));
     }
 
+    @Operation(
+            summary = "Member 배열 조회 API",
+            description = "주어진 access token의 workpspace id로 속한 Member의 배열을 조회합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<ApiResult<FindMembersResponse>> findMembers() {
@@ -79,6 +90,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(HttpStatus.OK, findMembersResponse));
     }
 
+    @Operation(
+            summary = "Member 정보 변경 API",
+            description = """
+                    주어진 Member에 대한 정보와 access token의 user id와 workpspace id로 Member의 정보를 변경합니다.
+                    Member에 대한 정보는 변경된 값만 포함해 요청합니다."""
+    )
     @PreAuthorize("isAuthenticated()")
     @PatchMapping
     ResponseEntity<ApiResult<UpdateMemberResponse>> updateMember(@RequestBody UpdateMemberRequest request) {

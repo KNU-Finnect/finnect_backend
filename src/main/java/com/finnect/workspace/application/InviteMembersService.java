@@ -3,6 +3,7 @@ package com.finnect.workspace.application;
 import com.finnect.user.application.port.in.CheckSignupQuery;
 import com.finnect.user.application.port.in.GetPersonalNameQuery;
 import com.finnect.user.application.port.in.command.CheckSignupsCommand;
+import com.finnect.user.application.port.out.LoadUserPort;
 import com.finnect.user.vo.UserId;
 import com.finnect.workspace.application.port.in.GetWorkspaceQuery;
 import com.finnect.workspace.application.port.out.SearchMemberPort;
@@ -35,6 +36,7 @@ public class InviteMembersService implements InviteMembersUsecase {
     private final GetPersonalNameQuery getPersonalNameQuery;
     private final CheckSignupQuery checkSignupQuery;
     private final SearchMemberPort searchMemberPort;
+    private final LoadUserPort loadUserPort;
 
     @Override
     public List<InvitationState> inviteMembers(List<InviteMembersCommand> cmds) {
@@ -44,6 +46,7 @@ public class InviteMembersService implements InviteMembersUsecase {
         WorkspaceState workspace = getWorkspaceQuery.getWorkspace(cmds.get(0).getWorkspaceId());
         String senderName = getPersonalNameQuery.getPersonalName(UserId.parseOrNull(cmds.get(0).getUserId()));
 
+        // 초대할 사람들의 이메일 목록을 주고, 각자 가입되어 있는지 확인
         Map<String, Boolean> signupMap = checkSignupQuery.checkSignups(
                 new CheckSignupsCommand(
                         cmds.stream()
@@ -60,12 +63,15 @@ public class InviteMembersService implements InviteMembersUsecase {
                     workspace.getWorkspaceName()
             );
 
+            // 가입하지 않은 사용자
             if (!signupMap.get(cmd.getEmail())) {
                 invitation.updateResult(InvitationResult.YET_SIGNUP);
                 invitations.add(invitation);
                 continue;
             }
-            if (searchMemberPort.searchMember(cmd.getUserId(), cmd.getWorkspaceId())) {
+
+            // 가입한 사용자라면, Member가 존재하는지 확인
+            if (searchMemberPort.searchMember(loadUserPort.loadUserByEmail(cmd.getEmail()).getId().value(), cmd.getWorkspaceId())) {
                 invitation.updateResult(InvitationResult.ALREADY_MEMBER);
                 invitations.add(invitation);
                 continue;

@@ -14,6 +14,7 @@ import com.finnect.crm.domain.company.CompanyDetail;
 import com.finnect.crm.domain.company.CompanyState;
 import java.util.List;
 import com.finnect.user.vo.WorkspaceAuthority;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,12 @@ public class CompanyController {
     private final CreateCompanyUsecase createCompanyUsecase;
     private final LoadCompanyUseCase loadCompanyUseCase;
 
+    @Operation(
+            summary = "Company 생성 API",
+            description = """
+                    주어진 Company에 대한 정보와 access token의 workspace id로 Company를 생성합니다.
+                    domain은 서로 같은 워크스페이스 내에서 중복될 수 없습니다."""
+    )
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<ApiUtils.ApiResult<CreateCompanyResponse>> createCompany(@RequestBody CreateCompanyRequest request) {
@@ -50,6 +57,10 @@ public class CompanyController {
         );
     }
 
+    @Operation(
+            summary = "Company 배열 조회 API",
+            description = "주어진 access token의 workspace id로 Workspace에 속한 Company의 배열을 반환합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<ApiResult<LoadCompaniesResponse>> getCompanies() {
@@ -75,6 +86,10 @@ public class CompanyController {
         );
     }
 
+    @Operation(
+            summary = "Company 상세 조회 API",
+            description = "주어진 company id로 Company의 상세 정보를 조회합니다."
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{companyId}")
     public ResponseEntity<ApiResult<GetCompanyResponse>> getCompany(@PathVariable Long companyId) {
